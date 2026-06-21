@@ -1,10 +1,10 @@
 # Claude Team Skills
 
-**19 AI Specialists Working as One Team — Built for Claude Code**
+**21 AI Specialists Working as One Team — Built for Claude Code**
 
 > Version 1.0 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
 
-Claude Team Skills is a collection of 19 interconnected specialist skills for Claude Code. Instead of a generic AI assistant, every task is handled by the right expert — PM, Security Engineer, DBA, Test Architect, and more — all routed by a central Orchestrator that loads one specialist at a time.
+Claude Team Skills (CTS) is a collection of 21 interconnected specialist skills for Claude Code. Instead of a generic AI assistant, every task is handled by the right expert — PM, Security Engineer, DBA, Software Architect, Test Architect, and more — all routed by a central Orchestrator that loads one specialist at a time.
 
 ---
 
@@ -16,7 +16,7 @@ This repository ships with companion materials for presentations and onboarding:
 |---|---|
 | `bmad-vs-cts-comparison.pdf` | Side-by-side feature comparison: BMAD Method vs Claude Team Skills |
 | `claude-team-skills-pitch.pptx` | Slide deck — pitch CTS to your team or stakeholders |
-| `claude-team-skills-user-manual.docx` | Detailed user manual covering all 19 specialists and workflows |
+| `claude-team-skills-user-manual.docx` | Detailed user manual covering all 21 specialists and workflows |
 
 ---
 
@@ -24,7 +24,7 @@ This repository ships with companion materials for presentations and onboarding:
 
 ### Step 1 — Copy the `skills/` folder into your project root
 
-Extract `claude-team-skills-final.tar.gz` and place its contents inside a `skills/` directory:
+Extract `claude-team-skills/` and place its contents inside a `skills/` directory:
 
 ```
 your-project/
@@ -32,6 +32,8 @@ your-project/
 │   ├── orchestrator/
 │   ├── project-manager/
 │   ├── scrum-master/
+│   ├── system-designer/
+│   ├── software-architect/
 │   ├── tech-lead/
 │   ├── security-engineer/
 │   ├── dba/
@@ -99,7 +101,7 @@ Interactive: options → pick → execute → verify
 Switches specialist with a 2-3 line handoff summary
 ```
 
-**Token cost:** CLAUDE.md (~1K) + Orchestrator (~2K) + one specialist (~1-2K) = ~3-5K tokens for routing. Compare to loading all 19 skills at once: 35K+ tokens wasted.
+**Token cost:** CLAUDE.md (~1K) + Orchestrator (~2K) + one specialist (~1-2K) = ~3-5K tokens for routing. Compare to loading all 21 skills at once: 35K+ tokens wasted.
 
 ---
 
@@ -196,11 +198,14 @@ Write SESSION_END to .logs/sessions.md:
 | **No silent phase skips** | If user says "skip this" → acknowledge in one sentence, log it, continue |
 | **2 hard gates** | BRAINSTORM → PLAN requires user option pick; PLAN → EXECUTE requires user confirmation |
 | **1 ship gate** | VERIFY must pass (tests + security) before SHIP — no exceptions |
-| **One specialist at a time** | Never load all 19 skills — Orchestrator + 1 specialist per task |
+| **One specialist at a time** | Never load all 21 skills — Orchestrator + 1 specialist per task |
 | **Written handoffs** | Every specialist switch gets a 2-3 line HANDOFF note |
 | **Confirm before code** | Present approach, get approval, then generate — prevents rewrites |
 | **Log in same tool call** | Log after action, in the same call — no extra round-trips |
 | **YAGNI gate** | Before building anything: "Is this needed RIGHT NOW?" Default to 🟢 SIMPLE |
+| **CI monitoring** | DevOps watches every push — CI red = stop all work, fix first |
+| **≥80% coverage** | Combined unit + integration coverage gate before every SHIP |
+| **Document-first** | New projects/large features: PRD → Architecture → Stories before coding |
 
 ---
 
@@ -356,6 +361,7 @@ Specialist: Deployment / DevOps (as needed)
 
 Actions:
   □ Commit / deploy / release
+  □ git push origin <branch>  ← mandatory every sprint
   □ Update relevant documentation
   □ Announce completion to user
   □ Log to .logs/activity.md:
@@ -413,16 +419,16 @@ Log the chosen option to `.logs/issues.md` with status `open` until resolved.
 
 ## The 6-Phase Workflow
 
-Every session follows this flow. Phases can be skipped when not needed.
+Every session follows this flow. All phases are mandatory.
 
 | Phase | What Happens | Logged To |
 |---|---|---|
 | 1. Understand | Clarify what, where, how big | `.logs/communications.md` |
-| 2. Brainstorm | 2-3 options ranked simple → complex | `.logs/decisions.md` |
+| 2. Brainstorm | 3 options ranked simple → complex | `.logs/decisions.md` |
 | 3. Plan | Break into 30-60 min task batches | `.logs/activity.md` |
 | 4. Execute | One task at a time, interactive checkpoints | `.logs/activity.md` |
-| 5. Verify | Tests + security review | `.logs/issues.md` |
-| 6. Ship | Deploy, document, announce | `.logs/activity.md` |
+| 5. Verify | Tests + security review + ≥80% coverage | `.logs/issues.md` |
+| 6. Ship | Deploy, git push, document, announce | `.logs/activity.md` |
 
 Options are always presented as:
 
@@ -451,7 +457,7 @@ Before building, designing, or planning anything — ask: *"Is this needed RIGHT
 
 ### 2. Token Efficiency
 
-- Load **one specialist at a time** — never all 19
+- Load **one specialist at a time** — never all 21
 - Handoffs use a **2-3 line summary**, not full history
 - Batch tasks into **30-60 min chunks** with checkpoints
 - **Confirm approach before generating code** — prevents expensive rewrites
@@ -459,54 +465,56 @@ Before building, designing, or planning anything — ask: *"Is this needed RIGHT
 
 ### 3. Project Memory
 
-Everything is appended to `.logs/` — decisions, bugs, risks, scope changes, handoffs. Resume any session exactly where you left off.
+Everything is appended to `.logs/` — decisions, bugs, risks, scope changes, handoffs. Resume any session exactly where you left off. Eight log files, all append-only, all searchable.
 
 ---
 
-## The Team — 19 Specialists
+## The Team — 21 Specialists
 
-### Management
+### Management & Planning
 | Specialist | What They Do | Trigger Words |
 |---|---|---|
-| **Orchestrator** | Routes every request to the right specialist | (first to load, always) |
-| **Project Manager** | Charter, WBS, risk matrix, estimation, status reports | project plan, scope, milestone, charter |
-| **Scrum Master** | Sprints, user stories, backlog, ceremonies, velocity | sprint, backlog, user story, retro, agile |
-| **Tech Lead** | ADRs, architecture, YAGNI gate, code standards | architecture, tech stack, refactor, design pattern |
+| **Orchestrator** | Routes every request to the right specialist; enforces all 6 phases | (first to load, always) |
+| **Project Manager** | Charter, WBS, risk matrix, PERT estimation, status reports, PRD | project plan, scope, milestone, charter, PRD |
+| **Scrum Master** | Sprints, user stories, MoSCoW backlog, ceremonies, velocity | sprint, backlog, user story, retro, agile |
+| **Tech Lead** | ADRs, YAGNI gate, code standards, tech stack decisions | architecture, tech stack, refactor, design pattern |
+
+### Architecture & Design
+| Specialist | What They Do | Trigger Words |
+|---|---|---|
+| **System Designer** | High-level topology, NFRs, scalability, data flow, capacity planning | system design, distributed, scalability, NFR, SLA, SLO |
+| **Software Architect** | Code structure, DDD, clean/hexagonal architecture, design patterns, module boundaries | clean architecture, DDD, bounded context, CQRS, design pattern |
+| **UX Designer** | User flows, wireframes, information architecture, usability, personas | user flow, wireframe, UX, usability, IA |
+| **UI Designer** | Design tokens, color, typography, component styling, design systems | design tokens, UI, color scheme, typography, dark mode |
 
 ### Security & Data
 | Specialist | What They Do | Trigger Words |
 |---|---|---|
-| **Security Engineer** | STRIDE, auth design, OWASP, compliance (SOC2/HIPAA/PCI-DSS) | threat model, security review, OWASP, auth design |
-| **DBA** | Schema, queries, indexes, migrations, backup strategy | database, schema, slow query, migration, index |
-
-### Design
-| Specialist | What They Do | Trigger Words |
-|---|---|---|
-| **UX Designer** | User flows, wireframes, IA, usability | user flow, wireframe, UX, usability |
-| **UI Designer** | Design tokens, colors, typography, visual polish | design tokens, UI, color scheme, typography |
+| **Security Engineer** | STRIDE threat modeling, auth design, OWASP, compliance (SOC2/HIPAA/PCI-DSS) | threat model, security review, OWASP, auth design |
+| **DBA** | Schema design, query optimization, indexes, migrations, backup strategy | database, schema, slow query, migration, index |
 
 ### Development
 | Specialist | What They Do | Trigger Words |
 |---|---|---|
-| **Backend Dev** | APIs, services, auth, ORM, business logic | API, endpoint, backend, REST, GraphQL, service |
-| **Frontend Dev** | Components, state, accessibility, responsive | component, React, Vue, Next, frontend, CSS |
-| **Tester** | Unit / integration / e2e tests, QA, bug reports | test, unit test, e2e, QA, coverage, bug report |
-| **Test Architect** | Risk-based strategy, ATDD/Gherkin, adversarial review | test strategy, ATDD, adversarial review, edge case |
+| **Backend Dev** | APIs, services, auth, ORM, business logic, performance | API, endpoint, backend, REST, GraphQL, service |
+| **Frontend Dev** | Components, state management, accessibility, responsive design | component, React, Vue, Next, frontend, CSS |
+| **Tester** | Unit / integration / e2e tests, QA, bug reports, ≥80% coverage gate | test, unit test, e2e, QA, coverage, bug report |
+| **Test Architect** | Risk-based strategy, ATDD/Gherkin, adversarial review, edge case hunting | test strategy, ATDD, adversarial review, edge case |
 
 ### Operations
 | Specialist | What They Do | Trigger Words |
 |---|---|---|
-| **Deployment** | Release, rollback, blue-green, environment management | deploy, release, rollback, staging, production |
-| **DevOps/DevSecOps** | CI/CD, Docker, K8s, Terraform, scanning (Semgrep/Trivy/Checkov) | CI/CD, pipeline, Docker, Kubernetes, security scan |
+| **Deployment** | Release, rollback, blue-green/canary strategies, environment management | deploy, release, rollback, staging, production |
+| **DevOps/DevSecOps** | CI/CD, Docker, K8s, Terraform, Semgrep/Trivy/Checkov scanning, CI monitoring | CI/CD, pipeline, Docker, Kubernetes, security scan |
 
 ### Creative & Marketing
 | Specialist | What They Do | Trigger Words |
 |---|---|---|
-| **Creative Intelligence** | Brainstorming, SCAMPER, Design Thinking, storytelling, naming | brainstorm, ideate, design thinking, name ideas |
-| **Digital Marketer** | SEO, campaigns, funnels, analytics | SEO, campaign, launch, analytics, growth |
-| **Copywriter** | Headlines, CTAs, email copy, UX writing | copy, headline, CTA, landing page, email |
-| **Content Marketer** | Blog posts, social media, content calendar | blog post, content, social media, newsletter |
-| **Project Monitor** | Logs, KPIs, status reports, retrospectives, session resumption | status report, KPIs, retro, what did we do |
+| **Creative Intelligence** | 7 ideation frameworks (SCAMPER, Design Thinking, First Principles, etc.) | brainstorm, ideate, design thinking, name ideas |
+| **Digital Marketer** | SEO, campaigns, email sequences, GA4 analytics, A/B testing | SEO, campaign, launch, analytics, growth |
+| **Copywriter** | Headlines, CTAs, landing pages, UX microcopy, email copy | copy, headline, CTA, landing page, email |
+| **Content Marketer** | Blog posts, content calendar, social media, case studies, repurposing chain | blog post, content, social media, newsletter |
+| **Project Monitor** | 8 log files, KPIs, status reports, retrospectives, session resumption | status report, KPIs, retro, what did we do |
 
 ---
 
@@ -518,7 +526,7 @@ The Orchestrator recognizes these scenarios and uses an optimised fast path:
 |---|---|---|
 | 🐛 Bug Fix | 15-60 min | Tech Lead → Backend/Frontend → Tester |
 | ✨ New Feature | 1-4 hrs | PM → UX → Tech Lead → DBA → Devs → Tester → Security |
-| 🚀 New Project | 2-6 hrs | PM → UX → Tech Lead → DBA → Security → all devs → DevOps |
+| 🚀 New Project | 2-6 hrs | PM → System Designer → Software Architect → UX → Tech Lead → DBA → Security → all devs → DevOps |
 | 📋 Document-First Build | 1-2 hrs planning + execution | PM → Tech Lead → DBA → Security → Scrum → Test Architect |
 | 🎨 UX/UI Design | 30-120 min | UX → UI → Frontend → Copywriter |
 | 🗄️ Database Design | 15-60 min | DBA → Tech Lead → Backend Dev |
@@ -594,6 +602,7 @@ On session start, the Orchestrator reads only the last `SESSION_END` entry from 
 | Blocker Duration | Time from open → resolved | < 1 session |
 | Security Issue Rate | Security issues / Tasks completed | < 0.2 |
 | Rework Rate | Corrections / Completed × 100 | < 15% |
+| Coverage Gate | Combined unit + integration % | ≥ 80% |
 
 ---
 
@@ -604,7 +613,9 @@ For new projects and large features (3+ days of work):
 ```
 PRD → Architecture Doc → Epics & Stories → Implementation
  PM    Tech Lead + DBA +    Scrum Master +     Dev team
-        Security Eng         Test Architect
+   System Designer +         Test Architect
+    Software Architect +
+      Security Engineer
 ```
 
 Each artifact is saved to `docs/`, logged as a MILESTONE, and requires user approval before proceeding.
@@ -722,7 +733,7 @@ Which one?
 | Quick bug fix | 3-8K | Orchestrator + 1 dev + Tester |
 | Small feature | 8-15K | Orchestrator + Tech Lead + 1-2 devs + Tester |
 | Large feature | 15-30K | Multiple specialists across batches |
-| New project scaffold | 15-25K | PM + Tech Lead + DBA + devs + DevOps |
+| New project scaffold | 15-25K | PM + System Designer + Software Architect + Tech Lead + DBA + devs + DevOps |
 | Database design | 5-10K | DBA + Backend Dev |
 | UX/UI design | 5-12K | UX + UI + Frontend + Copywriter |
 | Security audit | 5-15K | Security Eng + DevSecOps + references |
@@ -783,4 +794,4 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 
 ---
 
-*Claude Team Skills v1.0 — 19 specialists, 46 files, 6,087 lines*
+*Claude Team Skills v1.0 — 21 specialists, 46 files, 6,087 lines*
