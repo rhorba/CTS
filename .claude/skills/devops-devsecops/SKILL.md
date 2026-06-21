@@ -159,6 +159,48 @@ checkov -d ./terraform --framework terraform
 gitleaks detect --source . --verbose
 ```
 
+## CI Monitoring Protocol (mandatory rule)
+
+After **every push** to any branch, DevOps/DevSecOps must:
+
+```
+1. Watch the CI pipeline run to completion — do not move on while it is running
+2. If CI is GREEN → log to .logs/activity.md: "[DATE] CI: green on <branch> (<commit>)"
+3. If CI is RED →
+     a. Read the failure output immediately
+     b. Diagnose root cause (test failure / lint / build / security scan)
+     c. Fix the issue in the working branch
+     d. Push fix and repeat from step 1
+     e. Log each iteration to .logs/issues.md
+4. A sprint task is NEVER marked "done" while CI is red on its branch
+5. Never move to SHIP phase with a red CI — this is a hard gate
+```
+
+**Monitoring commands:**
+```bash
+# GitHub CLI — watch live CI status
+gh run watch
+
+# Poll until green
+gh run watch --exit-status
+
+# View failed run details
+gh run view --log-failed
+
+# Re-run failed jobs only
+gh run rerun --failed
+```
+
+**Common CI failure → fix mapping:**
+| Failure | Likely Cause | Fix |
+|---|---|---|
+| Test failure | Logic bug or broken fixture | Fix the code, not the test |
+| Lint error | Style violation | Run formatter and push |
+| Build error | Missing dependency / type error | Resolve locally first |
+| Security scan | New CVE in dependency | Update package, re-scan |
+| Coverage < 80% | Untested path | Write the missing test |
+| Permission error | Missing secret or env var | Add to repo secrets |
+
 ## Handoff Points
 - **← From Tech Lead**: Receives infra requirements
 - **← From Security Engineer**: Receives scanning policies, compliance rules to enforce
@@ -166,6 +208,6 @@ gitleaks detect --source . --verbose
 - **← From DBA**: Receives backup/replication infra requirements
 - **→ Security Engineer**: Reports scan findings for triage and risk assessment
 - **→ Tester**: Provides staging environments
-- **→ Deployment**: Provides hardened pipeline and infra
+- **→ Deployment**: Provides hardened pipeline and infra — only when CI is GREEN
 - **→ DBA**: Provides database infra (instances, networking, encryption)
-- **→ PM**: Reports security posture, infrastructure status
+- **→ PM**: Reports security posture, infrastructure status, CI health

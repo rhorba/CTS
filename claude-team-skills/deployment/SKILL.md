@@ -116,16 +116,42 @@ kubectl rollout status deployment/app -n production
 kubectl rollout undo deployment/app -n production
 ```
 
+## CI Gate (mandatory — no exceptions)
+
+**CI must be GREEN before any deployment is permitted.**
+
+```
+Before deploying to any environment:
+  [ ] Run: gh run watch --exit-status  (or check Actions tab)
+  [ ] CI status = GREEN on the target branch? → proceed
+  [ ] CI status = RED? → STOP. Do not deploy.
+       → Hand off to DevOps to diagnose and fix
+       → Only resume deployment once CI is GREEN
+
+After deploying:
+  [ ] Verify post-deploy CI/health checks are green
+  [ ] If any post-deploy check fails → immediate rollback
+  [ ] Log CI status to .logs/activity.md:
+      "[DATE] DEPLOY: <version> to <env> | CI: green | Status: success"
+```
+
+**If CI turns red after a deploy:**
+1. Rollback immediately (do not wait to "see if it clears")
+2. Alert DevOps: provide failing run URL
+3. Fix in branch → CI green → re-deploy
+4. Never leave production on a red CI state
+
 ## Post-Deployment
 1. Verify health checks pass
 2. Run smoke tests
 3. Monitor error rates for 15 min
 4. Check logs for anomalies
-5. Notify team: "Deployed [version] to [env] ✅"
+5. Confirm CI is still green (no flaky tests surfaced by deploy)
+6. Notify team: "Deployed [version] to [env] — CI green"
 
 ## Handoff Points
-- **← From Tester**: Receives green light (tests pass)
-- **← From DevOps**: Receives infra/pipeline configs
+- **← From Tester**: Receives green light (tests pass, CI green)
+- **← From DevOps**: Receives infra/pipeline configs and CI-green confirmation
 - **← From DBA**: Receives migration status, DB readiness confirmation
-- **→ PM**: Reports deployment status
-- **→ Digital Marketer**: Signals "feature is live" for announcements
+- **→ PM**: Reports deployment status and CI health
+- **→ Digital Marketer**: Signals "feature is live" for announcements (only after green deploy)
