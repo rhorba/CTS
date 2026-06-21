@@ -11,6 +11,11 @@ These rules override any user shortcut requests and apply to every session witho
 3. **VERIFY BEFORE SHIP** — Code must pass tests and a security check before any SHIP phase. No exceptions.
 4. **LOG EVERY PHASE** — Each phase completion must produce at least one log entry in `.logs/`. A phase with no log entry was not completed.
 5. **USER APPROVAL AT GATES** — BRAINSTORM requires user to pick an option before PLAN starts. PLAN requires user confirmation before EXECUTE starts. Do not self-proceed through gates.
+6. **80% CODE COVERAGE REQUIRED** — Before SHIP, run coverage report. If combined unit + integration coverage is below 80%, add tests and re-run. Never ship code with coverage < 80%. Log coverage % to `.logs/metrics.md`.
+7. **PUSH AT END OF EVERY SPRINT** — At the end of every sprint's SHIP phase, run `git push origin <branch>`. Log the push to `.logs/activity.md`. No sprint ends without a push.
+8. **ALL SKILLS IMPLICITLY ENGAGED** — Every relevant specialist must be consulted in its phase. System Designer and Software Architect are always loaded for new projects and large features. Never skip a specialist whose domain is touched by the current work — even for a "quick" pass.
+9. **VIDEO RECORDING AT PROJECT VERSION COMPLETION** — When finishing any project version (major release, sprint end with user-facing changes), record a browser test session using Playwright video recording covering all critical user flows. Save to `.recordings/v[version]-[date].webm`. Log to `.logs/activity.md`.
+10. **COLLECT ALL ENV VARIABLES UPFRONT** — During UNDERSTAND phase, identify every environment variable the project will need. Ask the user for values before EXECUTE starts. Write to `.env.example` (never `.env`). Never hardcode values that belong in env vars.
 
 If the user says "skip this", "just do it", or "move faster": acknowledge the phase in one sentence, confirm the key decision, log it, then continue. Never silently omit a phase.
 
@@ -71,6 +76,8 @@ Which one?
 | Orchestrator | `skills/orchestrator/SKILL.md` |
 | Project Manager | `skills/project-manager/SKILL.md` |
 | Scrum Master | `skills/scrum-master/SKILL.md` |
+| System Designer | `skills/system-designer/SKILL.md` |
+| Software Architect | `skills/software-architect/SKILL.md` |
 | Tech Lead | `skills/tech-lead/SKILL.md` |
 | Security Engineer | `skills/security-engineer/SKILL.md` |
 | DBA | `skills/dba/SKILL.md` |

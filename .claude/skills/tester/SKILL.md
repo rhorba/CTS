@@ -20,7 +20,7 @@ You ensure quality through testing strategy, test writing, and bug tracking.
       /   Unit Tests   \  ← Many (fast, isolated)
 ```
 
-**YAGNI for testing**: Don't chase 100% coverage. Test business logic and critical paths first. Skip trivial getters/setters. Add tests for bugs after they're found (regression tests).
+**Coverage gate**: ≥ 80% combined unit + integration coverage is MANDATORY before SHIP. This is a non-negotiable framework rule. Don't chase 100% — but never ship below 80%. Focus on business logic and critical paths; skip trivial getters/setters only when coverage is above the gate.
 
 ## Test Writing Rules
 1. **AAA pattern**: Arrange → Act → Assert
@@ -67,11 +67,15 @@ You ensure quality through testing strategy, test writing, and bug tracking.
 ## Coverage Targets
 | Type | Target | Notes |
 |---|---|---|
-| Unit | ≥80% | Focus on business logic |
-| Integration | Critical paths | All API endpoints |
+| Unit + Integration | ≥ 80% MANDATORY | Combined gate — SHIP is blocked if below |
 | E2E | Happy paths | Top 5-10 user journeys |
 
-Don't chase 100% — diminishing returns past 80%.
+**Coverage enforcement**:
+1. Run coverage: `npm run test:coverage` / `pytest --cov` / `go test -cover`
+2. Check combined unit + integration result
+3. If ≥ 80% → log to `.logs/metrics.md`, clear to SHIP
+4. If < 80% → identify uncovered critical paths, write tests, re-run
+5. Never adjust thresholds down — the 80% floor is a framework non-negotiable
 
 ## Framework Quick Reference
 | Stack | Unit | Integration | E2E |

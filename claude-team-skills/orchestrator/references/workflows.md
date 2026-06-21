@@ -1,6 +1,6 @@
 # Workflow Templates
 
-Quick-start paths for common scenarios. The orchestrator uses these to skip unnecessary phases.
+Quick-start paths for common scenarios. These templates fast-track phases — they do NOT skip them. Every numbered step below is MANDATORY. If a step is lightweight, complete it quickly and log it, then move on. Do not silently omit any step.
 
 ---
 
@@ -39,7 +39,7 @@ Quick-start paths for common scenarios. The orchestrator uses these to skip unne
 
 ## ✨ New Feature Workflow
 
-**Duration**: 1-4 hours | **Skills**: PM → UX → Tech Lead → DBA → Backend/Frontend → UI → Tester → Security → Deployment
+**Duration**: 1-4 hours | **Skills**: PM → System Designer (large) → Software Architect → UX → Tech Lead → DBA → Backend/Frontend → UI → Tester → Security → Deployment
 
 ```
 1. SCOPE (5 min)
@@ -47,42 +47,55 @@ Quick-start paths for common scenarios. The orchestrator uses these to skip unne
    → Who is it for?
    → What's the success criteria?
    → YAGNI check: what's the MINIMUM viable version?
+   → ENV VARS: any new env vars needed? Collect values now.
 
-2. UX DESIGN (10-20 min — skip for backend-only features)
+2. ARCHITECTURE REVIEW (5-10 min — fast-track to 2 min for trivial features)
+   → Software Architect: does this feature fit the existing module structure?
+   → If large: System Designer reviews topology impact (new service? new queue?)
+   → Define module boundaries, interfaces, and dependency rules for this feature
+   → If no changes to existing arch: note "fits existing arch" and log it
+
+3. UX DESIGN (10-20 min — fast-track to 2 min for pure backend features: confirm "no UI impact" and log it)
    → UX Designer: user flow for the feature
    → Key screens wireframed (text-based)
    → Error/empty states defined
    → Copywriter: microcopy if needed
 
-3. TECHNICAL DESIGN (10 min)
-   → Tech Lead: architecture approach (2-3 options, simple→complex)
+4. TECHNICAL DESIGN (10 min)
+   → Tech Lead: tech approach confirming Software Architect module boundaries
    → User picks approach
    → DBA: schema design if new data is involved
    → Security Engineer: quick threat check if auth/data involved
    → Define API contract / component structure
 
-4. VISUAL DESIGN (10-15 min — skip if using existing design system)
+5. VISUAL DESIGN (10-15 min — fast-track to 1 min if using existing design system: confirm "using existing tokens" and log it)
    → UI Designer: design tokens or component styles
    → Only for new visual patterns, not existing ones
 
-5. PLAN (5 min)
+6. PLAN (5 min)
    → Scrum Master: break into batches
    📋 Batch 1: Data layer (migrations, models, API)
    📋 Batch 2: Business logic (services, validation)
    📋 Batch 3: UI (components, pages, integration)
-   📋 Batch 4: Tests + polish
+   📋 Batch 4: Tests + coverage check (must hit ≥80%)
 
-6. EXECUTE (batch by batch)
+7. EXECUTE (batch by batch)
    → One task at a time
    → Checkpoint after each batch
 
-7. VERIFY
+8. VERIFY
    → Tester: run tests
+   → Run coverage report → must be ≥ 80%
    → Security Engineer: quick review (if auth/data touched)
    → User acceptance
+   📝 Log: coverage % to .logs/metrics.md
 
-8. SHIP (optional)
+9. SHIP (mandatory — even if "ship" means "commit and tag for review")
    → Deployment: push to staging/production
+   → git push origin <branch>
+   📝 Log: PUSH + coverage % to .logs/activity.md
+   → If this is a version release: record Playwright E2E video to .recordings/
+   → If not deploying yet: log "SHIP deferred — reason: [X]" to .logs/activity.md
 ```
 
 ---
@@ -112,46 +125,68 @@ Quick-start paths for common scenarios. The orchestrator uses these to skip unne
 
 ## 🚀 New Project Workflow
 
-**Duration**: 2-6 hours | **Skills**: PM → UX → Tech Lead → DBA → all devs → DevOps → Security → Tester
+**Duration**: 2-6 hours | **Skills**: PM → System Designer → Software Architect → UX → Tech Lead → DBA → all devs → DevOps → Security → Tester
 
 ```
 1. CHARTER (10 min)
    → PM: project charter (scope, goals, constraints)
    → YAGNI check: what's the absolute minimum to launch?
 
-2. UX FOUNDATION (15-20 min)
+1a. ENV VARIABLES (5 min) ← MANDATORY before any code
+   → Identify ALL env vars the project will need
+   → Ask user for each value
+   → Write to .env.example (never .env)
+   📝 Log: ENV_VARS_COLLECTED to .logs/activity.md
+
+2. SYSTEM DESIGN (15-20 min) ← ALWAYS run for new projects
+   → System Designer: NFR capture (availability, latency, throughput, storage)
+   → System Designer: component topology diagram
+   → System Designer: integration patterns (sync/async, queues, cache)
+   → User confirms topology before moving to software architecture
+
+3. SOFTWARE ARCHITECTURE (15 min) ← ALWAYS run for new projects
+   → Software Architect: architecture style selection (Layered / Clean / Hexagonal)
+   → Software Architect: module/package structure
+   → Software Architect: design patterns to apply
+   → Software Architect: dependency rules
+   → ADR written for key architectural decisions
+
+4. UX FOUNDATION (15-20 min)
    → UX Designer: core user flows (top 3 journeys)
    → UX Designer: site map / information architecture
    → Copywriter: key UI copy (app name, tagline, CTAs)
 
-3. ARCHITECTURE (15 min)
-   → Tech Lead: stack decision, project structure, ADRs
+5. TECH STACK + SECURITY (15 min)
+   → Tech Lead: stack decision confirming System Designer + Software Architect choices
    → DBA: database selection and initial schema
-   → Security Engineer: auth strategy, data protection requirements
+   → Security Engineer: auth strategy, data protection requirements, threat model
    → User confirms
 
-4. VISUAL FOUNDATION (10-15 min)
+6. VISUAL FOUNDATION (10-15 min)
    → UI Designer: design tokens (colors, typography, spacing)
    → Or: pick a UI framework and move on (YAGNI)
 
-5. SCAFFOLD (20 min)
-   → Create project structure
-   → Setup configs (linting, formatting, git)
+7. SCAFFOLD (20 min)
+   → Create project structure per Software Architect's module design
+   → Setup configs (linting, formatting, git, dependency-cruiser for arch enforcement)
    → Initial dependencies
    → Docker/docker-compose for dev
    → DBA: initial migration files
+   → DevOps: CI pipeline with coverage gate (fail if < 80%)
 
-6. FOUNDATION (30-60 min)
-   → Backend: DB setup, auth, base API
+8. FOUNDATION (30-60 min)
+   → Backend: DB setup, auth, base API following architecture patterns
    → Frontend: routing, layout, base components
    → DevOps: CI pipeline, basic security scanning
 
-7. FIRST FEATURE (varies)
+9. FIRST FEATURE (varies)
    → Switch to Feature Workflow above
 
-8. DEPLOY SETUP
-   → DevOps: staging environment
-   → Deployment: first deploy
+10. DEPLOY SETUP + SPRINT CLOSE
+    → DevOps: staging environment
+    → Deployment: first deploy
+    → git push origin <branch>
+    📝 Log: PUSH to .logs/activity.md
 ```
 
 ---
@@ -260,7 +295,7 @@ Quick-start paths for common scenarios. The orchestrator uses these to skip unne
    → Error paths and edge cases
    → Screen states: empty, loading, error, success
 
-3. WIREFRAME (10-20 min — skip if trivial)
+3. WIREFRAME (10-20 min — fast-track to 2 min for trivial changes: state "no new layout — existing pattern reused" and log it)
    → Low-fi layout: content hierarchy, primary CTA
    → YAGNI: boxes + text only, no colors yet
 
@@ -347,10 +382,10 @@ Quick-start paths for common scenarios. The orchestrator uses these to skip unne
 1. UNDERSTAND (5 min)
    → Who is the user?
    → What task are they completing?
-   → YAGNI check: how much design is actually needed?
-     Small (button/modal)   → skip to step 4
-     Medium (page/feature)  → start at step 2
-     Large (new product)    → full flow
+   → YAGNI check: scale the depth, not the phases
+     Small (button/modal)   → fast-track steps 2-3 (1 min each, note "minimal — no new flow/layout")
+     Medium (page/feature)  → normal depth for steps 2-3
+     Large (new product)    → full depth for all steps
 
 2. FLOW (UX — 15 min)
    → User flow diagram (text-based)
@@ -480,39 +515,69 @@ Quick-start paths for common scenarios. The orchestrator uses these to skip unne
 
 ## 📋 Document-First Build Workflow
 
-**Duration**: 1-2 hrs (planning) + execution | **Skills**: PM → Tech Lead → DBA → Security → Scrum → Test Architect → devs
+**Duration**: 1-2 hrs (planning) + execution | **Skills**: PM → System Designer → Software Architect → Tech Lead → DBA → Security → Scrum → Test Architect → devs
 
 Use for new projects and large features (3+ days of work).
 Read `references/document-chain.md` for full templates.
 
 ```
+0. ENV VARIABLES (5 min) ← BEFORE anything else
+   → Identify ALL env vars the project will need
+   → Ask user for each value now
+   → Write to .env.example
+   📝 Log: ENV_VARS_COLLECTED to .logs/activity.md
+
 1. PRD (PM — 15-20 min)
    → Problem, goals, user stories, scope, requirements, risks
    → Save to docs/prd-[name].md
    → User approves before proceeding
    📝 Log: MILESTONE "PRD approved"
 
-2. ARCHITECTURE (Tech Lead + DBA + Security — 15-20 min)
-   → ADRs, system design, data model, API design, security
+2. SYSTEM DESIGN (System Designer — 15 min)
+   → NFR capture: availability, latency, throughput, data volume
+   → Component topology diagram
+   → Integration patterns, scaling strategy
+   → Save to docs/system-design-[name].md
+   → User approves before proceeding
+   📝 Log: MILESTONE "System design approved"
+
+3. SOFTWARE ARCHITECTURE (Software Architect — 15 min)
+   → Architecture style (Layered / Clean / Hexagonal / DDD)
+   → Module/package structure and dependency rules
+   → Design patterns, cross-cutting concerns
+   → Architectural fitness functions (coverage ≥80%, 0 cycles)
    → Save to docs/architecture-[name].md
    → User approves before proceeding
    📝 Log: MILESTONE "Architecture approved"
+
+4. TECH DECISIONS (Tech Lead + DBA + Security — 15-20 min)
+   → Tech Lead: ADRs, stack confirmation, code review standards
+   → DBA: data model, schema, migrations
+   → Security Engineer: auth strategy, data protection, threat model
+   → Appended to docs/architecture-[name].md
    📝 Log: ARCHITECTURE decisions
 
-3. STORIES (Scrum Master + Test Architect — 10-15 min)
+5. STORIES (Scrum Master + Test Architect — 10-15 min)
    → Epics → stories with ATDD acceptance criteria
    → Save to docs/stories-[name].md
    → User approves before proceeding
    📝 Log: MILESTONE "Stories ready"
 
-4. EXECUTE (normal batch execution)
+6. EXECUTE (normal batch execution)
    → Follow the stories, batch by batch
    → Each story references PRD requirement + architecture decision
    → Test Architect validates acceptance criteria pass
 
-5. VERIFY
+7. VERIFY
    → Test Architect: adversarial review on high-risk components
    → Traceability check: every requirement → story → test → code
+   → Coverage report: must be ≥ 80%
+   📝 Log: coverage % to .logs/metrics.md
+
+8. SHIP + SPRINT CLOSE
+   → git push origin <branch>
+   → If version release: Playwright video recording to .recordings/
+   📝 Log: PUSH + VIDEO_RECORDED to .logs/activity.md
 ```
 
 ---
@@ -525,7 +590,7 @@ Read `references/document-chain.md` for full templates.
 1. RISK ASSESSMENT (Test Architect — 10 min)
    → Score each component: impact × frequency × complexity
    → Classify: maximum / high / standard / minimal testing
-   → Set coverage targets per risk level
+   → Set coverage targets per risk level (floor: ≥ 80% combined unit + integration)
 
 2. ATDD SPECIFICATIONS (Test Architect — 10-15 min)
    → Write Gherkin acceptance scenarios for critical paths
@@ -534,7 +599,7 @@ Read `references/document-chain.md` for full templates.
 
 3. TEST PLAN (Test Architect — 5 min)
    → Map: unit / integration / e2e / adversarial per component
-   → Set release gate criteria
+   → Set release gate criteria (coverage ≥ 80% is non-negotiable)
    → Hand off to Tester for implementation
 
 4. ADVERSARIAL REVIEW (Test Architect — 10-20 min)
@@ -549,5 +614,47 @@ Read `references/document-chain.md` for full templates.
 6. REPORT
    → Traceability matrix: requirement → test → status
    → Release readiness assessment
-   📝 Log: SPRINT_SNAPSHOT with test metrics
+   → Coverage report attached (must show ≥ 80%)
+   📝 Log: SPRINT_SNAPSHOT with test metrics + coverage %
+```
+
+---
+
+## 🎬 Video Recording Workflow
+
+**When**: At every project version completion (major release, milestone sprint, or first deploy)
+**Skills**: Tester → Frontend Dev (if UI changes) → Deployment
+
+```
+1. SETUP (5 min)
+   → Ensure Playwright is installed and configured with video recording:
+     playwright.config.ts: use: { video: 'on' }
+   → Target environment: staging or local (never prod)
+   → Output directory: .recordings/
+
+2. SCENARIO LIST (Test Architect — 5 min)
+   → Define scenarios to record (all critical user flows):
+     ✅ Happy path: [main user journey]
+     ✅ Auth: sign up, login, logout, password reset
+     ✅ Core feature flows: [list per project]
+     ✅ Error states: 404, form validation, API errors
+     ✅ Edge cases: empty state, long content, mobile viewport
+
+3. RECORD (Tester — 10-20 min)
+   → Run: npx playwright test --reporter=html
+   → Playwright saves .webm files per test automatically
+   → Name files: .recordings/v[version]-[YYYY-MM-DD]-[scenario].webm
+   → Or use one recording: .recordings/v[version]-[YYYY-MM-DD]-full.webm
+
+4. REVIEW
+   → Watch recording to verify all scenarios executed correctly
+   → If a scenario failed visually: fix → re-record
+
+5. LOG
+   📝 Log: VIDEO_RECORDED → .logs/activity.md
+   Entry format:
+     VIDEO_RECORDED: v[version] on [date]
+     File: .recordings/v[version]-[date]-full.webm
+     Scenarios: [list]
+     Duration: [total recording duration]
 ```

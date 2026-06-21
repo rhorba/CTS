@@ -4,8 +4,9 @@ description: >
   The team orchestrator and workflow manager. This is the FIRST skill to trigger on ANY project request.
   Use whenever the user starts a new session, mentions a project, feature, bug fix, documentation,
   brainstorming, planning, sprint, task, or wants to work on anything. This skill routes work to the
-  right specialist skills (PM, Scrum, Tech Lead, Security, DBA, UX, UI, Backend, Frontend, Tester,
-  Test Architect, Deployment, DevOps, Creative Intelligence, Marketing, Copywriter, Content, Monitor).
+  right specialist skills (PM, Scrum, System Designer, Software Architect, Tech Lead, Security, DBA,
+  UX, UI, Backend, Frontend, Tester, Test Architect, Deployment, DevOps, Creative Intelligence,
+  Marketing, Copywriter, Content, Monitor).
   Trigger on: "let's work on", "new feature", "bug fix", "plan", "brainstorm", "ideate", "what should
   we do", "sprint", "project", "build", "ship", "deploy", "market", "design", "database", "security",
   "test strategy", "adversarial review", "PRD", "document-first", "write content", or any general
@@ -47,7 +48,16 @@ BEFORE adding anything, ask: "Does the user need this RIGHT NOW?"
 
 ## Interactive Workflow
 
-Every session follows this flow. You may skip phases if the user says so.
+> **STRICT RULE — NO EXCEPTIONS**: All 6 phases are MANDATORY on every session. Do NOT skip, merge, or abbreviate any phase. If a phase is lightweight (e.g., "UNDERSTAND" takes 30 seconds), complete it and log it — then move on. Skipping phases creates gaps, missed requirements, and bugs. Even if the user says "skip this" or "just do it", acknowledge the phase first, confirm the context, then proceed. A fast phase is fine. A missing phase is not.
+>
+> **GLOBAL RULES (apply every session)**:
+> - **80% coverage gate**: Before SHIP, run coverage. If < 80% combined unit + integration, write tests first.
+> - **Sprint push**: At every SHIP, run `git push origin <branch>`. No sprint ends without a push.
+> - **Implicit skill use**: Every relevant specialist is automatically engaged. System Designer + Software Architect are always loaded for new projects/large features. Never skip a specialist whose domain is touched.
+> - **Video recording**: At project version completion, record browser E2E flows with Playwright video to `.recordings/v[version]-[date].webm`.
+> - **Env vars upfront**: During UNDERSTAND, identify all env vars. Collect values from user before EXECUTE. Write to `.env.example` only.
+>
+> **Handoffs are also MANDATORY**: Every specialist switch MUST include a written HANDOFF note (from/to/context/need/constraints). Never load a new specialist without one.
 
 ```
 SESSION START
@@ -115,18 +125,32 @@ Ask the user in ONE message:
 - **Where** are we? (new project / existing codebase / continuation)
 - **How big** is this? (quick fix / small task / medium feature / large epic)
 
+**Env var collection (mandatory for new projects and large features)**:
+After understanding scope, identify ALL environment variables the project will need:
+```
+🔑 ENV VARIABLES NEEDED:
+  - DATABASE_URL — [what it's for]
+  - JWT_SECRET — [what it's for]
+  - [any others...]
+
+Please provide values for each. I'll write them to .env.example.
+```
+Never start EXECUTE without collecting all env vars first.
+
 Based on answers, determine which specialists are needed. Example mappings:
 
 | Request Type | Primary Specialist | Supporting |
 |---|---|---|
-| New feature (large) | PM (PRD) → Tech Lead (arch) → Scrum (stories) | UX, DBA, Test Architect |
-| New feature (small) | Tech Lead → Backend/Frontend | Tester |
+| New feature (large) | PM (PRD) → System Designer → Software Architect → Tech Lead → Scrum | UX, DBA, Test Architect, Security |
+| New feature (small) | Software Architect → Tech Lead → Backend/Frontend | Tester |
 | Bug fix | Tech Lead → Backend or Frontend | Tester |
-| New project | PM (PRD) → Tech Lead (arch) → Scrum (stories) | UX, DBA, Security, DevOps |
+| New project | PM (PRD) → System Designer → Software Architect → Tech Lead → Scrum | UX, DBA, Security, DevOps |
 | Sprint planning | Scrum Master → PM | Tech Lead |
 | Deployment issue | DevOps/DevSecOps | Deployment, Tech Lead |
 | Database work | DBA | Backend Dev, Tech Lead |
 | Security review | Security Engineer | DevSecOps, Test Architect |
+| System/infra design | System Designer | Tech Lead, DBA, DevOps |
+| Software structure | Software Architect | Tech Lead, Backend Dev |
 | UI/UX design | UX Designer → UI Designer | Frontend Dev, Copywriter |
 | Brainstorm / ideation | Creative Intelligence | PM, Tech Lead, UX |
 | Test strategy | Test Architect | Tester, Security Engineer |
@@ -194,12 +218,35 @@ Load **Tester** skill. For each batch completed:
 - Show pass/fail summary
 - Fix failures before moving on
 
+**Coverage gate (mandatory)**:
+```
+Run coverage report → check combined unit + integration coverage
+  ≥ 80% → proceed to SHIP
+  < 80% → identify uncovered paths, write tests, re-run, repeat
+📝 Log: coverage % to .logs/metrics.md
+```
+
 ## Phase 6: SHIP
 
 Based on what was built:
 - **Code** → Load Deployment + DevOps skills
 - **Content** → Load Content Marketer + Copywriter skills
 - **Project docs** → Load PM skill for documentation
+
+**Sprint push (mandatory)**:
+```
+git push origin <branch>
+📝 Log: PUSH to .logs/activity.md with branch + commit hash
+```
+
+**Video recording (mandatory at project version completion)**:
+```
+If this sprint completes a project version:
+  → Run Playwright E2E tests with video recording enabled
+  → Cover: all critical user flows, error states, edge cases
+  → Save to .recordings/v[version]-[YYYY-MM-DD].webm
+  → Log: VIDEO_RECORDED to .logs/activity.md with scenario list
+```
 
 ---
 
@@ -210,43 +257,50 @@ Based on what was built:
                          │   PM    │ ← scope, risk, status
                          └────┬────┘
                               │
-                    ┌─────────┴─────────┐
-                    │                   │
-              ┌─────┴─────┐      ┌─────┴─────┐
-              │   Scrum   │      │ Security  │ ← threat model, compliance
-              │  Master   │      │ Engineer  │
-              └─────┬─────┘      └─────┬─────┘
-                    │                   │
-              ┌─────┴─────┐            │
-              │ Tech Lead │←───────────┘ ← security requirements
-              └─────┬─────┘
-                    │
-     ┌──────┬──────┼──────┬──────┐
-     │      │      │      │      │
-  ┌──┴──┐┌──┴──┐┌──┴──┐┌──┴──┐┌──┴───┐
-  │ UX  ││ DBA ││Back-││Front││DevOps│
-  │Desgn││     ││end  ││end  ││DevSec│
-  └──┬──┘└──┬──┘└──┬──┘└──┬──┘└──┬───┘
-     │      │      │      │      │
-  ┌──┴──┐   │      │      │   ┌──┴──────┐
-  │ UI  │   │      └──┬───┘   │Deploy-  │
-  │Desgn│   │         │       │ment     │
-  └──┬──┘   └────┬────┘       └─────────┘
-     │           │
-     └─────┬─────┘
-           │
-     ┌─────┴─────┐
-     │  Tester   │ ← tests everything
-     └───────────┘
+              ┌───────────────┼───────────────┐
+              │               │               │
+        ┌─────┴─────┐   ┌────┴────┐   ┌─────┴─────┐
+        │   Scrum   │   │ System  │   │ Security  │ ← threat model
+        │  Master   │   │Designer │   │ Engineer  │
+        └─────┬─────┘   └────┬────┘   └─────┬─────┘
+              │               │               │
+              │         ┌─────┴──────┐        │
+              │         │  Software  │        │
+              │         │ Architect  │        │
+              │         └─────┬──────┘        │
+              │               │               │
+              └───────────────┼───────────────┘
+                              │
+                       ┌──────┴──────┐
+                       │  Tech Lead  │ ← architecture, standards
+                       └──────┬──────┘
+                              │
+          ┌──────┬──────┬─────┼──────┬──────┐
+          │      │      │     │      │      │
+       ┌──┴──┐┌──┴──┐┌──┴──┐┌┴────┐┌┴────┐┌┴────┐
+       │ UX  ││ DBA ││Back-││Front││DevOps││Test │
+       │Desgn││     ││end  ││end  ││DevSec││Arch │
+       └──┬──┘└──┬──┘└──┬──┘└──┬──┘└──┬──┘└──┬──┘
+          │      │      │      │      │      │
+       ┌──┴──┐   │      │      │   ┌──┴──┐   │
+       │ UI  │   │      └──┬───┘   │Deploy│  │
+       │Desgn│   │         │       └──────┘  │
+       └──┬──┘   └────┬────┘                 │
+          │           │                      │
+          └─────┬─────┘                      │
+                │                            │
+          ┌─────┴─────┐                      │
+          │  Tester   │←─────────────────────┘
+          └───────────┘  ← tests everything, enforces ≥80% coverage
 
   ┌────────────────────────────────┐
   │ Digital Marketer → Copywriter  │
-  │       ↕            ↕          │ ← marketing team
+  │       ↕            ↕          │ ← marketing team (activates post-ship)
   │ Content Marketer              │
   └────────────────────────────────┘
 ```
 
-**Flow direction**: PM defines scope → Scrum breaks into sprints → Tech Lead makes architecture decisions → specialists build → Tester verifies → Deployment ships. Security Engineer reviews at design and verification. Marketing team activates after ship.
+**Flow direction**: PM defines scope → System Designer designs topology + NFRs → Software Architect designs internal structure → Scrum breaks into sprints → Tech Lead sets standards → specialists build → Tester verifies (≥80% coverage gate) → Deployment ships → git push → video recording at version completion. Security Engineer reviews at design and verification. Marketing team activates after ship.
 
 ---
 
@@ -258,14 +312,16 @@ When you need a specialist, read ONLY that skill's SKILL.md:
 |---|---|---|
 | Project Manager | `project-manager/SKILL.md` | Project initiation, scope, stakeholders, risk |
 | Scrum Master | `scrum-master/SKILL.md` | Sprint planning, backlog, ceremonies, velocity |
-| Tech Lead | `tech-lead/SKILL.md` | Architecture, tech decisions, code review standards |
+| System Designer | `system-designer/SKILL.md` | High-level topology, NFRs, scalability, distributed systems, data flow |
+| Software Architect | `software-architect/SKILL.md` | Code structure, design patterns, DDD, module boundaries, architectural fitness |
+| Tech Lead | `tech-lead/SKILL.md` | Tech stack decisions, code review standards, ADRs, technical direction |
 | Security Engineer | `security-engineer/SKILL.md` | Threat modeling, auth design, compliance, security architecture |
 | DBA | `dba/SKILL.md` | Schema design, queries, migrations, indexes, database ops |
 | UX Designer | `ux-designer/SKILL.md` | User flows, wireframes, IA, usability, interaction design |
 | UI Designer | `ui-designer/SKILL.md` | Visual design, design tokens, color, typography, component styling |
 | Backend Dev | `backend-dev/SKILL.md` | APIs, server logic, microservices |
 | Frontend Dev | `frontend-dev/SKILL.md` | UI components, state management, accessibility |
-| Tester | `tester/SKILL.md` | Unit/integration/e2e tests, QA checklists |
+| Tester | `tester/SKILL.md` | Unit/integration/e2e tests, QA checklists, coverage enforcement |
 | Test Architect | `test-architect/SKILL.md` | Test strategy, ATDD, adversarial review, edge case hunting, release gates |
 | Deployment | `deployment/SKILL.md` | Release process, rollback, environments |
 | DevOps/DevSecOps | `devops-devsecops/SKILL.md` | CI/CD, infra, security scanning, hardening |
