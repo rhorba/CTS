@@ -8,6 +8,18 @@ Claude Team Skills is a collection of 19 interconnected specialist skills for Cl
 
 ---
 
+## Included Resources
+
+This repository ships with companion materials for presentations and onboarding:
+
+| File | Description |
+|---|---|
+| `bmad-vs-cts-comparison.pdf` | Side-by-side feature comparison: BMAD Method vs Claude Team Skills |
+| `claude-team-skills-pitch.pptx` | Slide deck — pitch CTS to your team or stakeholders |
+| `claude-team-skills-user-manual.docx` | Detailed user manual covering all 19 specialists and workflows |
+
+---
+
 ## Installation
 
 ### Step 1 — Copy the `skills/` folder into your project root
