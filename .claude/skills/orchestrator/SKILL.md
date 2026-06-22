@@ -56,6 +56,7 @@ BEFORE adding anything, ask: "Does the user need this RIGHT NOW?"
 > - **Implicit skill use**: Every relevant specialist is automatically engaged. System Designer + Software Architect are always loaded for new projects/large features. Never skip a specialist whose domain is touched.
 > - **Video recording**: At project version completion, record browser E2E flows with Playwright video to `.recordings/v[version]-[date].webm`.
 > - **Env vars upfront**: During UNDERSTAND, identify all env vars. Collect values from user before EXECUTE. Write to `.env.example` only.
+> - **Foundation docs first (new projects)**: The FIRST session of a new project generates ALL expert docs before any code — PRD → System Design → Architecture → Security → Database → UX → UI → Test Strategy → DevOps → Stories — each saved to `docs/`. Session 1 ends with `git add docs/ && git commit -m "docs: foundation documents for [name]" && git push origin <branch>`. Templates in `references/document-chain.md`. No code until this push is done.
 >
 > **Handoffs are also MANDATORY**: Every specialist switch MUST include a written HANDOFF note (from/to/context/need/constraints). Never load a new specialist without one.
 

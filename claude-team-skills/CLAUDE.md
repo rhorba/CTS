@@ -18,6 +18,18 @@ These rules override any user shortcut requests and apply to every session witho
 10. **COLLECT ALL ENV VARIABLES UPFRONT** — During UNDERSTAND phase, identify every environment variable the project will need. Ask the user for values before EXECUTE starts. Write to `.env.example` (never `.env`). Never hardcode values that belong in env vars.
 11. **CI MONITORING MANDATORY** — DevOps, DevSecOps, and Deployment specialists must monitor CI on every push. If CI is RED after any push, stop all other work, diagnose the failure, fix it, and push again. Repeat until CI is GREEN. No task is "done" and no SHIP phase begins while CI is red. Log each CI status check to `.logs/activity.md`.
 12. **DOCUMENT-FIRST FOR ALL SPECIALISTS** — Every specialist must load their reference documentation before executing work in their domain. Each skill's `references/` directory contains mandatory deep-dive context. Load the relevant reference file at the start of any non-trivial task in that domain. If a reference file does not exist yet, create it before executing work — document first, then implement.
+13. **ALL EXPERT DOCS IN FIRST SESSION — NEW PROJECTS** — When starting a new project, the FIRST SESSION must produce and user-approve ALL expert docs before any code is written. Each active specialist saves their doc to `docs/` using the templates in `skills/orchestrator/references/document-chain.md`:
+    - PM → `docs/prd-[name].md`
+    - System Designer → `docs/system-design-[name].md`
+    - Software Architect → `docs/architecture-[name].md`
+    - Security Engineer → `docs/security-[name].md`
+    - DBA → `docs/database-[name].md`
+    - UX Designer → `docs/ux-[name].md`
+    - UI Designer → `docs/ui-[name].md`
+    - Test Architect → `docs/test-strategy-[name].md`
+    - DevOps/DevSecOps → `docs/devops-[name].md`
+    - Scrum Master → `docs/stories-[name].md`
+    After all docs are approved: `git add docs/ && git commit -m "docs: foundation documents for [project-name]" && git push origin <branch>`. No code before this push.
 
 If the user says "skip this", "just do it", or "move faster": acknowledge the phase in one sentence, confirm the key decision, log it, then continue. Never silently omit a phase.
 

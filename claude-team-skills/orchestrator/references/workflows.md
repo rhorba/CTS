@@ -515,28 +515,32 @@ Quick-start paths for common scenarios. These templates fast-track phases — th
 
 ## 📋 Document-First Build Workflow
 
-**Duration**: 1-2 hrs (planning) + execution | **Skills**: PM → System Designer → Software Architect → Tech Lead → DBA → Security → Scrum → Test Architect → devs
+**Duration**: Session 1 — all docs (1-3 hrs) | Session 2+ — execution | **Skills**: PM → System Designer → Software Architect → Security → DBA → UX → UI → Test Architect → DevOps → Scrum → devs
 
 Use for new projects and large features (3+ days of work).
-Read `references/document-chain.md` for full templates.
+Read `references/document-chain.md` for full templates for every artifact.
+
+> **FIRST SESSION RULE**: All expert docs below MUST be generated, user-approved, and pushed in Session 1 before any code is written. Do NOT skip any specialist doc.
 
 ```
+SESSION 1 — Foundation (all docs, no code):
+
 0. ENV VARIABLES (5 min) ← BEFORE anything else
    → Identify ALL env vars the project will need
    → Ask user for each value now
-   → Write to .env.example
+   → Write to .env.example (never .env)
    📝 Log: ENV_VARS_COLLECTED to .logs/activity.md
 
 1. PRD (PM — 15-20 min)
-   → Problem, goals, user stories, scope, requirements, risks
+   → Problem, goals, user stories, scope, requirements, risks, timeline
    → Save to docs/prd-[name].md
    → User approves before proceeding
-   📝 Log: MILESTONE "PRD approved"
+   📝 Log: MILESTONE "PRD approved" → .logs/activity.md
 
 2. SYSTEM DESIGN (System Designer — 15 min)
-   → NFR capture: availability, latency, throughput, data volume
-   → Component topology diagram
-   → Integration patterns, scaling strategy
+   → NFR capture: availability, latency, throughput, data volume, RTO/RPO
+   → Component topology diagram (text-based)
+   → Integration patterns, scalability strategy, SDRs
    → Save to docs/system-design-[name].md
    → User approves before proceeding
    📝 Log: MILESTONE "System design approved"
@@ -544,40 +548,92 @@ Read `references/document-chain.md` for full templates.
 3. SOFTWARE ARCHITECTURE (Software Architect — 15 min)
    → Architecture style (Layered / Clean / Hexagonal / DDD)
    → Module/package structure and dependency rules
-   → Design patterns, cross-cutting concerns
-   → Architectural fitness functions (coverage ≥80%, 0 cycles)
+   → Design patterns, cross-cutting concerns, fitness functions
    → Save to docs/architecture-[name].md
    → User approves before proceeding
    📝 Log: MILESTONE "Architecture approved"
+   📝 Log: ARCHITECTURE decisions → .logs/decisions.md
 
-4. TECH DECISIONS (Tech Lead + DBA + Security — 15-20 min)
-   → Tech Lead: ADRs, stack confirmation, code review standards
-   → DBA: data model, schema, migrations
-   → Security Engineer: auth strategy, data protection, threat model
-   → Appended to docs/architecture-[name].md
-   📝 Log: ARCHITECTURE decisions
-
-5. STORIES (Scrum Master + Test Architect — 10-15 min)
-   → Epics → stories with ATDD acceptance criteria
-   → Save to docs/stories-[name].md
+4. SECURITY BASELINE (Security Engineer — 10-15 min)
+   → 5-minute threat model + STRIDE top risks
+   → Auth strategy, authorization model, data protection plan
+   → Security requirements handed to dev team
+   → Save to docs/security-[name].md
    → User approves before proceeding
-   📝 Log: MILESTONE "Stories ready"
+   📝 Log: MILESTONE "Security baseline approved"
 
-6. EXECUTE (normal batch execution)
-   → Follow the stories, batch by batch
-   → Each story references PRD requirement + architecture decision
-   → Test Architect validates acceptance criteria pass
+5. DATABASE DESIGN (DBA — 10-15 min)
+   → Database engine selection (YAGNI default: PostgreSQL)
+   → Entity-relationship model, schema design, index strategy
+   → Migration plan, access patterns, sensitive data fields
+   → Save to docs/database-[name].md
+   → User approves before proceeding
+   📝 Log: MILESTONE "Database design approved"
 
-7. VERIFY
-   → Test Architect: adversarial review on high-risk components
-   → Traceability check: every requirement → story → test → code
-   → Coverage report: must be ≥ 80%
-   📝 Log: coverage % to .logs/metrics.md
+6. UX FOUNDATION (UX Designer — 15-20 min)
+   → Minimal personas, information architecture / site map
+   → Core user flows (top 3 journeys), key screen wireframes (text-based)
+   → Screen states: empty, loading, error, success
+   → Save to docs/ux-[name].md
+   → User approves before proceeding
+   📝 Log: MILESTONE "UX foundation approved"
 
-8. SHIP + SPRINT CLOSE
-   → git push origin <branch>
-   → If version release: Playwright video recording to .recordings/
-   📝 Log: PUSH + VIDEO_RECORDED to .logs/activity.md
+7. UI FOUNDATION (UI Designer — 10-15 min)
+   → Design approach: UI framework or custom tokens (YAGNI)
+   → Design tokens if custom; component inventory; responsive breakpoints
+   → Accessibility baseline
+   → Save to docs/ui-[name].md
+   → User approves before proceeding
+   📝 Log: MILESTONE "UI foundation approved"
+
+8. TEST STRATEGY (Test Architect — 10-15 min)
+   → Risk assessment per component
+   → Test pyramid targets (combined ≥ 80% — non-negotiable gate)
+   → ATDD acceptance scenarios for critical paths
+   → Adversarial checklist for high-risk components
+   → Release gate criteria
+   → Save to docs/test-strategy-[name].md
+   → User approves before proceeding
+   📝 Log: MILESTONE "Test strategy approved"
+
+9. DEVOPS FOUNDATION (DevOps/DevSecOps — 10-15 min)
+   → Environment strategy (local / staging / prod)
+   → CI pipeline stages: lint → test (coverage gate) → security scan → build → deploy
+   → Infrastructure, secrets management, monitoring baseline
+   → Save to docs/devops-[name].md
+   → User approves before proceeding
+   📝 Log: MILESTONE "DevOps foundation approved"
+
+10. STORIES (Scrum Master + Test Architect — 10-15 min)
+    → Epics → stories with ATDD acceptance criteria from Test Architect
+    → Each story references PRD requirement + architecture decision
+    → Save to docs/stories-[name].md
+    → User approves before proceeding
+    📝 Log: MILESTONE "Stories ready"
+
+11. COMMIT ALL DOCS + PUSH (mandatory end of Session 1)
+    git add docs/
+    git commit -m "docs: foundation documents for [project-name]"
+    git push origin <branch>
+    📝 Log: PUSH → .logs/activity.md
+
+SESSION 2+ — Execution:
+
+12. EXECUTE (normal batch execution)
+    → Follow the stories, batch by batch
+    → Each story references PRD requirement + architecture decision
+    → Test Architect validates acceptance criteria pass
+
+13. VERIFY
+    → Test Architect: adversarial review on high-risk components
+    → Traceability check: every requirement → story → test → code
+    → Coverage report: must be ≥ 80%
+    📝 Log: coverage % to .logs/metrics.md
+
+14. SHIP + SPRINT CLOSE
+    → git push origin <branch>
+    → If version release: Playwright video recording to .recordings/
+    📝 Log: PUSH + VIDEO_RECORDED to .logs/activity.md
 ```
 
 ---

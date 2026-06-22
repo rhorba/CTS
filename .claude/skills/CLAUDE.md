@@ -16,6 +16,18 @@ These rules override any user shortcut requests and apply to every session witho
 8. **ALL SKILLS IMPLICITLY ENGAGED** — Every relevant specialist must be consulted in its phase. System Designer and Software Architect are always loaded for new projects and large features. Never skip a specialist whose domain is touched by the current work — even for a "quick" pass.
 9. **VIDEO RECORDING AT PROJECT VERSION COMPLETION** — When finishing any project version (major release, sprint end with user-facing changes), record a browser test session using Playwright video recording covering all critical user flows. Save to `.recordings/v[version]-[date].webm`. Log to `.logs/activity.md`.
 10. **COLLECT ALL ENV VARIABLES UPFRONT** — During UNDERSTAND phase, identify every environment variable the project will need. Ask the user for values before EXECUTE starts. Write to `.env.example` (never `.env`). Never hardcode values that belong in env vars.
+11. **ALL EXPERT DOCS IN FIRST SESSION — NEW PROJECTS** — When starting a new project, the FIRST SESSION must produce and user-approve ALL expert docs before any code is written. Each active specialist saves their doc to `docs/` using the templates in `skills/orchestrator/references/document-chain.md`:
+    - PM → `docs/prd-[name].md`
+    - System Designer → `docs/system-design-[name].md`
+    - Software Architect → `docs/architecture-[name].md`
+    - Security Engineer → `docs/security-[name].md`
+    - DBA → `docs/database-[name].md`
+    - UX Designer → `docs/ux-[name].md`
+    - UI Designer → `docs/ui-[name].md`
+    - Test Architect → `docs/test-strategy-[name].md`
+    - DevOps/DevSecOps → `docs/devops-[name].md`
+    - Scrum Master → `docs/stories-[name].md`
+    After all docs are approved: `git add docs/ && git commit -m "docs: foundation documents for [project-name]" && git push origin <branch>`. No code before this push.
 
 If the user says "skip this", "just do it", or "move faster": acknowledge the phase in one sentence, confirm the key decision, log it, then continue. Never silently omit a phase.
 
