@@ -109,6 +109,7 @@ For common scenarios, read `references/workflows.md` for a pre-built fast path:
 - 🔒 **Security Audit** — scan → triage → fix → verify (30-90 min)
 - 🔄 **Refactor** — assess → plan → incremental steps (30-120 min)
 - 🎨 **UX/UI Design** — flow → wireframe → visual → handoff (30-120 min)
+- 🔁 **Design Loop (one-shot quality)** — design system → build → 3 independent critics → fix → re-round (varies; reserve for high-stakes/reusable artifacts)
 - 🗄️ **Database Design** — entities → schema → migration → indexes (15-60 min)
 - 🔐 **Security Review** — threat model → requirements → scan → fix (20-60 min)
 - 💡 **Brainstorm/Ideation** — diverge → cluster → converge → validate (15-45 min)
@@ -152,7 +153,7 @@ Based on answers, determine which specialists are needed. Example mappings:
 | Security review | Security Engineer | DevSecOps, Test Architect |
 | System/infra design | System Designer | Tech Lead, DBA, DevOps |
 | Software structure | Software Architect | Tech Lead, Backend Dev |
-| UI/UX design | UX Designer → UI Designer | Frontend Dev, Copywriter |
+| UI/UX design | UX Designer → UI Designer | Frontend Dev, Copywriter, Design Loop (before ship) |
 | Brainstorm / ideation | Creative Intelligence | PM, Tech Lead, UX |
 | Test strategy | Test Architect | Tester, Security Engineer |
 | Marketing need | Digital Marketer | Copywriter, Content |
@@ -320,6 +321,7 @@ When you need a specialist, read ONLY that skill's SKILL.md:
 | DBA | `dba/SKILL.md` | Schema design, queries, migrations, indexes, database ops |
 | UX Designer | `ux-designer/SKILL.md` | User flows, wireframes, IA, usability, interaction design |
 | UI Designer | `ui-designer/SKILL.md` | Visual design, design tokens, color, typography, component styling |
+| Design Loop | `design-loop/SKILL.md` | Before shipping any high-stakes UI/graphic — runs independent fresh-context critics (brief/system/craft) instead of self-review |
 | Backend Dev | `backend-dev/SKILL.md` | APIs, server logic, microservices |
 | Frontend Dev | `frontend-dev/SKILL.md` | UI components, state management, accessibility |
 | Tester | `tester/SKILL.md` | Unit/integration/e2e tests, QA checklists, coverage enforcement |

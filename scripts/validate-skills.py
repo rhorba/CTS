@@ -18,6 +18,7 @@ REQUIRED_SKILLS = [
     "dba",
     "ux-designer",
     "ui-designer",
+    "design-loop",
     "backend-dev",
     "frontend-dev",
     "tester",

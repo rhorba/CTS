@@ -1,10 +1,10 @@
 # Claude Team Skills
 
-**21 AI Specialists Working as One Team — Built for Claude Code**
+**22 AI Specialists Working as One Team — Built for Claude Code**
 
-> Version 1.0 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
+> Version 1.1 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
 
-Claude Team Skills (CTS) is a collection of 21 interconnected specialist skills for Claude Code. Instead of a generic AI assistant, every task is handled by the right expert — PM, Security Engineer, DBA, Software Architect, Test Architect, and more — all routed by a central Orchestrator that loads one specialist at a time.
+Claude Team Skills (CTS) is a collection of 22 interconnected specialist skills for Claude Code. Instead of a generic AI assistant, every task is handled by the right expert — PM, Security Engineer, DBA, Software Architect, Test Architect, and more — all routed by a central Orchestrator that loads one specialist at a time.
 
 ---
 
@@ -16,7 +16,7 @@ This repository ships with companion materials for presentations and onboarding:
 |---|---|
 | `bmad-vs-cts-comparison.pdf` | Side-by-side feature comparison: BMAD Method vs Claude Team Skills |
 | `claude-team-skills-pitch.pptx` | Slide deck — pitch CTS to your team or stakeholders |
-| `claude-team-skills-user-manual.docx` | Detailed user manual covering all 21 specialists and workflows |
+| `claude-team-skills-user-manual.docx` | Detailed user manual covering all 22 specialists and workflows |
 
 ---
 
@@ -39,6 +39,8 @@ your-project/
 │   ├── dba/
 │   ├── ux-designer/
 │   ├── ui-designer/
+│   ├── design-loop/
+│   │   └── references/        ← critic prompts, design-tokens brief template
 │   ├── backend-dev/
 │   ├── frontend-dev/
 │   ├── tester/
@@ -101,7 +103,7 @@ Interactive: options → pick → execute → verify
 Switches specialist with a 2-3 line handoff summary
 ```
 
-**Token cost:** CLAUDE.md (~1K) + Orchestrator (~2K) + one specialist (~1-2K) = ~3-5K tokens for routing. Compare to loading all 21 skills at once: 35K+ tokens wasted.
+**Token cost:** CLAUDE.md (~1K) + Orchestrator (~2K) + one specialist (~1-2K) = ~3-5K tokens for routing. Compare to loading all 22 skills at once: 35K+ tokens wasted.
 
 ---
 
@@ -198,7 +200,7 @@ Write SESSION_END to .logs/sessions.md:
 | **No silent phase skips** | If user says "skip this" → acknowledge in one sentence, log it, continue |
 | **2 hard gates** | BRAINSTORM → PLAN requires user option pick; PLAN → EXECUTE requires user confirmation |
 | **1 ship gate** | VERIFY must pass (tests + security) before SHIP — no exceptions |
-| **One specialist at a time** | Never load all 21 skills — Orchestrator + 1 specialist per task |
+| **One specialist at a time** | Never load all 22 skills — Orchestrator + 1 specialist per task |
 | **Written handoffs** | Every specialist switch gets a 2-3 line HANDOFF note |
 | **Confirm before code** | Present approach, get approval, then generate — prevents rewrites |
 | **Log in same tool call** | Log after action, in the same call — no extra round-trips |
@@ -469,7 +471,7 @@ Everything is appended to `.logs/` — decisions, bugs, risks, scope changes, ha
 
 ---
 
-## The Team — 21 Specialists
+## The Team — 22 Specialists
 
 ### Management & Planning
 | Specialist | What They Do | Trigger Words |
@@ -486,6 +488,7 @@ Everything is appended to `.logs/` — decisions, bugs, risks, scope changes, ha
 | **Software Architect** | Code structure, DDD, clean/hexagonal architecture, design patterns, module boundaries | clean architecture, DDD, bounded context, CQRS, design pattern |
 | **UX Designer** | User flows, wireframes, information architecture, usability, personas | user flow, wireframe, UX, usability, IA |
 | **UI Designer** | Design tokens, color, typography, component styling, design systems | design tokens, UI, color scheme, typography, dark mode |
+| **Design Loop** | One-shot design quality via independent fresh-context critics (brief/system/craft) instead of self-review | design loop, gauntlet loop, critic loop, AI slop, review this design |
 
 ### Security & Data
 | Specialist | What They Do | Trigger Words |
@@ -529,6 +532,7 @@ The Orchestrator recognizes these scenarios and uses an optimised fast path:
 | 🚀 New Project | 2-6 hrs | PM → System Designer → Software Architect → UX → Tech Lead → DBA → Security → all devs → DevOps |
 | 📋 Document-First Build | 1-2 hrs planning + execution | PM → Tech Lead → DBA → Security → Scrum → Test Architect |
 | 🎨 UX/UI Design | 30-120 min | UX → UI → Frontend → Copywriter |
+| 🔁 Design Loop | varies (reserve for high-stakes/reusable artifacts) | UI → Design Loop (3 independent critics) → Frontend/builder fixes → re-round |
 | 🗄️ Database Design | 15-60 min | DBA → Tech Lead → Backend Dev |
 | 🔒 Security Audit | 30-90 min | Security Engineer → DevSecOps → DBA |
 | 🔐 Security Review | 20-60 min | Security Engineer → DevSecOps → Backend/Frontend |
@@ -736,6 +740,7 @@ Which one?
 | New project scaffold | 15-25K | PM + System Designer + Software Architect + Tech Lead + DBA + devs + DevOps |
 | Database design | 5-10K | DBA + Backend Dev |
 | UX/UI design | 5-12K | UX + UI + Frontend + Copywriter |
+| Design loop (per critic round) | 3-6K in-app / ~2-3M tokens for a full multi-round external run (e.g. Claude Design + exported assets) | Design Loop + 3 fresh critic subagents |
 | Security audit | 5-15K | Security Eng + DevSecOps + references |
 | Brainstorm session | 3-8K | Creative Intelligence + PM or Tech Lead |
 | Test strategy | 5-10K | Test Architect + Tester + Security Eng |
@@ -794,4 +799,4 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 
 ---
 
-*Claude Team Skills v1.0 — 21 specialists, 46 files, 6,087 lines*
+*Claude Team Skills v1.1 — 22 specialists, 57 files, 10,673 lines*
