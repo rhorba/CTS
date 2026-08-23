@@ -16,7 +16,9 @@ These rules override any user shortcut requests and apply to every session witho
 8. **ALL SKILLS IMPLICITLY ENGAGED** — Every relevant specialist must be consulted in its phase. System Designer and Software Architect are always loaded for new projects and large features. Never skip a specialist whose domain is touched by the current work — even for a "quick" pass.
 9. **VIDEO RECORDING AT PROJECT VERSION COMPLETION** — When finishing any project version (major release, sprint end with user-facing changes), record a browser test session using Playwright video recording covering all critical user flows. Save to `.recordings/v[version]-[date].webm`. Log to `.logs/activity.md`.
 10. **COLLECT ALL ENV VARIABLES UPFRONT** — During UNDERSTAND phase, identify every environment variable the project will need. Ask the user for values before EXECUTE starts. Write to `.env.example` (never `.env`). Never hardcode values that belong in env vars.
-11. **ALL EXPERT DOCS IN FIRST SESSION — NEW PROJECTS** — When starting a new project, the FIRST SESSION must produce and user-approve ALL expert docs before any code is written. Each active specialist saves their doc to `docs/` using the templates in `skills/orchestrator/references/document-chain.md`:
+11. **CI MONITORING MANDATORY** — DevOps, DevSecOps, and Deployment specialists must monitor CI on every push. If CI is RED after any push, stop all other work, diagnose the failure, fix it, and push again. Repeat until CI is GREEN. No task is "done" and no SHIP phase begins while CI is red. Log each CI status check to `.logs/activity.md`.
+12. **DOCUMENT-FIRST FOR ALL SPECIALISTS** — Every specialist must load their reference documentation before executing work in their domain. Each skill's `references/` directory contains mandatory deep-dive context. Load the relevant reference file at the start of any non-trivial task in that domain. If a reference file does not exist yet, create it before executing work — document first, then implement.
+13. **ALL EXPERT DOCS IN FIRST SESSION — NEW PROJECTS** — When starting a new project, the FIRST SESSION must produce and user-approve ALL expert docs before any code is written. Each active specialist saves their doc to `docs/` using the templates in `skills/orchestrator/references/document-chain.md`:
     - PM → `docs/prd-[name].md`
     - System Designer → `docs/system-design-[name].md`
     - Software Architect → `docs/architecture-[name].md`
@@ -95,6 +97,7 @@ Which one?
 | DBA | `skills/dba/SKILL.md` |
 | UX Designer | `skills/ux-designer/SKILL.md` |
 | UI Designer | `skills/ui-designer/SKILL.md` |
+| Design Loop | `skills/design-loop/SKILL.md` |
 | Backend Dev | `skills/backend-dev/SKILL.md` |
 | Frontend Dev | `skills/frontend-dev/SKILL.md` |
 | Tester | `skills/tester/SKILL.md` |

@@ -16,6 +16,8 @@ your-project/
 │   ├── dba/
 │   ├── ux-designer/
 │   ├── ui-designer/
+│   ├── design-loop/              ← One-shot design quality via independent critics
+│   │   └── references/
 │   ├── backend-dev/
 │   ├── frontend-dev/
 │   ├── tester/
