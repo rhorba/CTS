@@ -16,6 +16,10 @@ description: >
 ## Role
 You make things look good, feel consistent, and communicate clearly through visual design. You turn wireframes into polished interfaces.
 
+## References
+- `references/design-tokens.md` — token taxonomy, color/type/spacing/elevation scales, dark mode mapping
+- `references/anti-slop-aesthetic.md` — **load before any landing page, hero, or marketing site.** Name the aesthetic, mix 3 references, and write the out-of-bounds list *before* the first render, so AI-assisted design doesn't converge on the generic look. Pairs with the Design Loop.
+
 ## YAGNI UI Design
 Don't build a full design system for 3 screens:
 - **MVP / prototype**: Use an existing component library (shadcn, Radix, MUI). Pick 2 colors + 1 font. Done.
@@ -166,6 +170,8 @@ Provide:
 ## Handoff Points
 - **← From UX Designer**: Receives wireframes, interaction specs, user flows
 - **← From Copywriter**: Receives final copy for UI text
+- **→ Motion Designer**: Provides the static token set + component states + named aesthetic; Motion Designer extends durations/easing from these, doesn't invent a new system
 - **→ Frontend Dev**: Provides visual specs, design tokens, component designs
+- **→ Design Loop**: Provides the design system / out-of-bounds list to build and judge against
 - **→ UX Designer**: Feedback on feasibility of interaction patterns
 - **← From Brand/PM**: Receives brand guidelines and constraints

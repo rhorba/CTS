@@ -174,18 +174,18 @@ set_font(run2, 24, bold=False, color=DARK)
 
 p3 = doc.add_paragraph()
 p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run3 = p3.add_run("21 AI Specialists. One Team. Zero Dependencies.")
+run3 = p3.add_run("23 AI Specialists. One Team. Zero Dependencies.")
 set_font(run3, 14, italic=True, color=MID_GRAY)
 
 doc.add_paragraph()
 
 meta = [
-    ("Version",   "1.0"),
+    ("Version",   "1.1"),
     ("License",   "MIT"),
     ("Platform",  "Claude Code"),
-    ("Specialists", "21"),
-    ("Files",     "52 markdown files"),
-    ("Total lines", "9,503"),
+    ("Specialists", "23"),
+    ("Files",     "59 markdown skill files"),
+    ("Total lines", "10,893"),
 ]
 for label, value in meta:
     p = doc.add_paragraph()
@@ -204,7 +204,7 @@ page_break()
 h1("1. Introduction")
 rule()
 body(
-    "Claude Team Skills (CTS) is a collection of 21 interconnected specialist skills for Claude Code. "
+    "Claude Team Skills (CTS) is a collection of 23 interconnected specialist skills for Claude Code. "
     "Instead of a generic AI assistant, every task is handled by the right expert — Project Manager, "
     "Security Engineer, DBA, Software Architect, Test Architect, and more — all routed by a central "
     "Orchestrator that loads one specialist at a time."
@@ -232,11 +232,11 @@ h2("1.2 What's Included")
 add_table(
     ["File / Directory", "Description"],
     [
-        ["claude-team-skills/", "21 skill directories — each with SKILL.md and a references/ deep-dive file"],
+        ["claude-team-skills/", "23 skill directories — each with SKILL.md and a references/ deep-dive file"],
         ["claude-team-skills/CLAUDE.md", "Entry point — copy to your project root"],
         ["claude-team-skills/QUICKSTART.md", "Cheat sheet for ongoing use"],
         ["claude-team-skills/INSTALL.md", "Detailed installation and FAQ"],
-        ["scripts/validate-skills.py", "CI validation: checks all 21 SKILL.md files exist and are valid"],
+        ["scripts/validate-skills.py", "CI validation: checks all 23 SKILL.md files exist and are valid"],
         ["scripts/build_pitch.py", "Regenerates the pitch deck PPTX"],
         ["scripts/build_manual.py", "Regenerates this user manual"],
         ["scripts/build_comparison.py", "Regenerates the BMAD vs CTS comparison PDF"],
@@ -270,7 +270,9 @@ code_block(
     "    security-engineer/\n"
     "    dba/\n"
     "    ux-designer/\n"
-    "    ui-designer/\n"
+    "    ui-designer/          <- design tokens, anti-slop aesthetic guide\n"
+    "    motion-designer/      <- motion system + video pipeline, generative visuals\n"
+    "    design-loop/          <- independent fresh-context design critics\n"
     "    backend-dev/\n"
     "    frontend-dev/\n"
     "    tester/\n"
@@ -400,9 +402,9 @@ page_break()
 
 
 # =============================================================================
-# CHAPTER 4 — THE 21 SPECIALISTS
+# CHAPTER 4 — THE 23 SPECIALISTS
 # =============================================================================
-h1("4. The 21 Specialists")
+h1("4. The 23 Specialists")
 rule()
 body(
     "Each specialist is a markdown file (SKILL.md) with YAML frontmatter declaring its name, "
@@ -467,8 +469,22 @@ specialists_arch = [
     ("UI Designer", "ui-designer/SKILL.md",
      "Design token system (semantic colors, typography scale 12px-36px, 4px spacing grid, border radius scale), "
      "component patterns (4 button types + 6 states, form rules, card structure), 12/8/4 column grid "
-     "(desktop/tablet/mobile), dark mode rules, visual hierarchy checklist, 44x44px touch targets.",
+     "(desktop/tablet/mobile), dark mode rules, visual hierarchy checklist, 44x44px touch targets. "
+     "Anti-slop aesthetic discipline: name the aesthetic + mix 3 references + write the out-of-bounds "
+     "list before the first render.",
      "'UI design', 'color palette', 'typography', 'design tokens', 'component library', 'dark mode', 'design system'"),
+    ("Motion Designer", "motion-designer/SKILL.md",
+     "Motion token system (duration scale 0-480ms, easing curves, choreography/stagger, named interaction "
+     "inventory), hard rules (nothing blocking > 400ms, prefers-reduced-motion, compositor-only props), "
+     "scroll reveals / parallax / view transitions, motion graphics via React->MP4 (Remotion-style "
+     "render->review->fix loop), generative/procedural hero visuals. Delivers a Motion Spec table to Frontend Dev.",
+     "'motion design', 'animation', 'micro-interaction', 'transition', 'easing', 'scroll animation', 'promo video', 'generative background'"),
+    ("Design Loop", "design-loop/SKILL.md",
+     "One-shot design quality via independent fresh-context critics instead of self-review. Step 0 design "
+     "system first, then three critics (Brief / System / Craft) that see only the rendered artifact + brief + "
+     "tokens, each returning pass/fail + a numbered concrete fix list. Re-round with fresh context until all "
+     "pass or issues stop surfacing. YAGNI-gated to high-stakes / reusable artifacts.",
+     "'design loop', 'gauntlet loop', 'critic loop', 'AI slop', 'review this design', 'does this look AI-generated'"),
 ]
 for name, path, desc, triggers in specialists_arch:
     h3(name)
@@ -930,7 +946,7 @@ add_table(
     [
         ["CLAUDE.md + Orchestrator + 1 specialist",     "~3-5K tokens"],
         ["CLAUDE.md + Orchestrator + 1 specialist + 1 reference file", "~6-10K tokens"],
-        ["All 21 skills loaded at once",                "~35K+ tokens (wasteful)"],
+        ["All 23 skills loaded at once",                "~35K+ tokens (wasteful)"],
     ],
     col_widths=[3.5, 3.0]
 )
@@ -997,7 +1013,7 @@ code_block(
     "Commit messages:  type(scope): description\n"
     "  feat(auth): add refresh token rotation\n"
     "  fix(login): resolve 500 on invalid credentials\n"
-    "  docs(readme): update specialist count to 21\n\n"
+    "  docs(readme): update specialist count to 23\n\n"
     "Branch naming:    type/short-description\n"
     "  feature/add-auth\n"
     "  fix/login-bug\n"
@@ -1009,7 +1025,7 @@ body("scripts/validate-skills.py checks:")
 checks = [
     "claude-team-skills/ directory exists",
     "CLAUDE.md, QUICKSTART.md, INSTALL.md exist and have >50 chars",
-    "All 21 skill directories have a SKILL.md file",
+    "All 23 skill directories have a SKILL.md file",
     "Each SKILL.md has valid YAML frontmatter (--- delimiters)",
     "Each SKILL.md frontmatter contains name: and description: fields",
     "Each SKILL.md body (after frontmatter) is >=100 chars",
@@ -1080,7 +1096,7 @@ page_break()
 # =============================================================================
 # APPENDIX A — FULL SPECIALIST QUICK REFERENCE
 # =============================================================================
-h1("Appendix A — All 21 Specialists at a Glance")
+h1("Appendix A — All 23 Specialists at a Glance")
 rule()
 
 add_table(
@@ -1093,20 +1109,22 @@ add_table(
         ["5",  "System Designer",      "Architecture","NFRs, topology, scalability, capacity planning"],
         ["6",  "Software Architect",   "Architecture","Clean/Hexagonal/DDD, design patterns, modules"],
         ["7",  "UX Designer",          "Design",      "User flows, wireframes, personas, usability"],
-        ["8",  "UI Designer",          "Design",      "Design tokens, color, typography, component styling"],
-        ["9",  "Security Engineer",    "Security",    "STRIDE, auth design, OWASP, SOC2/HIPAA/PCI-DSS"],
-        ["10", "DBA",                  "Data",        "Schema, query opt, indexes, migrations, backup"],
-        ["11", "Backend Dev",          "Dev",         "REST/GraphQL APIs, service layer, ORM, auth"],
-        ["12", "Frontend Dev",         "Dev",         "React/Vue/Next components, state, a11y, responsive"],
-        ["13", "Tester",               "Quality",     "Unit/integration/e2e, >=80% coverage gate"],
-        ["14", "Test Architect",       "Quality",     "Risk-based strategy, ATDD, adversarial review"],
-        ["15", "Deployment",           "Operations",  "Rolling/Blue-Green/Canary, env management"],
-        ["16", "DevOps/DevSecOps",     "Operations",  "CI/CD, Docker/K8s, Semgrep/Trivy/Checkov"],
-        ["17", "Creative Intelligence","Creative",    "7 ideation frameworks, scoring matrix"],
-        ["18", "Digital Marketer",     "Marketing",   "SEO, funnels, GA4, A/B testing, campaigns"],
-        ["19", "Copywriter",           "Marketing",   "AIDA/PAS/BAB, headlines, CTAs, microcopy"],
-        ["20", "Content Marketer",     "Marketing",   "Blog posts, calendar, social, case studies"],
-        ["21", "Project Monitor",      "Memory",      "8 log files, 10 KPIs, status reports, retros"],
+        ["8",  "UI Designer",          "Design",      "Design tokens, color, typography, anti-slop aesthetic"],
+        ["9",  "Motion Designer",      "Design",      "Motion tokens, transitions, scroll, React->MP4 video, generative BGs"],
+        ["10", "Design Loop",          "Design",      "Independent fresh-context critics instead of self-review"],
+        ["11", "Security Engineer",    "Security",    "STRIDE, auth design, OWASP, SOC2/HIPAA/PCI-DSS"],
+        ["12", "DBA",                  "Data",        "Schema, query opt, indexes, migrations, backup"],
+        ["13", "Backend Dev",          "Dev",         "REST/GraphQL APIs, service layer, ORM, auth"],
+        ["14", "Frontend Dev",         "Dev",         "React/Vue/Next components, state, a11y, responsive"],
+        ["15", "Tester",               "Quality",     "Unit/integration/e2e, >=80% coverage gate"],
+        ["16", "Test Architect",       "Quality",     "Risk-based strategy, ATDD, adversarial review"],
+        ["17", "Deployment",           "Operations",  "Rolling/Blue-Green/Canary, env management"],
+        ["18", "DevOps/DevSecOps",     "Operations",  "CI/CD, Docker/K8s, Semgrep/Trivy/Checkov"],
+        ["19", "Creative Intelligence","Creative",    "7 ideation frameworks, scoring matrix"],
+        ["20", "Digital Marketer",     "Marketing",   "SEO, funnels, GA4, A/B testing, campaigns"],
+        ["21", "Copywriter",           "Marketing",   "AIDA/PAS/BAB, headlines, CTAs, microcopy"],
+        ["22", "Content Marketer",     "Marketing",   "Blog posts, calendar, social, case studies"],
+        ["23", "Project Monitor",      "Memory",      "8 log files, 10 KPIs, status reports, retros"],
     ],
     col_widths=[0.3, 1.5, 1.1, 3.6]
 )
@@ -1115,7 +1133,7 @@ add_table(
 doc.add_paragraph()
 p = doc.add_paragraph()
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = p.add_run("Claude Team Skills v1.0  |  21 specialists  |  52 files  |  9,503 lines  |  MIT License")
+run = p.add_run("Claude Team Skills v1.1  |  23 specialists  |  59 skill files  |  10,893 lines  |  MIT License")
 set_font(run, 9, italic=True, color=MID_GRAY)
 
 # ── Save ─────────────────────────────────────────────────────────────────────

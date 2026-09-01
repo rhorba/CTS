@@ -97,6 +97,7 @@ Which one?
 | DBA | `skills/dba/SKILL.md` |
 | UX Designer | `skills/ux-designer/SKILL.md` |
 | UI Designer | `skills/ui-designer/SKILL.md` |
+| Motion Designer | `skills/motion-designer/SKILL.md` |
 | Design Loop | `skills/design-loop/SKILL.md` |
 | Backend Dev | `skills/backend-dev/SKILL.md` |
 | Frontend Dev | `skills/frontend-dev/SKILL.md` |

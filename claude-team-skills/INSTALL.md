@@ -16,6 +16,9 @@ your-project/
 │   ├── dba/
 │   ├── ux-designer/
 │   ├── ui-designer/
+│   │   └── references/        ← design tokens, anti-slop aesthetic guide
+│   ├── motion-designer/          ← animation, transitions, promo video, generative visuals
+│   │   └── references/
 │   ├── design-loop/              ← One-shot design quality via independent critics
 │   │   └── references/
 │   ├── backend-dev/

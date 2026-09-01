@@ -73,7 +73,7 @@ story.append(Spacer(1, 0.3 * inch))
 story.append(Paragraph("BMAD Method vs Claude Team Skills", title_style))
 story.append(Paragraph("Side-by-Side Feature Comparison", subtitle_style))
 story.append(Paragraph(
-    "Version 1.0  ·  21 specialists  ·  52 files  ·  9,503 lines  ·  MIT License",
+    "Version 1.1  ·  23 specialists  ·  59 skill files  ·  10,893 lines  ·  MIT License",
     note_style
 ))
 story.append(HRFlowable(width="100%", thickness=2, color=PURPLE, spaceAfter=14))
@@ -94,12 +94,12 @@ story.append(Paragraph("At a Glance", section_style))
 
 glance_data = [
     ["Metric", "BMAD Method", "Claude Team Skills"],
-    ["Specialists / roles", "~10-15 personas", "21 specialists"],
+    ["Specialists / roles", "~10-15 personas", "23 specialists"],
     ["Installation", "npm package", "Copy markdown — zero deps"],
     ["Platform", "ChatGPT, Gemini, Claude, 10+ IDEs", "Claude Code native"],
     ["Config format", "YAML (Agent-as-Code)", "Plain markdown"],
-    ["Total files", "Varies by bundle", "52 .md files"],
-    ["Total lines", "Varies", "9,503 lines"],
+    ["Total files", "Varies by bundle", "59 .md skill files"],
+    ["Total lines", "Varies", "10,893 lines"],
     ["License", "MIT", "MIT"],
 ]
 glance_table = Table(
@@ -206,7 +206,7 @@ comparison_rows = [
         "Token efficiency",
         "Varies by persona count loaded",
         "~3-5K for routing (1 specialist at a time)",
-        "vs 35K+ if all 21 skills loaded simultaneously.",
+        "vs 35K+ if all 23 skills loaded simultaneously.",
     ],
     [
         "KPI tracking",
@@ -231,6 +231,12 @@ comparison_rows = [
         "Not included",
         "5 creative specialists: Digital Marketer, Copywriter, Content, Creative Intelligence",
         "Full-stack product team, not just engineering.",
+    ],
+    [
+        "Design quality loop",
+        "Not built-in",
+        "Motion Designer + Design Loop: motion system, then independent fresh-context critics",
+        "One-shot design that doesn't grade its own work — kills 'AI slop'.",
     ],
 ]
 
@@ -263,7 +269,7 @@ story.append(Spacer(1, 0.2 * inch))
 
 # ── CTS 21 Specialists ────────────────────────────────────────────────────────
 story.append(HRFlowable(width="100%", thickness=1, color=PURPLE, spaceAfter=8))
-story.append(Paragraph("The 21 CTS Specialists", section_style))
+story.append(Paragraph("The 23 CTS Specialists", section_style))
 
 specialists = [
     ["#", "Specialist", "Group", "Unique Capabilities vs Generic AI"],
@@ -274,20 +280,22 @@ specialists = [
     ["5",  "System Designer",      "Architecture","NFR capture, capacity planning, topology, SLA/SLO, SDRs"],
     ["6",  "Software Architect",   "Architecture","Clean/Hexagonal/DDD, CQRS, fitness functions, dependency rules"],
     ["7",  "UX Designer",          "Design",      "3-tier flows, wireframe states, personas, Nielsen heuristics"],
-    ["8",  "UI Designer",          "Design",      "Design tokens, 4px grid, 12-col layout, dark mode rules"],
-    ["9",  "Security Engineer",    "Security",    "STRIDE model, auth decision tree, SOC2/HIPAA/PCI-DSS, IR template"],
-    ["10", "DBA",                  "Data",        "PostgreSQL-default, 4 index types, EXPLAIN ANALYZE, backup strategy"],
-    ["11", "Backend Dev",          "Dev",         "RESTful checklist, Route→Controller→Service→Repository pattern"],
-    ["12", "Frontend Dev",         "Dev",         "State management decision table, a11y checklist, breakpoints"],
-    ["13", "Tester",               "Quality",     "Testing pyramid, AAA, >=80% coverage gate (non-negotiable)"],
-    ["14", "Test Architect",       "Quality",     "Risk scoring, ATDD, adversarial review, edge case hunter"],
-    ["15", "Deployment",           "Operations",  "Rolling/Blue-Green/Canary procedures, pre/post checklists"],
-    ["16", "DevOps/DevSecOps",     "Operations",  "Semgrep/Trivy/Checkov/Gitleaks, hardened Dockerfile, CI monitoring"],
-    ["17", "Creative Intelligence","Creative",    "7 ideation frameworks (SCAMPER, Design Thinking, First Principles)"],
-    ["18", "Digital Marketer",     "Marketing",   "SEO checklist, funnel, GA4 events, A/B testing rules"],
-    ["19", "Copywriter",           "Marketing",   "AIDA/PAS/BAB, 5 headline types, 8-section landing page"],
-    ["20", "Content Marketer",     "Marketing",   "Pillars, calendar, repurposing chain blog→LinkedIn→email→video"],
-    ["21", "Project Monitor",      "Memory",      "8 append-only logs, 10 KPIs, status reports, session resumption"],
+    ["8",  "UI Designer",          "Design",      "Design tokens, 4px grid, 12-col layout, anti-slop aesthetic"],
+    ["9",  "Motion Designer",      "Design",      "Motion tokens, micro-interactions, scroll/transitions, React→MP4, generative BGs"],
+    ["10", "Design Loop",          "Design",      "Independent fresh-context critics (brief/system/craft) instead of self-review"],
+    ["11", "Security Engineer",    "Security",    "STRIDE model, auth decision tree, SOC2/HIPAA/PCI-DSS, IR template"],
+    ["12", "DBA",                  "Data",        "PostgreSQL-default, 4 index types, EXPLAIN ANALYZE, backup strategy"],
+    ["13", "Backend Dev",          "Dev",         "RESTful checklist, Route→Controller→Service→Repository pattern"],
+    ["14", "Frontend Dev",         "Dev",         "State management decision table, a11y checklist, breakpoints"],
+    ["15", "Tester",               "Quality",     "Testing pyramid, AAA, >=80% coverage gate (non-negotiable)"],
+    ["16", "Test Architect",       "Quality",     "Risk scoring, ATDD, adversarial review, edge case hunter"],
+    ["17", "Deployment",           "Operations",  "Rolling/Blue-Green/Canary procedures, pre/post checklists"],
+    ["18", "DevOps/DevSecOps",     "Operations",  "Semgrep/Trivy/Checkov/Gitleaks, hardened Dockerfile, CI monitoring"],
+    ["19", "Creative Intelligence","Creative",    "7 ideation frameworks (SCAMPER, Design Thinking, First Principles)"],
+    ["20", "Digital Marketer",     "Marketing",   "SEO checklist, funnel, GA4 events, A/B testing rules"],
+    ["21", "Copywriter",           "Marketing",   "AIDA/PAS/BAB, 5 headline types, 8-section landing page"],
+    ["22", "Content Marketer",     "Marketing",   "Pillars, calendar, repurposing chain blog→LinkedIn→email→video"],
+    ["23", "Project Monitor",      "Memory",      "8 append-only logs, 10 KPIs, status reports, session resumption"],
 ]
 
 spec_table = Table(
@@ -364,7 +372,7 @@ story.append(Spacer(1, 0.2 * inch))
 # ── Footer ────────────────────────────────────────────────────────────────────
 story.append(HRFlowable(width="100%", thickness=2, color=PURPLE, spaceAfter=6))
 story.append(Paragraph(
-    "Claude Team Skills v1.0  ·  21 specialists  ·  52 files  ·  9,503 lines  ·  MIT License  ·  github.com/rhorba/CTS",
+    "Claude Team Skills v1.1  ·  23 specialists  ·  59 skill files  ·  10,893 lines  ·  MIT License  ·  github.com/rhorba/CTS",
     note_style,
 ))
 

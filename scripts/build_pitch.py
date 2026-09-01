@@ -134,7 +134,7 @@ rect(s, 0, Inches(4.8), W, Inches(0.06), PURPLE)
 txt(s, "Claude Team Skills", Inches(0.7), Inches(1.1), Inches(11.9), Inches(1.5),
     size=54, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 
-txt(s, "21 AI Specialists. One Team. Zero Dependencies.",
+txt(s, "23 AI Specialists. One Team. Zero Dependencies.",
     Inches(0.7), Inches(2.7), Inches(11.9), Inches(0.85),
     size=26, color=RGBColor(0xD0, 0xC0, 0xFF), align=PP_ALIGN.CENTER)
 
@@ -145,7 +145,7 @@ txt(s,
 
 # badges
 badges = [
-    ("v1.0", Inches(3.6)),
+    ("v1.1", Inches(3.6)),
     ("MIT License", Inches(5.9)),
     ("Zero Dependencies", Inches(8.2)),
 ]
@@ -188,12 +188,12 @@ slide_number(s, 2, TOTAL)
 # Slide 3 — The Solution
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 s = add_slide()
-header_band(s, "The Solution", "21 interconnected specialists — each an expert in their domain")
+header_band(s, "The Solution", "23 interconnected specialists — each an expert in their domain")
 
 cols = [
-    ("21 Specialists", PURPLE,
+    ("23 Specialists", PURPLE,
      ["Every task goes to the right expert.", "PM, Security Eng, DBA, Test Architect,",
-      "UX Designer, DevOps — and 15 more."]),
+      "UX, UI, Motion, DevOps — and 15 more."]),
     ("One Orchestrator", DARK_PURPLE,
      ["Routes every request automatically.", "Loads ONE specialist at a time.",
       "Written handoff on every switch."]),
@@ -285,12 +285,14 @@ slide_number(s, 5, TOTAL)
 # Slide 6 — The Team: Engineering & Quality
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 s = add_slide()
-header_band(s, "The Team — Engineering & Quality",
-            "8 specialists covering data, code, tests, and operations")
+header_band(s, "The Team — Design, Engineering & Quality",
+            "10 specialists covering design polish, data, code, tests, and operations")
 
 rows = [
+    ("UI Designer",      "Design tokens, color/typography system, 4px grid, dark mode, anti-slop aesthetic discipline."),
+    ("Motion Designer",  "Motion tokens, micro-interactions, scroll/transitions, React→MP4 video, generative backgrounds."),
+    ("Design Loop",      "Independent fresh-context critics (Brief/System/Craft) instead of self-review — kills AI slop."),
     ("DBA",              "Schema design, query optimization, indexes, migrations, backup strategy (PostgreSQL default)."),
-    ("UI Designer",      "Design tokens, color/typography system, 4px grid, component styling, dark mode rules."),
     ("Backend Dev",      "REST/GraphQL APIs, service layer pattern, ORM, auth flow, performance checklist."),
     ("Frontend Dev",     "React/Vue/Next components, state management, accessibility (WCAG), responsive design."),
     ("Tester",           "Unit/integration/e2e tests. Hard ≥80% coverage gate. Bug report format. Framework quick ref."),
@@ -299,13 +301,13 @@ rows = [
     ("DevOps/DevSecOps", "CI/CD pipelines, Docker/K8s, Terraform, Semgrep/Trivy/Checkov/Gitleaks scanning."),
 ]
 for i, (name, desc) in enumerate(rows):
-    ty = Inches(1.78 + i * 0.68)
+    ty = Inches(1.72 + i * 0.55)
     bg = LIGHT_GRAY if i % 2 == 0 else WHITE
-    rect(s, Inches(0.3), ty, Inches(12.7), Inches(0.62), bg)
-    txt(s, name, Inches(0.45), ty + Inches(0.1), Inches(2.3), Inches(0.45),
-        size=12.5, bold=True, color=PURPLE)
-    txt(s, desc, Inches(2.8), ty + Inches(0.1), Inches(10.1), Inches(0.45),
-        size=12, color=NAVY)
+    rect(s, Inches(0.3), ty, Inches(12.7), Inches(0.5), bg)
+    txt(s, name, Inches(0.45), ty + Inches(0.07), Inches(2.4), Inches(0.4),
+        size=12, bold=True, color=PURPLE)
+    txt(s, desc, Inches(2.9), ty + Inches(0.07), Inches(10.0), Inches(0.4),
+        size=11, color=NAVY)
 
 slide_number(s, 6, TOTAL)
 
@@ -414,7 +416,7 @@ workflows = [
     ("✨ New Feature",         "1-4 hrs",    "PM → UX → Tech Lead → DBA → Devs → Tester → Security"),
     ("🚀 New Project",         "2-6 hrs",    "PM → System Designer → Software Architect → UX → Tech Lead → DBA → Security → DevOps"),
     ("📋 Document-First Build","1-2 hrs+",   "PM → Tech Lead → DBA → Security → Scrum → Test Architect"),
-    ("🎨 UX/UI Design",        "30-120 min", "UX Designer → UI Designer → Frontend Dev → Copywriter"),
+    ("🎨 UX/UI Design",        "30-120 min", "UX → UI → Motion Designer → Frontend Dev → Copywriter"),
     ("🗄️ Database Design",     "15-60 min",  "DBA → Tech Lead → Backend Dev"),
     ("🔒 Security Audit",      "30-90 min",  "Security Engineer → DevSecOps → DBA"),
     ("🔐 Security Review",     "20-60 min",  "Security Engineer → DevSecOps → Backend/Frontend"),
@@ -488,7 +490,7 @@ header_band(s, "Zero-Dependency Setup", "Plain markdown — no Node.js, no npm, 
 
 steps = [
     ("Step 1", "Copy skills/ folder",
-     "Extract claude-team-skills/ and place it in your project root.\n21 skill directories, plain .md files."),
+     "Extract claude-team-skills/ and place it in your project root.\n23 skill directories, plain .md files."),
     ("Step 2", "Add CLAUDE.md",
      "Copy CLAUDE.md to your project root.\nClaude Code reads it first on every session."),
     ("Step 3", "Start working",
@@ -508,9 +510,9 @@ for i, (num, title, body) in enumerate(steps):
 
 # file count badges
 badges2 = [
-    ("21 specialists", Inches(1.0)),
-    ("46 files total",  Inches(4.55)),
-    ("6,087 lines",     Inches(8.1)),
+    ("23 specialists", Inches(1.0)),
+    ("59 skill files",  Inches(4.55)),
+    ("10,893 lines",    Inches(8.1)),
     ("0 dependencies",  Inches(11.0)),
 ]
 for label, lx in badges2:
@@ -568,7 +570,7 @@ slide_number(s, 12, TOTAL)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 s = add_slide()
 header_band(s, "Just Say What You Need",
-            "21 voice commands — the Orchestrator picks the right specialist automatically")
+            "Just say what you need — the Orchestrator picks the right specialist automatically")
 
 examples = [
     ("💬 Feature",    '"I need to add user authentication"',         "PM → Security → Backend → Tester"),
@@ -610,7 +612,7 @@ txt(s, "Ready to Ship Better Software?",
     Inches(0.5), Inches(0.8), Inches(12.3), Inches(1.1),
     size=40, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 
-txt(s, "3 steps. 0 dependencies. 21 specialists on your team from day one.",
+txt(s, "3 steps. 0 dependencies. 23 specialists on your team from day one.",
     Inches(1.0), Inches(2.0), Inches(11.3), Inches(0.65),
     size=20, color=RGBColor(0xD0, 0xC0, 0xFF), align=PP_ALIGN.CENTER)
 
@@ -628,7 +630,7 @@ txt(s, "github.com/rhorba/CTS",
     Inches(3.8), Inches(6.27), Inches(5.75), Inches(0.65),
     size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 
-txt(s, "Claude Team Skills v1.0 · MIT License · 21 specialists · 46 files · 6,087 lines",
+txt(s, "Claude Team Skills v1.1 · MIT License · 23 specialists · 59 skill files · 10,893 lines",
     Inches(0.5), Inches(7.1), Inches(12.3), Inches(0.35),
     size=10, color=MID_GRAY, align=PP_ALIGN.CENTER)
 

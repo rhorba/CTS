@@ -5,8 +5,8 @@ description: >
   Use whenever the user starts a new session, mentions a project, feature, bug fix, documentation,
   brainstorming, planning, sprint, task, or wants to work on anything. This skill routes work to the
   right specialist skills (PM, Scrum, System Designer, Software Architect, Tech Lead, Security, DBA,
-  UX, UI, Backend, Frontend, Tester, Test Architect, Deployment, DevOps, Creative Intelligence,
-  Marketing, Copywriter, Content, Monitor).
+  UX, UI, Motion, Backend, Frontend, Tester, Test Architect, Deployment, DevOps, Creative
+  Intelligence, Marketing, Copywriter, Content, Monitor).
   Trigger on: "let's work on", "new feature", "bug fix", "plan", "brainstorm", "ideate", "what should
   we do", "sprint", "project", "build", "ship", "deploy", "market", "design", "database", "security",
   "test strategy", "adversarial review", "PRD", "document-first", "write content", or any general
@@ -108,7 +108,8 @@ For common scenarios, read `references/workflows.md` for a pre-built fast path:
 - 📢 **Marketing Launch** — strategy → content → setup → launch (1-3 hrs)
 - 🔒 **Security Audit** — scan → triage → fix → verify (30-90 min)
 - 🔄 **Refactor** — assess → plan → incremental steps (30-120 min)
-- 🎨 **UX/UI Design** — flow → wireframe → visual → handoff (30-120 min)
+- 🎨 **UX/UI Design** — flow → wireframe → visual → motion → handoff (30-120 min)
+- 🌀 **Motion & Interaction** — motion tokens → named interactions → scroll/transition spec → handoff (or React→MP4 video) (20-90 min)
 - 🔁 **Design Loop (one-shot quality)** — design system → build → 3 independent critics → fix → re-round (varies; reserve for high-stakes/reusable artifacts)
 - 🗄️ **Database Design** — entities → schema → migration → indexes (15-60 min)
 - 🔐 **Security Review** — threat model → requirements → scan → fix (20-60 min)
@@ -153,7 +154,8 @@ Based on answers, determine which specialists are needed. Example mappings:
 | Security review | Security Engineer | DevSecOps, Test Architect |
 | System/infra design | System Designer | Tech Lead, DBA, DevOps |
 | Software structure | Software Architect | Tech Lead, Backend Dev |
-| UI/UX design | UX Designer → UI Designer | Frontend Dev, Copywriter, Design Loop (before ship) |
+| UI/UX design | UX Designer → UI Designer | Motion Designer, Frontend Dev, Copywriter, Design Loop (before ship) |
+| Motion / animation / transitions / promo video | Motion Designer | UI Designer, Frontend Dev, Design Loop |
 | Brainstorm / ideation | Creative Intelligence | PM, Tech Lead, UX |
 | Test strategy | Test Architect | Tester, Security Engineer |
 | Marketing need | Digital Marketer | Copywriter, Content |
@@ -289,6 +291,10 @@ If this sprint completes a project version:
        │Desgn│   │         │       └──────┘  │
        └──┬──┘   └────┬────┘                 │
           │           │                      │
+       ┌──┴──┐        │                      │
+       │Motn │        │                      │  ← animation, transitions, promo video
+       │Desgn│        │                      │
+       └──┬──┘        │                      │
           └─────┬─────┘                      │
                 │                            │
           ┌─────┴─────┐                      │
@@ -321,6 +327,7 @@ When you need a specialist, read ONLY that skill's SKILL.md:
 | DBA | `dba/SKILL.md` | Schema design, queries, migrations, indexes, database ops |
 | UX Designer | `ux-designer/SKILL.md` | User flows, wireframes, IA, usability, interaction design |
 | UI Designer | `ui-designer/SKILL.md` | Visual design, design tokens, color, typography, component styling |
+| Motion Designer | `motion-designer/SKILL.md` | Animation, micro-interactions, transitions, scroll choreography, reduced-motion strategy, motion graphics / React→MP4 video, generative background visuals |
 | Design Loop | `design-loop/SKILL.md` | Before shipping any high-stakes UI/graphic — runs independent fresh-context critics (brief/system/craft) instead of self-review |
 | Backend Dev | `backend-dev/SKILL.md` | APIs, server logic, microservices |
 | Frontend Dev | `frontend-dev/SKILL.md` | UI components, state management, accessibility |

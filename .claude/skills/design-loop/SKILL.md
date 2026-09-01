@@ -61,7 +61,10 @@ design system" is a far more reliable prompt than "design me something new." Sav
 living reference file (e.g. `design-system.md`) that every critic and every future prompt reads
 from — not from vibes, and not re-litigated per screen.
 
-See `references/design-tokens-brief-template.md` for a fill-in-the-blanks starting point.
+See `references/design-tokens-brief-template.md` for a fill-in-the-blanks starting point, and
+`../ui-designer/references/anti-slop-aesthetic.md` for the front-loaded discipline (name the
+aesthetic, mix 3 references, write the out-of-bounds list) that gives the System and Craft critics
+something concrete to enforce.
 
 ## Step 1 — Define the brief
 

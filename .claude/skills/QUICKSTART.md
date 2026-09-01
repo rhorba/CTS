@@ -97,7 +97,7 @@ Just describe what you need. The orchestrator figures out the rest.
 
 ---
 
-## Team Roster (16 specialists)
+## Team Roster (23 specialists)
 
 | # | Specialist | One-liner |
 |---|---|---|
@@ -105,21 +105,25 @@ Just describe what you need. The orchestrator figures out the rest.
 | 2 | Project Manager | Scope, timeline, risk, charter |
 | 3 | Scrum Master | Sprints, stories, backlog, ceremonies |
 | 4 | Tech Lead | Architecture decisions, code standards |
-| 5 | Security Engineer | Threat models, auth design, compliance |
-| 6 | DBA | Schema, queries, migrations, indexes |
-| 7 | UX Designer | User flows, wireframes, usability |
-| 8 | UI Designer | Colors, typography, design tokens, visual polish |
-| 9 | Backend Dev | APIs, services, server logic |
-| 10 | Frontend Dev | Components, state, accessibility |
-| 11 | Tester | Unit/integration/e2e tests, QA |
-| 12 | Test Architect | Test strategy, ATDD, adversarial review, edge cases |
-| 13 | Deployment | Release, rollback, environments |
-| 14 | DevOps/DevSecOps | CI/CD, Docker, K8s, infra, scanning |
-| 15 | Creative Intelligence | Brainstorming, design thinking, storytelling, innovation |
-| 16 | Digital Marketer | SEO, campaigns, funnels, analytics |
-| 17 | Copywriter | Headlines, CTAs, email copy, UX writing |
-| 18 | Content Marketer | Blog posts, social media, content strategy |
-| 19 | Project Monitor | Activity logs, KPIs, status reports, retrospectives |
+| 5 | System Designer | Topology, NFRs, scalability, capacity planning |
+| 6 | Software Architect | Clean/hexagonal/DDD, design patterns, module boundaries |
+| 7 | Security Engineer | Threat models, auth design, compliance |
+| 8 | DBA | Schema, queries, migrations, indexes |
+| 9 | UX Designer | User flows, wireframes, usability |
+| 10 | UI Designer | Colors, typography, design tokens, anti-slop aesthetic |
+| 11 | Motion Designer | Animation, transitions, scroll choreography, promo video, generative backgrounds |
+| 12 | Design Loop | One-shot design quality via independent fresh-context critics |
+| 13 | Backend Dev | APIs, services, server logic |
+| 14 | Frontend Dev | Components, state, accessibility |
+| 15 | Tester | Unit/integration/e2e tests, QA |
+| 16 | Test Architect | Test strategy, ATDD, adversarial review, edge cases |
+| 17 | Deployment | Release, rollback, environments |
+| 18 | DevOps/DevSecOps | CI/CD, Docker, K8s, infra, scanning |
+| 19 | Creative Intelligence | Brainstorming, design thinking, storytelling, innovation |
+| 20 | Digital Marketer | SEO, campaigns, funnels, analytics |
+| 21 | Copywriter | Headlines, CTAs, email copy, UX writing |
+| 22 | Content Marketer | Blog posts, social media, content strategy |
+| 23 | Project Monitor | Activity logs, KPIs, status reports, retrospectives |
 
 ---
 
