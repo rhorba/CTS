@@ -119,6 +119,8 @@ def slide_number(slide, n, total):
 
 
 # ── Slide data ───────────────────────────────────────────────────────────────
+from pathlib import Path
+
 TOTAL = 14
 
 
@@ -145,7 +147,7 @@ txt(s,
 
 # badges
 badges = [
-    ("v1.1", Inches(3.6)),
+    ("v2.0", Inches(3.6)),
     ("MIT License", Inches(5.9)),
     ("Zero Dependencies", Inches(8.2)),
 ]
@@ -486,13 +488,13 @@ slide_number(s, 10, TOTAL)
 # Slide 11 — Zero-Dependency Setup
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 s = add_slide()
-header_band(s, "Zero-Dependency Setup", "Plain markdown — no Node.js, no npm, no build step")
+header_band(s, "Zero-Dependency Setup", "One plugin, plain markdown and shell — no Node.js, no npm, no build step")
 
 steps = [
-    ("Step 1", "Copy skills/ folder",
-     "Extract claude-team-skills/ and place it in your project root.\n23 skill directories, plain .md files."),
-    ("Step 2", "Add CLAUDE.md",
-     "Copy CLAUDE.md to your project root.\nClaude Code reads it first on every session."),
+    ("Step 1", "Add the marketplace",
+     "/plugin marketplace add rhorba/CTS\n\nOr copy the skills/ folder and CLAUDE.md by hand."),
+    ("Step 2", "Install the plugin",
+     "/plugin install cts@rhorba-cts\n\n23 skills, 3 agents and 3 hooks load together."),
     ("Step 3", "Start working",
      "Open Claude Code and describe what you need.\nThe Orchestrator handles the rest."),
 ]
@@ -512,7 +514,7 @@ for i, (num, title, body) in enumerate(steps):
 badges2 = [
     ("23 specialists", Inches(1.0)),
     ("59 skill files",  Inches(4.55)),
-    ("10,893 lines",    Inches(8.1)),
+    ("10,754 lines",    Inches(8.1)),
     ("0 dependencies",  Inches(11.0)),
 ]
 for label, lx in badges2:
@@ -526,41 +528,41 @@ slide_number(s, 11, TOTAL)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Slide 12 — CTS vs BMAD
+# Slide 12 — What's New in v2
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 s = add_slide()
-header_band(s, "CTS vs BMAD Method",
-            "CTS skips 8 BMAD features by design — lightweight wins for Claude Code users")
+header_band(s, "What's New in v2",
+            "The rules are now backed by hooks, subagents and evals")
 
 # column headers
 rect(s, Inches(0.3), Inches(1.7), Inches(5.6), Inches(0.45), PURPLE)
 rect(s, Inches(6.1), Inches(1.7), Inches(3.2), Inches(0.45), PURPLE)
 rect(s, Inches(9.5), Inches(1.7), Inches(3.55), Inches(0.45), DARK_PURPLE)
 
-txt(s, "Feature", Inches(0.4), Inches(1.72), Inches(5.5), Inches(0.4),
+txt(s, "Capability", Inches(0.4), Inches(1.72), Inches(5.5), Inches(0.4),
     size=12.5, bold=True, color=WHITE)
-txt(s, "BMAD", Inches(6.2), Inches(1.72), Inches(3.0), Inches(0.4),
+txt(s, "v1.1", Inches(6.2), Inches(1.72), Inches(3.0), Inches(0.4),
     size=12.5, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-txt(s, "CTS", Inches(9.55), Inches(1.72), Inches(3.4), Inches(0.4),
+txt(s, "v2", Inches(9.55), Inches(1.72), Inches(3.4), Inches(0.4),
     size=12.5, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 
 comparisons = [
-    ("Installation",         "npm installer required",          "Copy markdown — zero deps"),
-    ("IDE support",          "10+ IDEs",                        "Claude Code native — done well"),
-    ("Agent style",          "Named personas",                  "Role-based skills — fewer tokens"),
-    ("Multi-agent debate",   "Party Mode",                      "Sequential handoffs — 70% less tokens"),
-    ("Bundles",              "Modular expansion packs",         "Single download — everything included"),
-    ("Complexity control",   "Scale-adaptive (auto-detected)",  "YAGNI gates — you choose complexity"),
-    ("Config format",        "YAML compilation (Agent-as-Code)","Plain markdown — any text editor"),
-    ("Platform support",     "ChatGPT / Gemini / Claude",       "Claude Code native only"),
+    ("Install",              "Copy markdown files",             "One-command plugin, or copy"),
+    ("Ship gate",            "A written rule",                  "Hook blocks git push"),
+    ("Execution",            "One context",                     "Fresh subagent per code task"),
+    ("Code review",          "Self-review",                     "Spec review, then quality review"),
+    ("Small requests",       "Full ceremony",                   "Quick track: one specialist"),
+    ("Existing codebases",   "Document-first only",             "Change-spec deltas"),
+    ("Other agents",         "Claude Code only",                "Generated AGENTS.md"),
+    ("Evidence",             "Structure checks",                "Behavioural evals: 3 of 4 pass"),
 ]
-for i, (feature, bmad, cts) in enumerate(comparisons):
+for i, (feature, before, now) in enumerate(comparisons):
     ty = Inches(2.2 + i * 0.59)
     bg = LIGHT_GRAY if i % 2 == 0 else WHITE
     rect(s, Inches(0.3), ty, Inches(12.75), Inches(0.55), bg)
     txt(s, feature, Inches(0.42), ty + Inches(0.07), Inches(5.4), Inches(0.42), size=12, color=NAVY, bold=True)
-    txt(s, bmad,    Inches(6.1),  ty + Inches(0.07), Inches(3.2), Inches(0.42), size=11.5, color=RED_SOFT, align=PP_ALIGN.CENTER)
-    txt(s, cts,     Inches(9.5),  ty + Inches(0.07), Inches(3.55),Inches(0.42), size=11.5, color=GREEN, align=PP_ALIGN.CENTER)
+    txt(s, before,  Inches(6.1),  ty + Inches(0.07), Inches(3.2), Inches(0.42), size=11.5, color=MID_GRAY, align=PP_ALIGN.CENTER)
+    txt(s, now,     Inches(9.5),  ty + Inches(0.07), Inches(3.55),Inches(0.42), size=11.5, color=GREEN, align=PP_ALIGN.CENTER)
 
 slide_number(s, 12, TOTAL)
 
@@ -617,8 +619,8 @@ txt(s, "3 steps. 0 dependencies. 23 specialists on your team from day one.",
     size=20, color=RGBColor(0xD0, 0xC0, 0xFF), align=PP_ALIGN.CENTER)
 
 steps_cta = [
-    "1  Copy the skills/ folder into your project",
-    "2  Add CLAUDE.md to your project root",
+    "1  /plugin marketplace add rhorba/CTS",
+    "2  /plugin install cts@rhorba-cts",
     "3  Open Claude Code and start describing work",
 ]
 for i, step in enumerate(steps_cta):
@@ -630,7 +632,7 @@ txt(s, "github.com/rhorba/CTS",
     Inches(3.8), Inches(6.27), Inches(5.75), Inches(0.65),
     size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 
-txt(s, "Claude Team Skills v1.1 · MIT License · 23 specialists · 59 skill files · 10,893 lines",
+txt(s, "Claude Team Skills v2.0.0-alpha.1 · MIT License · 23 specialists · 59 skill files · 10,754 lines",
     Inches(0.5), Inches(7.1), Inches(12.3), Inches(0.35),
     size=10, color=MID_GRAY, align=PP_ALIGN.CENTER)
 
@@ -638,6 +640,6 @@ slide_number(s, 14, TOTAL)
 
 
 # ── Save ─────────────────────────────────────────────────────────────────────
-out = r"C:\Users\moham\OneDrive - um5.ac.ma\Desktop\CTS\claude-team-skills-pitch.pptx"
+out = str(Path(__file__).resolve().parent.parent / "claude-team-skills-pitch.pptx")
 prs.save(out)
 print(f"Saved {TOTAL} slides -> {out}")

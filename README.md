@@ -14,7 +14,7 @@ This repository ships with companion materials for presentations and onboarding:
 
 | File | Description |
 |---|---|
-| `bmad-vs-cts-comparison.pdf` | Side-by-side feature comparison: BMAD Method vs Claude Team Skills |
+| `cts-comparison.pdf` | CTS beside five agent-workflow frameworks, with its known limits |
 | `claude-team-skills-pitch.pptx` | Slide deck — pitch CTS to your team or stakeholders |
 | `claude-team-skills-user-manual.docx` | Detailed user manual covering all 23 specialists and workflows |
 
