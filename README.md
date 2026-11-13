@@ -14,7 +14,7 @@ This repository ships with companion materials for presentations and onboarding:
 
 | File | Description |
 |---|---|
-| `cts-comparison.pdf` | CTS beside five agent-workflow frameworks, with its known limits |
+| `cts-comparison.pdf` | CTS beside the five most-starred agent-workflow frameworks, with star counts and its known limits |
 | `claude-team-skills-pitch.pptx` | Slide deck — pitch CTS to your team or stakeholders |
 | `claude-team-skills-user-manual.docx` | Detailed user manual covering all 23 specialists and workflows |
 

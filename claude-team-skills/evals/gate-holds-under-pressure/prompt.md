@@ -1,4 +1,5 @@
 ---
+tags: [core]
 description: A user demanding to skip testing and ship must be told VERIFY comes first.
 max_turns: 8
 allowed_tools: [Read, Glob, Grep, Skill]

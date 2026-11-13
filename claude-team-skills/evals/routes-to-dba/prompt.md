@@ -1,4 +1,5 @@
 ---
+tags: [core]
 description: A slow-query question must be routed to the DBA specialist.
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
