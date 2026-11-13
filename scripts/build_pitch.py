@@ -354,7 +354,7 @@ slide_number(s, 7, TOTAL)
 # Slide 8 — Token Efficiency
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 s = add_slide()
-header_band(s, "Token Efficiency", "Load one specialist at a time — about 2-10K tokens of routing vs 39K for all")
+header_band(s, "Token Efficiency", "Load one specialist at a time — about 2-8K tokens of routing vs 37K for all")
 
 # Left: vs comparison
 rect(s, Inches(0.3), Inches(1.75), Inches(5.8), Inches(5.45), RGBColor(0xFF, 0xF0, 0xF0))
@@ -362,7 +362,7 @@ txt(s, "❌  Without CTS",
     Inches(0.5), Inches(1.9), Inches(5.4), Inches(0.5),
     size=15, bold=True, color=RED_SOFT)
 without = [
-    "Load all skills upfront → about 39K tokens",
+    "Load all skills upfront → about 37K tokens",
     "No handoffs → full history repeated each switch",
     "No phase structure → unbounded context growth",
     "No logging → decisions re-derived every session",
@@ -376,7 +376,7 @@ txt(s, "✅  With CTS",
     Inches(6.7), Inches(1.9), Inches(6.15), Inches(0.5),
     size=15, bold=True, color=GREEN)
 with_cts = [
-    "Quick track ~2-4K · Standard track ~8-10K (estimates)",
+    "Quick track ~2-4K · Standard track ~6-8K (estimates)",
     "2-3 line handoff summaries — full history stays in .logs/",
     "One specialist per task — context never bloats",
     "Reference files loaded on demand — not by default",
@@ -389,11 +389,11 @@ for i, line in enumerate(with_cts):
 rect(s, Inches(0.3), Inches(5.95), Inches(12.75), Inches(1.25), LIGHT_GRAY)
 budget = [
     ("Quick question", "~2K"),
-    ("Bug fix", "~10K"),
-    ("Small feature", "~13K"),
-    ("UX/UI design", "~14K"),
-    ("Security audit", "~10K"),
-    ("New project", "~25K"),
+    ("Bug fix", "~8K"),
+    ("Small feature", "~11K"),
+    ("UX/UI design", "~12K"),
+    ("Security audit", "~9K"),
+    ("New project", "~23K"),
 ]
 col_w = Inches(2.12)
 for i, (label, tokens) in enumerate(budget):

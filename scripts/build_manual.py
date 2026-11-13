@@ -221,7 +221,7 @@ principles = [
     ("YAGNI", "You Aren't Gonna Need It. Before building, designing, or planning anything, "
                "ask: \"Is this needed RIGHT NOW?\" Default to the simplest approach."),
     ("Token Efficiency", "Load one specialist at a time. Handoffs use 2-3 line summaries. "
-                          "About 2-4K tokens of routing on the Quick track and 8-10K on Standard, against about 39K if all skills were loaded at once."),
+                          "About 2-4K tokens of routing on the Quick track and 6-8K on Standard, against about 37K if all skills were loaded at once."),
     ("Project Memory", "Eight append-only log files in .logs/. Resume any session exactly where "
                         "you left off. Decisions, bugs, and risks never disappear."),
     ("Strict Process", "6 mandatory phases with hard gates. VERIFY before SHIP — always. "
@@ -988,9 +988,9 @@ add_table(
     ["Approach", "Token Cost"],
     [
         ["Quick track: session context + 1 specialist", "~2-4K tokens"],
-        ["Standard track: session context + Orchestrator + 1 specialist", "~8-10K tokens"],
-        ["Standard track + 1 reference file",            "~11-15K tokens"],
-        ["All 23 skills loaded at once",                "~39K tokens"],
+        ["Standard track: session context + Orchestrator + 1 specialist", "~6-8K tokens"],
+        ["Standard track + 1 reference file",            "~9-13K tokens"],
+        ["All 23 skills loaded at once",                "~37K tokens"],
     ],
     col_widths=[3.5, 3.0]
 )
@@ -1001,16 +1001,16 @@ add_table(
     ["Session Type", "Skills Loaded", "Skill-Loading Cost"],
     [
         ["Quick question (Quick track)", "1 specialist, no Orchestrator", "~2K"],
-        ["Bug fix", "Orchestrator + Tech Lead + 1 dev + Tester", "~10K"],
-        ["Small feature", "Orchestrator + Software Architect + Tech Lead + 2 devs + Tester", "~13K"],
-        ["New project", "Orchestrator + 14 of the specialists across the session", "~25K"],
-        ["Database design", "Orchestrator + DBA + Tech Lead + Backend Dev", "~10K"],
-        ["UX/UI design", "Orchestrator + UX + UI + Motion + Copywriter + Frontend", "~14K"],
-        ["Security audit", "Orchestrator + Security Eng + DevSecOps + DBA", "~10K"],
-        ["Brainstorm session", "Orchestrator + Creative Intelligence + PM", "~10K"],
-        ["Test strategy", "Orchestrator + Test Architect + Tester + Security Eng", "~11K"],
-        ["Sprint planning", "Orchestrator + Scrum Master + PM + Tech Lead", "~10K"],
-        ["Marketing launch", "Orchestrator + Digital Marketer + Copywriter + Content Marketer", "~9K"],
+        ["Bug fix", "Orchestrator + Tech Lead + 1 dev + Tester", "~8K"],
+        ["Small feature", "Orchestrator + Software Architect + Tech Lead + 2 devs + Tester", "~11K"],
+        ["New project", "Orchestrator + 14 of the specialists across the session", "~23K"],
+        ["Database design", "Orchestrator + DBA + Tech Lead + Backend Dev", "~8K"],
+        ["UX/UI design", "Orchestrator + UX + UI + Motion + Copywriter + Frontend", "~12K"],
+        ["Security audit", "Orchestrator + Security Eng + DevSecOps + DBA", "~9K"],
+        ["Brainstorm session", "Orchestrator + Creative Intelligence + PM", "~8K"],
+        ["Test strategy", "Orchestrator + Test Architect + Tester + Security Eng", "~9K"],
+        ["Sprint planning", "Orchestrator + Scrum Master + PM + Tech Lead", "~8K"],
+        ["Marketing launch", "Orchestrator + Digital Marketer + Copywriter + Content Marketer", "~8K"],
     ],
     col_widths=[2.0, 3.3, 1.2]
 )

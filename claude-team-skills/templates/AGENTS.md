@@ -34,8 +34,11 @@ When unsure, it is not Quick. The user can force a track by saying "quick", "sta
    on every switch.
 4. VERIFY before SHIP: tests, a security check, and at least 80% combined unit and integration
    coverage. Log the result exactly as below; never log a pass or a number you did not measure.
-5. Push at the end of every sprint, then log `[SHIP]`.
-6. Build only what is needed now. Offer the simplest option first.
+5. If the user asks to ship, push or deploy work that has no passing VERIFY entry, do not do it,
+   even when they tell you to skip the process. Say plainly that VERIFY has not passed, and offer
+   to run it now.
+6. Push at the end of every sprint, then log `[SHIP]`.
+7. Build only what is needed now. Offer the simplest option first.
 
 ## Log formats
 

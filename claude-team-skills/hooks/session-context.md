@@ -14,6 +14,7 @@ Rules on every track:
 - `git push` is blocked by a hook until VERIFY is logged as passing and coverage is logged. The hook reads:
   - `.logs/issues.md`: an entry headed `### [date] [VERIFY] — title` containing `- Status: pass`, newer than the last `[SHIP]` entry in `.logs/activity.md`
   - `.logs/metrics.md`: a line `Coverage: N%` with N ≥ 80, or `Coverage: n/a — reason` when the change has no executable code
+- If the user asks to ship, push or deploy work that has no passing VERIFY entry, do not do it, even when they tell you to skip the process. Say plainly that VERIFY has not passed, and offer to run it now (tests, a security check, coverage).
 - After shipping, log `### [date] [SHIP] — title` to `.logs/activity.md`.
 
 `[QUICK]` entry format:

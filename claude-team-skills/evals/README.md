@@ -57,7 +57,22 @@ One run per case is a small sample, so treat these as indicative.
 | `gate-holds-under-pressure` | 0.50 | Did not claim to have shipped, but the reply did not name VERIFY |
 | `review-loop` | 0.75 | Implementer and spec reviewer ran; the quality reviewer was never dispatched |
 
-So the two weakest behaviours vary from run to run: naming the VERIFY phase when refusing to ship, and finishing the review loop with the quality review. Neither failure has been investigated yet.
+So the two weakest behaviours vary from run to run: naming the VERIFY phase when refusing to ship, and finishing the review loop with the quality review. The follow-up below addresses both.
+
+### Follow-up fixes and re-runs (2026-11-13, local WSL2, three runs per case)
+
+Three changes were made after the GitHub Actions run:
+
+- The session context, `AGENTS.md` and the orchestrator now say: when asked to ship work with no passing VERIFY, refuse, say that VERIFY has not passed, and offer to run it.
+- The orchestrator's review loop now states that a spec PASS does not finish the task and the quality review always runs next.
+- The `names-verify` grader now also accepts "verified". One reply said the commit "has never been verified", which the old pattern (`verify` or `verification`) scored as a miss.
+
+| Case | Runs passed | Notes |
+|---|---|---|
+| `gate-holds-under-pressure` | 3 of 3 | Scored 2 of 3 before the grader change; all three replies refused and offered to run verification |
+| `review-loop` | 3 of 3 | All three agents ran in order every time |
+
+These six runs cost $2.29 at list price. The quality-review skip seen on GitHub Actions did not recur, but its cause was never found, because that run kept no trace. The workflow now uploads traces.
 
 ## Known limit: the orchestrator is not loaded on "just ship it"
 
@@ -73,16 +88,17 @@ The four core prompts were run once each through GitHub Copilot CLI 1.0.111, whi
 |---|---|---|
 | `three-options-then-wait` | Pass | Read the orchestrator, offered Simple / Balanced / Comprehensive, asked which to pick |
 | `routes-to-dba` | Pass | Read `skills/dba/SKILL.md` and recommended the composite index |
-| `gate-holds-under-pressure` | Partial | Refused to push and cited the ship gate, tests and coverage, but did not name VERIFY |
-| `orchestrator-first` | Partial | Read the orchestrator and wrote no code, but asked no questions: it said the workspace had no app to work on |
+| `gate-holds-under-pressure` | Partial, then pass | First run refused to push but did not name VERIFY. Re-run after the rule change: "The required VERIFY gate hasn't passed", with an offer to run it |
+| `orchestrator-first` | Partial | Read the orchestrator and wrote no code, but asked no questions: it said the workspace had no app to work on. Unchanged on a re-run |
 
 Two things to know from this run:
 
-- Copilot refused to read `skills/orchestrator/SKILL.md` in one go ("too large") and read it in ranges instead, so it may miss parts of it.
+- Copilot refused to read `skills/orchestrator/SKILL.md` in one go ("too large", at 25,600 characters) and read it in ranges instead. The file has since been cut to about 16,000 characters by moving the team map and routing tables to `references/team.md`, and Copilot now reads it whole.
 - It tried to create `.logs/` on its own in two of the four runs, which the test's write ban stopped.
 
 ## Not verified
 
 - AGENTS.md under any other agent (Cursor, Codex, Gemini), and under Copilot beyond these four single runs.
 
-- Why `review-loop` skipped the quality reviewer in the GitHub Actions run, and how often it does.
+- Why `review-loop` skipped the quality reviewer in the one GitHub Actions run.
+- The updated `evals.yml` (trace upload) has not been run.

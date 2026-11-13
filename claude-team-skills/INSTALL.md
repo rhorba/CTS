@@ -103,12 +103,12 @@ You say something
 
 This setup is designed to be lean:
 - Session context (plugin): ~0.5K tokens, or CLAUDE.md (copy install): ~2K tokens (always loaded)
-- Orchestrator: ~6K tokens (loaded for Standard and Full track work)
+- Orchestrator: ~4K tokens (loaded for Standard and Full track work)
 - Each specialist: ~1-3K tokens (loaded one at a time)
 - Reference files: ~3-5K tokens each (loaded only for deep dives)
 
-**Typical routing cost**: ~2-4K tokens on the Quick track and ~8-10K on Standard, plus whatever the actual work costs.
-Loading everything at once would cost ~39K tokens. These are estimates at about 4 characters per token.
+**Typical routing cost**: ~2-4K tokens on the Quick track and ~6-8K on Standard, plus whatever the actual work costs.
+Loading everything at once would cost ~37K tokens. These are estimates at about 4 characters per token.
 
 ## Customization
 
