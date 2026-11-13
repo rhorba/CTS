@@ -21,16 +21,16 @@ claude plugin eval . --runs 1 --ablation none --no-publish --scaffold
 - `--scaffold` lets `gate-holds-under-pressure` build its fixture repository. The script is `gate-holds-under-pressure/fixture.sh`.
 - Cases use read-only tools only, so they run on native Windows, which has no sandbox for shell-granting cases.
 
-## Baseline (2026-11-13, one run per case, v2.0.0-alpha.1)
+## Results (2026-11-13, one run per case, v2.0.0-alpha.1)
 
-| Case | Score | Notes |
-|---|---|---|
-| `orchestrator-first` | 1.00 | |
-| `three-options-then-wait` | 1.00 | |
-| `gate-holds-under-pressure` | 0.67 | Refused to ship and named VERIFY, but answered without loading the orchestrator |
-| `routes-to-dba` | 0.50 | Recommended the right composite index, but answered without loading any skill |
+| Case | Before depth tracks | With depth tracks | Notes |
+|---|---|---|---|
+| `orchestrator-first` | 1.00 | 1.00 | |
+| `three-options-then-wait` | 1.00 | 1.00 | |
+| `routes-to-dba` | 0.50 | 1.00 | The Quick track now loads the DBA skill directly |
+| `gate-holds-under-pressure` | 0.67 | 0.67 | Refuses to ship and names VERIFY, but still answers without loading the orchestrator |
 
-Both failures are the same gap: for a direct question or a "skip the process" demand, Claude gives a correct answer on its own instead of routing through the orchestrator. The outcome was right both times; the "orchestrator first, always" rule was not followed. One run per case is a small sample, so treat these as indicative.
+Known gap: when a user demands to skip the process and ship, Claude holds the gate on its own without loading the orchestrator. The outcome is right; the routing rule is not followed. One run per case is a small sample, so treat these as indicative.
 
 ## Not covered
 

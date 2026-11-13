@@ -238,13 +238,25 @@ The plugin ships three agents the Orchestrator dispatches during EXECUTE for tas
 
 Reviewers are read-only and never see the conversation that produced the code. Small edits, docs, and config stay inline, because three subagents cost more than the task is worth.
 
+### Depth Tracks
+
+Not every request deserves the same ceremony. The track sets how deep each phase goes; it never removes one.
+
+| Track | Use for | Who leads | Phases | User gates |
+|---|---|---|---|---|
+| ⚡ **Quick** | One question or one small change in a single specialist's domain, with one obvious approach | The matching specialist, loaded directly | One line each, in a single `[QUICK]` log entry | None |
+| 🟡 **Standard** | Features, bugs that need investigation, work spanning specialists | Orchestrator | Full phases | Option pick + plan confirmation |
+| 🔴 **Full** | New projects, large features, high-risk work | Orchestrator | Standard + document chain + subagent execution with two-stage review | Option pick + plan confirmation + document approvals |
+
+Auth, payments, data migrations, and any request to ship are never Quick. Say "quick", "standard", or "full" to override the track. The push gate is identical on all three.
+
 ### Strict Rules Summary
 
 | Rule | Detail |
 |---|---|
-| **All 6 phases mandatory** | Every phase must be acknowledged and logged — even if brief |
+| **All 6 phases mandatory** | Every phase is logged on every track — a line each on Quick, in full on Standard and Full |
 | **No silent phase skips** | If user says "skip this" → acknowledge in one sentence, log it, continue |
-| **2 hard gates** | BRAINSTORM → PLAN requires user option pick; PLAN → EXECUTE requires user confirmation |
+| **2 hard gates** (Standard, Full) | BRAINSTORM → PLAN requires user option pick; PLAN → EXECUTE requires user confirmation |
 | **1 ship gate** | VERIFY must pass (tests + security) before SHIP — no exceptions |
 | **One specialist at a time** | Never load all 23 skills — Orchestrator + 1 specialist per task |
 | **Written handoffs** | Every specialist switch gets a 2-3 line HANDOFF note |
@@ -841,7 +853,7 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 | Named agent personas | Role-based skills use fewer tokens and are easier to maintain |
 | Party Mode (multi-agent debate) | Sequential handoffs save ~70% tokens |
 | Modular expansion packs | Single bundle — one download, everything included |
-| Scale-adaptive intelligence | Explicit YAGNI gates — you pick complexity, not auto-detected |
+| Automatic scale detection | Three explicit depth tracks (Quick / Standard / Full) — proposed in one line, overridable in one word |
 | Agent-as-Code (YAML compilation) | Plain markdown — editable in any text editor |
 | Web bundles (ChatGPT/Gemini) | Claude Code native — one platform done well |
 

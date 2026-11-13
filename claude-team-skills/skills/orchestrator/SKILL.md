@@ -46,9 +46,38 @@ BEFORE adding anything, ask: "Does the user need this RIGHT NOW?"
 - Don't write a marketing funnel for an internal tool
 - Start with the simplest approach in 🟢 and only upgrade when there's a real reason
 
+## Depth Tracks
+
+Every request runs on one of three tracks. The track sets how deep each phase goes; it never removes a phase.
+
+| Track | Use for | Who leads | Phases | User gates |
+|---|---|---|---|---|
+| ⚡ **Quick** | One question or one small change, inside a single specialist's domain, with one obvious approach | The matching specialist, loaded directly — no orchestrator | One line each, in a single `[QUICK]` log entry | None: state the approach in one line and proceed |
+| 🟡 **Standard** | Features, bug fixes that need investigation, anything touching more than one specialist | Orchestrator | Full phases as described below | Option pick, then plan confirmation |
+| 🔴 **Full** | New projects, large features (3+ days), regulated or high-risk work | Orchestrator | Standard plus the document chain, System Designer + Software Architect, and subagent execution with two-stage review | Option pick, plan confirmation, and approval of each document |
+
+**Never Quick**, whatever the size: anything touching auth, payments, or data migrations; any request to ship or deploy; anything where there is more than one reasonable approach for the user to choose between.
+
+**Picking the track**: in UNDERSTAND, state the track you chose and why in one line ("Standard: touches API and schema"). The user can override by saying "quick", "standard", or "full". When unsure between two tracks, take the deeper one.
+
+**Escalating**: if a Quick task turns out to need a second specialist, a design decision, or a change in a never-Quick area, stop, say so, and restart it on Standard under the orchestrator. Log the escalation to `.logs/corrections.md`.
+
+**Quick track log entry** (appended to `.logs/activity.md` when `.logs/` exists):
+
+```
+### [YYYY-MM-DD HH:MM] [QUICK] — [title]
+- Specialist: [skill used]
+- Understand: [the question or change, one line]
+- Approach: [what was chosen and why, one line]
+- Result: [what was answered or changed]
+- Verify: [how it was checked, or "advice only — nothing executed"]
+```
+
+The push gate is the same on every track: a Quick change that gets pushed still needs a passing `[VERIFY]` entry and a coverage line.
+
 ## Interactive Workflow
 
-> **STRICT RULE — NO EXCEPTIONS**: All 6 phases are MANDATORY on every session. Do NOT skip, merge, or abbreviate any phase. If a phase is lightweight (e.g., "UNDERSTAND" takes 30 seconds), complete it and log it — then move on. Skipping phases creates gaps, missed requirements, and bugs. Even if the user says "skip this" or "just do it", acknowledge the phase first, confirm the context, then proceed. A fast phase is fine. A missing phase is not.
+> **STRICT RULE — NO EXCEPTIONS**: All 6 phases are MANDATORY on every session, on every track. On the Quick track they are a line each in one `[QUICK]` entry; on Standard and Full they follow the rules below. Do NOT skip, merge, or abbreviate any phase. If a phase is lightweight (e.g., "UNDERSTAND" takes 30 seconds), complete it and log it — then move on. Skipping phases creates gaps, missed requirements, and bugs. Even if the user says "skip this" or "just do it", acknowledge the phase first, confirm the context, then proceed. A fast phase is fine. A missing phase is not.
 >
 > **GLOBAL RULES (apply every session)**:
 > - **80% coverage gate**: Before SHIP, run coverage. If < 80% combined unit + integration, write tests first.
@@ -127,6 +156,8 @@ Ask the user in ONE message:
 - **What** are we working on? (feature / bug fix / docs / marketing / other)
 - **Where** are we? (new project / existing codebase / continuation)
 - **How big** is this? (quick fix / small task / medium feature / large epic)
+
+Skip any of the three the user has already answered. Then state the depth track and why in one line (see Depth Tracks above).
 
 **Env var collection (mandatory for new projects and large features)**:
 After understanding scope, identify ALL environment variables the project will need:
