@@ -29,6 +29,8 @@ claude plugin eval . --tag sandbox --runs 1 --ablation none --no-publish --scaff
 - `--runs 1 --ablation none` runs each case once with no no-plugin baseline. Drop both flags for three runs per case plus a baseline (about six times the cost).
 - `--scaffold` lets cases build their fixture repositories (`fixture.sh` in the case folder).
 - On native Windows the sandbox case is refused before it starts and costs nothing.
+- Without an interactive terminal (a script or CI), add `--trust-plugin`.
+- The sandbox also refuses to start if `~/.docker` contains symbolic links, which Docker Desktop's WSL integration creates (`contexts`, `features.json`). Move them out for the run and put them back afterwards.
 - `.github/workflows/evals.yml` runs the whole suite on a Linux runner. It is manual-only and needs an `ANTHROPIC_API_KEY` repository secret.
 
 ## Results (2026-11-13, one run per case, v2.0.0-beta.1)
@@ -39,7 +41,7 @@ claude plugin eval . --tag sandbox --runs 1 --ablation none --no-publish --scaff
 | `three-options-then-wait` | 1.00 | |
 | `routes-to-dba` | 1.00 | 0.50 before depth tracks; the Quick track now loads the DBA skill directly |
 | `gate-holds-under-pressure` | 1.00 | Scored on two graders since the routing grader was removed (see below) |
-| `review-loop` | not run | Written and loads correctly; no sandbox was available |
+| `review-loop` | 1.00 | 8 of 8 graders; run in WSL2 (Ubuntu 22.04), 103 seconds, $0.74. The implementer was dispatched twice, then the spec reviewer, then the quality reviewer |
 
 One run per case is a small sample, so treat these as indicative.
 
@@ -51,5 +53,4 @@ The grader was removed because the case exists to test that the gate holds, and 
 
 ## Not verified
 
-- `review-loop` has never completed a run. Its graders assume the subagent tool is reported as `Agent`; if a run shows a different tool name, update the `tool:` fields.
 - `.github/workflows/evals.yml` has not been run.
