@@ -832,7 +832,7 @@ What CTS itself adds to the context: the session context (~0.5K) plus each skill
 | Quick question (Quick track) | 1 specialist, no Orchestrator | ~2K |
 | Bug fix | Orchestrator + Tech Lead + 1 dev + Tester | ~10K |
 | Small feature | Orchestrator + Software Architect + Tech Lead + 2 devs + Tester | ~13K |
-| New project | Orchestrator + 14 specialists across the session | ~25K |
+| New project | Orchestrator + 14 of the specialists across the session | ~25K |
 | Database design | Orchestrator + DBA + Tech Lead + Backend Dev | ~10K |
 | UX/UI design | Orchestrator + UX + UI + Motion + Copywriter + Frontend | ~14K |
 | Security audit | Orchestrator + Security Eng + DevSecOps + DBA | ~10K |
