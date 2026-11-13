@@ -11,6 +11,8 @@ In a Claude Code session:
 
 The 23 specialists load as plugin skills (`cts:orchestrator`, `cts:tester`, …). Nothing is copied into your project, and updates arrive with the plugin.
 
+The plugin also installs three hooks: one loads the CTS rules and your last session summary at session start, one blocks `git push` until VERIFY and coverage are logged, and one closes unfinished sessions in `.logs/sessions.md`. They are POSIX shell scripts; on Windows they need Git Bash, which Claude Code uses by default when it is installed. Option B does not include the hooks.
+
 ## Option B: Copy the files
 
 ### Step 1: Copy the skills folder

@@ -230,6 +230,22 @@ Run coverage report → check combined unit + integration coverage
 📝 Log: coverage % to .logs/metrics.md
 ```
 
+**Log formats the push gate reads (exact)**. When CTS is installed as a plugin, a hook blocks `git push` until both entries exist:
+
+```
+.logs/issues.md
+### [YYYY-MM-DD HH:MM] [VERIFY] — [what was verified]
+- Tests: [X passed / Y failed]
+- Security: [pass / issues found]
+- Status: pass
+
+.logs/metrics.md
+- [YYYY-MM-DD] Coverage: 87%
+- [YYYY-MM-DD] Coverage: n/a — [reason, e.g. documentation only]
+```
+
+Log `Status: fail` honestly when checks fail; fix, re-verify, and log a new entry. Each `[SHIP]` entry consumes one passing `[VERIFY]`, so new changes need a new verification. Never write `Status: pass` or a coverage number you did not measure in order to get past the gate.
+
 ## Phase 6: SHIP
 
 Based on what was built:
@@ -240,7 +256,10 @@ Based on what was built:
 **Sprint push (mandatory)**:
 ```
 git push origin <branch>
-📝 Log: PUSH to .logs/activity.md with branch + commit hash
+📝 Log to .logs/activity.md:
+### [YYYY-MM-DD HH:MM] [SHIP] — [what shipped]
+- Summary: [branch + commit hash]
+- Status: complete
 ```
 
 **Video recording (mandatory at project version completion)**:

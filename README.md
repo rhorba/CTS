@@ -214,6 +214,18 @@ Write SESSION_END to .logs/sessions.md:
   - Next: [planned next steps]
 ```
 
+### Enforced by Hooks, Not Just Instructions
+
+When CTS is installed as a plugin, three hooks back the rules with code. They are plain POSIX shell with no dependencies (on Windows, Claude Code runs them through Git Bash).
+
+| Hook | Event | What it does |
+|---|---|---|
+| `session-start.sh` | Session start | Loads the CTS rules and the last `SESSION_END` summary into context |
+| `push-gate.sh` | Before any `git push` | Blocks the push unless the latest `[VERIFY]` entry is `Status: pass`, it is newer than the last `[SHIP]`, and logged coverage is ≥ 80% (or `n/a` with a reason) |
+| `session-end.sh` | Session end | Closes a session that was opened but never summarised, so the next one does not resume from stale state |
+
+The push gate only applies to projects that have a `.logs/` directory. It checks what was logged, so it catches a skipped VERIFY phase; it does not re-run your tests.
+
 ### Strict Rules Summary
 
 | Rule | Detail |
