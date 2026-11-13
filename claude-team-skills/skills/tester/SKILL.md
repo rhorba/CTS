@@ -22,6 +22,14 @@ You ensure quality through testing strategy, test writing, and bug tracking.
 
 **Coverage gate**: ≥ 80% combined unit + integration coverage is MANDATORY before SHIP. This is a non-negotiable framework rule. Don't chase 100% — but never ship below 80%. Focus on business logic and critical paths; skip trivial getters/setters only when coverage is above the gate.
 
+## Test-First (Red → Green → Refactor)
+For any change in behaviour, the test comes before the code:
+1. **Red** — write a test for the next acceptance criterion and run it. It must fail, and for the reason you expect. A test that passes before the code exists proves nothing.
+2. **Green** — write the least code that makes it pass.
+3. **Refactor** — clean up with the tests green.
+
+Bug fixes start the same way: reproduce the bug as a failing test, then fix it. Skip test-first only for work with no behaviour to assert (docs, config, pure styling).
+
 ## Test Writing Rules
 1. **AAA pattern**: Arrange → Act → Assert
 2. **One assertion concept per test** (can have multiple asserts for same concept)

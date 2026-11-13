@@ -2,7 +2,7 @@
 
 **23 AI Specialists Working as One Team — Built for Claude Code**
 
-> Version 1.1 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
+> Version 2.0.0-alpha.1 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
 
 Claude Team Skills (CTS) is a collection of 23 interconnected specialist skills for Claude Code. Instead of a generic AI assistant, every task is handled by the right expert — PM, Security Engineer, DBA, Software Architect, Test Architect, and more — all routed by a central Orchestrator that loads one specialist at a time.
 
@@ -22,9 +22,28 @@ This repository ships with companion materials for presentations and onboarding:
 
 ## Installation
 
-### Step 1 — Copy the `skills/` folder into your project root
+### Option A — Install as a plugin (recommended)
 
-Extract `claude-team-skills/` and place its contents inside a `skills/` directory:
+In a Claude Code session:
+
+```
+/plugin marketplace add rhorba/CTS
+/plugin install cts@rhorba-cts
+```
+
+On Claude Code 2.1.275 or later, one step also works:
+
+```
+/plugin install cts --marketplace rhorba/CTS
+```
+
+The 23 specialists load as plugin skills (`cts:orchestrator`, `cts:tester`, …) and update when the plugin updates. Nothing is copied into your project.
+
+### Option B — Copy the files (no plugin system)
+
+#### Step 1 — Copy the `skills/` folder into your project root
+
+Copy `claude-team-skills/skills/` into your project root:
 
 ```
 your-project/
@@ -58,16 +77,16 @@ your-project/
 │   └── project-monitor/
 │       ├── references/
 │       └── templates/         ← init-logs.sh, generate-report.py
-├── CLAUDE.md                  ← Copy this to your project root
+├── CLAUDE.md                  ← Copied from claude-team-skills/templates/CLAUDE.md
 ├── QUICKSTART.md              ← Cheat sheet
 └── .logs/                     ← Auto-created on first session
 ```
 
-### Step 2 — Copy `CLAUDE.md` to your project root
+#### Step 2 — Copy `claude-team-skills/templates/CLAUDE.md` to your project root
 
 This is the entry point. Claude Code reads it first on every session and loads the Orchestrator.
 
-### Step 3 — Start working
+### Start working
 
 Open Claude Code and describe what you need:
 
@@ -194,6 +213,30 @@ Write SESSION_END to .logs/sessions.md:
   - Blocked: [list]
   - Next: [planned next steps]
 ```
+
+### Enforced by Hooks, Not Just Instructions
+
+When CTS is installed as a plugin, three hooks back the rules with code. They are plain POSIX shell with no dependencies (on Windows, Claude Code runs them through Git Bash).
+
+| Hook | Event | What it does |
+|---|---|---|
+| `session-start.sh` | Session start | Loads the CTS rules and the last `SESSION_END` summary into context |
+| `push-gate.sh` | Before any `git push` | Blocks the push unless the latest `[VERIFY]` entry is `Status: pass`, it is newer than the last `[SHIP]`, and logged coverage is ≥ 80% (or `n/a` with a reason) |
+| `session-end.sh` | Session end | Closes a session that was opened but never summarised, so the next one does not resume from stale state |
+
+The push gate only applies to projects that have a `.logs/` directory. It checks what was logged, so it catches a skipped VERIFY phase; it does not re-run your tests.
+
+### Fresh-Context Execution and Two-Stage Review
+
+The plugin ships three agents the Orchestrator dispatches during EXECUTE for tasks that change code:
+
+| Agent | Role |
+|---|---|
+| `cts:implementer` | Builds one task test-first from a self-contained brief, in a fresh context |
+| `cts:spec-reviewer` | Checks the result against the brief: nothing missing, nothing wrong, nothing extra |
+| `cts:quality-reviewer` | Runs only after the spec review passes: correctness, security, tests, fit, simplicity |
+
+Reviewers are read-only and never see the conversation that produced the code. Small edits, docs, and config stay inline, because three subagents cost more than the task is worth.
 
 ### Strict Rules Summary
 
@@ -462,7 +505,7 @@ Before building, designing, or planning anything — ask: *"Is this needed RIGHT
 
 ### 2. Token Efficiency
 
-- Load **one specialist at a time** — never all 21
+- Load **one specialist at a time** — never all 23
 - Handoffs use a **2-3 line summary**, not full history
 - Batch tasks into **30-60 min chunks** with checkpoints
 - **Confirm approach before generating code** — prevents expensive rewrites
@@ -804,4 +847,4 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 
 ---
 
-*Claude Team Skills v1.1 — 23 specialists, 59 skill files, 10,893 lines*
+*Claude Team Skills v2.0.0-alpha.1 — 23 specialists, 58 skill files*

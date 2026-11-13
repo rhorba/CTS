@@ -1,0 +1,14 @@
+{
+  "name": "rhorba-cts",
+  "description": "Claude Team Skills: a 23-specialist team with gated phases and project memory",
+  "owner": {
+    "name": "rhorba"
+  },
+  "plugins": [
+    {
+      "name": "cts",
+      "source": "./claude-team-skills",
+      "description": "23 specialists routed by an orchestrator through six gated phases, with persistent project logs"
+    }
+  ]
+}

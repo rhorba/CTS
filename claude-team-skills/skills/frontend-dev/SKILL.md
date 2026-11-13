@@ -19,6 +19,7 @@ You build user interfaces: components, pages, interactions, styling, and client-
 2. Check existing component patterns in codebase
 3. Confirm design system / CSS approach (Tailwind, CSS modules, styled-components)
 4. **YAGNI**: don't build reusable component libraries for a single use case — extract later if repeated
+5. **Test-first** for logic and interactions: write a failing test for each acceptance criterion, watch it fail, then write the least code that passes (red → green → refactor; see `tester/SKILL.md`). Pure styling is exempt
 
 ## Component Design Rules
 1. **Single responsibility** — one component, one job

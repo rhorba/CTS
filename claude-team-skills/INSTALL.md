@@ -1,6 +1,19 @@
 # Claude Team Skills — Installation Guide
 
-## Quick Setup (Claude Code)
+## Option A: Install as a plugin (recommended)
+
+In a Claude Code session:
+
+```
+/plugin marketplace add rhorba/CTS
+/plugin install cts@rhorba-cts
+```
+
+The 23 specialists load as plugin skills (`cts:orchestrator`, `cts:tester`, …). Nothing is copied into your project, and updates arrive with the plugin.
+
+The plugin also installs three hooks: one loads the CTS rules and your last session summary at session start, one blocks `git push` until VERIFY and coverage are logged, and one closes unfinished sessions in `.logs/sessions.md`. They are POSIX shell scripts; on Windows they need Git Bash, which Claude Code uses by default when it is installed. Option B does not include the hooks.
+
+## Option B: Copy the files
 
 ### Step 1: Copy the skills folder
 Place the entire `skills/` directory in your project root:
@@ -11,6 +24,8 @@ your-project/
 │   ├── orchestrator/
 │   ├── project-manager/
 │   ├── scrum-master/
+│   ├── system-designer/
+│   ├── software-architect/
 │   ├── tech-lead/
 │   ├── security-engineer/
 │   ├── dba/
@@ -50,7 +65,7 @@ your-project/
 ```
 
 ### Step 2: Add CLAUDE.md to project root
-Copy the provided `CLAUDE.md` file to your project root. This is the entry point that tells Claude Code how to use the skills.
+Copy `templates/CLAUDE.md` to your project root. This is the entry point that tells Claude Code how to use the skills.
 
 ### Step 3: Start working
 Open Claude Code and just describe what you need:
@@ -122,7 +137,7 @@ Create a new folder in `skills/` with a `SKILL.md` following the same pattern:
 ## FAQ
 
 **Q: Does Claude really load skills one at a time?**
-A: Yes. The orchestrator tells Claude which skill to read for the current step. It never loads all 12 at once.
+A: Yes. The orchestrator tells Claude which skill to read for the current step. It never loads all 23 at once.
 
 **Q: What if I need two specialists at the same time?**
 A: The orchestrator handles this with the handoff protocol — it summarizes context in 2-3 lines when switching, so no tokens are wasted repeating full history.

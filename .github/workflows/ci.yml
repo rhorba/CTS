@@ -8,7 +8,7 @@ on:
 
 jobs:
   validate-skills:
-    name: Validate skill files
+    name: Validate plugin and skills
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,8 +18,17 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Validate CTS framework structure
+      - name: Validate CTS plugin structure
         run: python3 scripts/validate-skills.py
+
+      - name: Check .claude/skills mirror is in sync
+        run: python3 scripts/sync-skills.py --check
+
+      - name: Test scripts with coverage gate
+        run: |
+          pip install coverage
+          coverage run --source=scripts --omit='scripts/build_*' -m unittest discover -s tests -v
+          coverage report --fail-under=80
 
   lint-markdown:
     name: Lint markdown
