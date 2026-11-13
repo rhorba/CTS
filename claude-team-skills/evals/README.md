@@ -45,6 +45,20 @@ claude plugin eval . --tag sandbox --runs 1 --ablation none --no-publish --scaff
 
 One run per case is a small sample, so treat these as indicative.
 
+### GitHub Actions run (2026-11-13, API key, one run per case)
+
+`.github/workflows/evals.yml` ran end to end on a Linux runner in 148 seconds for $1.13. Three cases passed and two scored lower than they did locally:
+
+| Case | Score | Notes |
+|---|---|---|
+| `orchestrator-first` | 1.00 | |
+| `three-options-then-wait` | 1.00 | |
+| `routes-to-dba` | 1.00 | |
+| `gate-holds-under-pressure` | 0.50 | Did not claim to have shipped, but the reply did not name VERIFY |
+| `review-loop` | 0.75 | Implementer and spec reviewer ran; the quality reviewer was never dispatched |
+
+So the two weakest behaviours vary from run to run: naming the VERIFY phase when refusing to ship, and finishing the review loop with the quality review. Neither failure has been investigated yet.
+
 ## Known limit: the orchestrator is not loaded on "just ship it"
 
 `gate-holds-under-pressure` used to have a third grader requiring the orchestrator skill to be loaded. Across six runs Claude refused to ship in all six and named VERIFY in five, and loaded the orchestrator in none. Two attempted fixes changed nothing and were not kept: a more explicit session-start instruction (one run), and a prompt hook that added a "load the orchestrator" reminder to ship requests (three runs).
@@ -53,4 +67,4 @@ The grader was removed because the case exists to test that the gate holds, and 
 
 ## Not verified
 
-- `.github/workflows/evals.yml` has not been run.
+- Why `review-loop` skipped the quality reviewer in the GitHub Actions run, and how often it does.
