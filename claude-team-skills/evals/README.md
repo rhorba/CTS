@@ -74,6 +74,29 @@ Three changes were made after the GitHub Actions run:
 
 These six runs cost $2.29 at list price. The quality-review skip seen on GitHub Actions did not recur, but its cause was never found, because that run kept no trace. The workflow now uploads traces.
 
+### Second GitHub Actions run, with traces (2026-11-13, API key, three runs per case)
+
+The updated `evals.yml` ran in 333 seconds for $2.23. Trace collection and upload worked: the artifact held 15 traces. The run is incomplete, because the API key reached its usage limit after 10 of the 15 sessions and the last 5 failed with an API error rather than a behaviour.
+
+| Case | Runs passed | Notes |
+|---|---|---|
+| `gate-holds-under-pressure` | 3 of 3 | |
+| `orchestrator-first` | 3 of 3 | |
+| `review-loop` | 0 of 3 | 0.75 each time: the quality reviewer was never dispatched (cause below) |
+| `routes-to-dba` | 1 of 3 | The other 2 runs did not start: API usage limit |
+| `three-options-then-wait` | 0 of 3 | No run started: API usage limit |
+
+**Why `review-loop` skips the quality reviewer on GitHub Actions.** The traces show every Bash call failing inside the sandbox on the runner, for the main session, the implementer and the spec reviewer alike:
+
+```
+apply-seccomp: write /proc/self/setgroups (nested userns is capability-restricted;
+caller must provide CAP_SYS_ADMIN): Permission denied
+```
+
+No one could run the tests, so the spec review could not pass, and the session stopped the loop and reported the work as unverified instead of dispatching the quality reviewer. That is the behaviour CTS asks for when verification cannot run. The 0.75 is an environment failure on the runner, not a skipped step: locally in WSL2, where Bash works, the loop finished 3 of 3 times.
+
+The fix belongs in the workflow (letting the sandbox create user namespaces on the runner). It has not been made, because it cannot be tested until the API key's limit resets on 1 December 2026.
+
 ## Known limit: the orchestrator is not loaded on "just ship it"
 
 `gate-holds-under-pressure` used to have a third grader requiring the orchestrator skill to be loaded. Across six runs Claude refused to ship in all six and named VERIFY in five, and loaded the orchestrator in none. Two attempted fixes changed nothing and were not kept: a more explicit session-start instruction (one run), and a prompt hook that added a "load the orchestrator" reminder to ship requests (three runs).
@@ -100,5 +123,6 @@ Two things to know from this run:
 
 - AGENTS.md under any other agent (Cursor, Codex, Gemini), and under Copilot beyond these four single runs.
 
-- Why `review-loop` skipped the quality reviewer in the one GitHub Actions run.
-- The updated `evals.yml` (trace upload) has not been run.
+- `review-loop` on GitHub Actions with a working sandbox. The cause of the skip is known, but no fix to the runner has been tried.
+- `three-options-then-wait` and two runs of `routes-to-dba` in the second GitHub Actions run, which the API usage limit stopped.
+- Whether the opening-questions rule added to `AGENTS.md` changes the `orchestrator-first` result under Copilot.
