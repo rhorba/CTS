@@ -24,6 +24,9 @@ jobs:
       - name: Check .claude/skills mirror is in sync
         run: python3 scripts/sync-skills.py --check
 
+      - name: Check AGENTS.md is up to date
+        run: python3 scripts/build-agents-md.py --check
+
       - name: Test scripts with coverage gate
         run: |
           pip install coverage

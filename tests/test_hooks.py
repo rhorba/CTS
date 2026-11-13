@@ -113,6 +113,50 @@ class PushGateTests(HookCase):
         self.assertEqual(self.gate().returncode, 0)
 
 
+@unittest.skipIf(SH is None or shutil.which("git") is None, "sh and git are required")
+class GitPrePushTests(HookCase):
+    """push-gate.sh also works as a plain git pre-push hook, for agents without Claude Code hooks."""
+
+    def git(self, *args, cwd=None):
+        return subprocess.run(
+            ["git", *args],
+            cwd=cwd or self.project,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            timeout=60,
+        )
+
+    def setUp(self):
+        super().setUp()
+        self.remote = self.project.parent / (self.project.name + "-remote.git")
+        self.addCleanup(shutil.rmtree, self.remote, True)
+        self.git("init", "-q", "--bare", str(self.remote), cwd=self.project.parent)
+        self.git("init", "-q")
+        self.git("config", "user.email", "t@example.com")
+        self.git("config", "user.name", "T")
+        self.git("config", "core.hooksPath", ".git/hooks")
+        self.git("remote", "add", "origin", self.remote.as_posix())
+        (self.project / "a.txt").write_text("a", encoding="utf-8")
+        self.log("issues.md", "# Issue Log\n")
+        self.git("add", "a.txt")
+        self.git("commit", "-q", "-m", "init")
+        hook = self.project / ".git" / "hooks" / "pre-push"
+        hook.parent.mkdir(exist_ok=True)
+        shutil.copyfile(HOOKS / "push-gate.sh", hook)
+        hook.chmod(0o755)
+
+    def test_push_blocked_then_allowed(self):
+        blocked = self.git("push", "origin", "HEAD:main")
+        self.assertNotEqual(blocked.returncode, 0)
+        self.assertIn("CTS push gate", blocked.stderr)
+
+        self.log("issues.md", VERIFY_PASS)
+        self.log("metrics.md", "Coverage: 90%\n")
+        allowed = self.git("push", "origin", "HEAD:main")
+        self.assertEqual(allowed.returncode, 0, allowed.stderr)
+
+
 class SessionStartTests(HookCase):
     def test_prints_rules_and_init_hint_without_logs(self):
         result = self.run_hook("session-start.sh")

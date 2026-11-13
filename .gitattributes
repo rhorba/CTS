@@ -1,3 +1,9 @@
 # Hook and template scripts must stay LF: sh fails on CRLF, and plugins are cloned
 # with whatever autocrlf setting the installing machine has.
 *.sh text eol=lf
+
+# Generated documents are binary: line-ending conversion would corrupt them.
+*.pdf binary
+*.docx binary
+*.pptx binary
+*.png binary

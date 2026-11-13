@@ -1,380 +1,221 @@
-"""Rebuild bmad-vs-cts-comparison.pdf from project source of truth."""
+"""Build cts-comparison.pdf: CTS v2 against five agent-workflow frameworks.
 
-from reportlab.lib.pagesizes import letter
+Run from the repo root:  python scripts/build_comparison.py
+
+Competitor descriptions are summarised from public documentation and third-party
+reviews read in November 2026 (listed on the last page). They describe what each
+project is known for, not an audit of everything it can do.
+"""
+
+from pathlib import Path
+
 from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.pagesizes import landscape, letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import (
-    SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, HRFlowable
-)
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT
-
-OUT = r"C:\Users\moham\OneDrive - um5.ac.ma\Desktop\CTS\bmad-vs-cts-comparison.pdf"
-
-# ── Palette ───────────────────────────────────────────────────────────────────
-PURPLE      = colors.HexColor("#6B4EFF")
-DARK        = colors.HexColor("#1A1A2E")
-MID_GRAY    = colors.HexColor("#555566")
-LIGHT_BG    = colors.HexColor("#F5F5F7")
-GREEN_BG    = colors.HexColor("#E6FFF0")
-RED_BG      = colors.HexColor("#FFF0F0")
-GREEN_TEXT  = colors.HexColor("#1A6B4E")
-RED_TEXT    = colors.HexColor("#CC2200")
-WHITE       = colors.white
-
-doc = SimpleDocTemplate(
-    OUT,
-    pagesize=letter,
-    leftMargin=0.75 * inch,
-    rightMargin=0.75 * inch,
-    topMargin=0.75 * inch,
-    bottomMargin=0.75 * inch,
+    HRFlowable, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle,
 )
 
-styles = getSampleStyleSheet()
+REPO = Path(__file__).resolve().parent.parent
+OUT = REPO / "cts-comparison.pdf"
+VERSION = "2.0.0-beta.1"
+AS_OF = "November 2026"
 
-title_style = ParagraphStyle(
-    "Title", parent=styles["Normal"],
-    fontSize=26, fontName="Helvetica-Bold",
-    textColor=PURPLE, alignment=TA_CENTER,
-    spaceAfter=6,
-)
-subtitle_style = ParagraphStyle(
-    "Subtitle", parent=styles["Normal"],
-    fontSize=13, fontName="Helvetica",
-    textColor=MID_GRAY, alignment=TA_CENTER,
-    spaceAfter=4,
-)
-h2_style = ParagraphStyle(
-    "H2", parent=styles["Normal"],
-    fontSize=14, fontName="Helvetica-Bold",
-    textColor=DARK, spaceBefore=14, spaceAfter=4,
-)
-body_style = ParagraphStyle(
-    "Body", parent=styles["Normal"],
-    fontSize=10, fontName="Helvetica",
-    textColor=DARK, spaceAfter=4,
-)
-note_style = ParagraphStyle(
-    "Note", parent=styles["Normal"],
-    fontSize=9, fontName="Helvetica-Oblique",
-    textColor=MID_GRAY, alignment=TA_CENTER, spaceAfter=6,
-)
-section_style = ParagraphStyle(
-    "Section", parent=styles["Normal"],
-    fontSize=11, fontName="Helvetica-Bold",
-    textColor=PURPLE, spaceBefore=10, spaceAfter=3,
-)
+INK = colors.HexColor("#16202A")
+MUTED = colors.HexColor("#5B6770")
+ACCENT = colors.HexColor("#0B6E4F")
+ACCENT_TINT = colors.HexColor("#E7F3EE")
+RULE = colors.HexColor("#C9D1D6")
+BAND = colors.HexColor("#F4F6F7")
 
-story = []
+base = getSampleStyleSheet()["Normal"]
 
-# ── Cover ─────────────────────────────────────────────────────────────────────
-story.append(Spacer(1, 0.3 * inch))
-story.append(Paragraph("BMAD Method vs Claude Team Skills", title_style))
-story.append(Paragraph("Side-by-Side Feature Comparison", subtitle_style))
-story.append(Paragraph(
-    "Version 1.1  ·  23 specialists  ·  59 skill files  ·  10,893 lines  ·  MIT License",
-    note_style
-))
-story.append(HRFlowable(width="100%", thickness=2, color=PURPLE, spaceAfter=14))
 
-# ── Overview ──────────────────────────────────────────────────────────────────
-story.append(Paragraph("Overview", h2_style))
-story.append(Paragraph(
-    "BMAD Method and Claude Team Skills (CTS) both aim to bring structured, specialist-driven "
-    "workflows to AI-assisted software development. They share a common philosophy but diverge "
-    "significantly in design priorities. This document compares them feature-by-feature so teams "
-    "can make an informed choice.",
-    body_style,
-))
-story.append(Spacer(1, 0.1 * inch))
+def style(name, **kw):
+    return ParagraphStyle(name, parent=base, **{"fontName": "Helvetica", "textColor": INK, **kw})
 
-# ── At-a-Glance table ─────────────────────────────────────────────────────────
-story.append(Paragraph("At a Glance", section_style))
 
-glance_data = [
-    ["Metric", "BMAD Method", "Claude Team Skills"],
-    ["Specialists / roles", "~10-15 personas", "23 specialists"],
-    ["Installation", "npm package", "Copy markdown — zero deps"],
-    ["Platform", "ChatGPT, Gemini, Claude, 10+ IDEs", "Claude Code native"],
-    ["Config format", "YAML (Agent-as-Code)", "Plain markdown"],
-    ["Total files", "Varies by bundle", "59 .md skill files"],
-    ["Total lines", "Varies", "10,893 lines"],
-    ["License", "MIT", "MIT"],
-]
-glance_table = Table(
-    glance_data,
-    colWidths=[1.7 * inch, 2.7 * inch, 2.7 * inch],
-    repeatRows=1,
-)
-glance_table.setStyle(TableStyle([
-    ("BACKGROUND", (0, 0), (-1, 0), PURPLE),
-    ("TEXTCOLOR",  (0, 0), (-1, 0), WHITE),
-    ("FONTNAME",   (0, 0), (-1, 0), "Helvetica-Bold"),
-    ("FONTSIZE",   (0, 0), (-1, 0), 10),
-    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [LIGHT_BG, WHITE]),
-    ("FONTNAME",   (0, 1), (-1, -1), "Helvetica"),
-    ("FONTSIZE",   (0, 1), (-1, -1), 9),
-    ("TEXTCOLOR",  (0, 1), (-1, -1), DARK),
-    ("FONTNAME",   (0, 1), (0, -1), "Helvetica-Bold"),
-    ("GRID",       (0, 0), (-1, -1), 0.4, colors.HexColor("#CCCCDD")),
-    ("TOPPADDING", (0, 0), (-1, -1), 5),
-    ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-    ("LEFTPADDING", (0, 0), (-1, -1), 7),
-]))
-story.append(glance_table)
-story.append(Spacer(1, 0.15 * inch))
+TITLE = style("title", fontName="Helvetica-Bold", fontSize=24, leading=28, spaceAfter=4)
+SUB = style("sub", fontSize=11, leading=15, textColor=MUTED, spaceAfter=10)
+H2 = style("h2", fontName="Helvetica-Bold", fontSize=13, leading=16, spaceBefore=12, spaceAfter=6, textColor=ACCENT)
+BODY = style("body", fontSize=9.5, leading=13, spaceAfter=5)
+CELL = style("cell", fontSize=8, leading=10.5)
+CELL_B = style("cellb", fontSize=8, leading=10.5, fontName="Helvetica-Bold")
+HEAD = style("head", fontSize=8.5, leading=11, fontName="Helvetica-Bold", textColor=colors.white)
+NOTE = style("note", fontSize=8, leading=11, textColor=MUTED)
+FOOT = style("foot", fontSize=8, leading=11, textColor=MUTED, alignment=TA_CENTER)
 
-# ── Feature Comparison ────────────────────────────────────────────────────────
-story.append(Paragraph("Feature-by-Feature Comparison", section_style))
 
-comparison_rows = [
-    ["Feature", "BMAD Method", "Claude Team Skills", "CTS Rationale"],
-    [
-        "Installation",
-        "npm installer required",
-        "Copy markdown — zero deps",
-        "No Node.js, no build step. Works in any editor.",
-    ],
-    [
-        "IDE / platform support",
-        "10+ IDEs (VS Code, Cursor, Windsurf, ChatGPT, Gemini, Claude...)",
-        "Claude Code native only",
-        "One platform done exceptionally well beats many done passably.",
-    ],
-    [
-        "Agent style",
-        "Named personas (characters with backstories)",
-        "Role-based skills (function defines the specialist)",
-        "Role-based uses fewer tokens and is easier to maintain.",
-    ],
-    [
-        "Multi-agent debate",
-        "Party Mode — agents debate simultaneously",
-        "Sequential handoffs with written notes",
-        "Sequential saves ~70% tokens vs loading all agents.",
-    ],
-    [
-        "Bundle structure",
-        "Modular expansion packs (install what you need)",
-        "Single download — everything included",
-        "One bundle = no dependency hell, simpler onboarding.",
-    ],
-    [
-        "Complexity control",
-        "Scale-adaptive intelligence (auto-detects)",
-        "YAGNI gates — user explicitly picks complexity",
-        "Explicit choice prevents over-engineering by default.",
-    ],
-    [
-        "Config format",
-        "YAML compilation (Agent-as-Code)",
-        "Plain markdown — editable in any text editor",
-        "Markdown is universal, requires no build step.",
-    ],
-    [
-        "Session memory",
-        "Context within session",
-        "8 append-only .logs/ files — persist across sessions",
-        "Decisions and bugs survive session resets.",
-    ],
-    [
-        "Workflow phases",
-        "Task-based (flexible)",
-        "6 mandatory phases with hard gates",
-        "Non-negotiable gates prevent code shipping before VERIFY.",
-    ],
-    [
-        "Coverage gate",
-        "Not enforced by framework",
-        ">=80% combined unit + integration — hard gate before SHIP",
-        "Coverage is a quality invariant, not a suggestion.",
-    ],
-    [
-        "CI monitoring",
-        "Not built-in",
-        "DevOps watches every push — CI red = stop all work",
-        "CI red is a blocker, not a background event.",
-    ],
-    [
-        "Security integration",
-        "Optional security persona",
-        "Security Engineer engaged at DESIGN phase + VERIFY gate",
-        "Security at design time is cheaper than security at ship time.",
-    ],
-    [
-        "Token efficiency",
-        "Varies by persona count loaded",
-        "~3-5K for routing (1 specialist at a time)",
-        "vs 35K+ if all 23 skills loaded simultaneously.",
-    ],
-    [
-        "KPI tracking",
-        "Not built-in",
-        "10 KPIs tracked across every sprint (velocity, coverage, etc.)",
-        "Data-driven decisions require persistent metrics.",
-    ],
-    [
-        "Document-first",
-        "Not enforced",
-        "PRD -> Architecture -> Stories chain enforced for large features",
-        "Prevents code-before-requirements anti-pattern.",
-    ],
-    [
-        "Adversarial review",
-        "Not built-in",
-        "Test Architect runs adversarial review for auth/payments/data",
-        "SQLi, XSS, IDOR, CSRF, race conditions tested systematically.",
-    ],
-    [
-        "Creative/marketing",
-        "Not included",
-        "5 creative specialists: Digital Marketer, Copywriter, Content, Creative Intelligence",
-        "Full-stack product team, not just engineering.",
-    ],
-    [
-        "Design quality loop",
-        "Not built-in",
-        "Motion Designer + Design Loop: motion system, then independent fresh-context critics",
-        "One-shot design that doesn't grade its own work — kills 'AI slop'.",
-    ],
+def table(rows, widths, highlight_col=None):
+    """rows[0] is the header. Every cell is wrapped in a Paragraph so text wraps."""
+    data = [[Paragraph(c, HEAD) for c in rows[0]]]
+    for row in rows[1:]:
+        data.append([Paragraph(c, CELL_B if i == 0 else CELL) for i, c in enumerate(row)])
+    t = Table(data, colWidths=widths, repeatRows=1)
+    commands = [
+        ("BACKGROUND", (0, 0), (-1, 0), INK),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, BAND]),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LINEBELOW", (0, 0), (-1, -1), 0.4, RULE),
+        ("TOPPADDING", (0, 0), (-1, -1), 5),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+    ]
+    if highlight_col is not None:
+        commands.append(("BACKGROUND", (highlight_col, 1), (highlight_col, -1), ACCENT_TINT))
+        commands.append(("BACKGROUND", (highlight_col, 0), (highlight_col, 0), ACCENT))
+    t.setStyle(TableStyle(commands))
+    return t
+
+
+LANDSCAPE = [
+    ["", "Claude Team Skills", "Superpowers", "BMAD Method", "Spec Kit", "OpenSpec", "GSD"],
+    ["Known for",
+     "A 23-role team (engineering, design, security, marketing) run through six gated phases",
+     "An engineering methodology: brainstorm, plan, then test-driven work with review",
+     "The full agile lifecycle, from ideation to deployment, with many workflows",
+     "Spec-driven development for new work: spec, plan, tasks",
+     "Lightweight spec tracking for changes to existing code",
+     "A lean project, milestone and phase loop aimed at solo developers"],
+    ["Best fit",
+     "Solo builders and small teams who want product, design and launch covered, not only code",
+     "Solo developers and small teams who want engineering discipline enforced",
+     "Teams that want agile roles and ceremonies",
+     "Greenfield projects",
+     "Brownfield projects",
+     "Solo developers shipping quickly"],
+    ["How you get it",
+     "Claude Code plugin, or copy the markdown; AGENTS.md for other agents",
+     "Claude Code plugin marketplace",
+     "npx installer with selectable modules",
+     "Command-line toolkit",
+     "Command-line toolkit",
+     "Installer script"],
+    ["Roles beyond engineering",
+     "UX, UI, motion, copy, content, marketing, project management",
+     "Engineering focused",
+     "Analyst, product and agile roles; creative module",
+     "Not role based",
+     "Not role based",
+     "Not role based"],
+    ["Fresh-context execution",
+     "Implementer subagent per task, then spec review, then quality review",
+     "Subagent per task with spec-compliance and code-quality review",
+     "Party mode: several personas discuss in one session",
+     "Not its focus",
+     "Not its focus",
+     "Multiple agents per phase"],
+    ["Specs for existing code",
+     "Change-spec workflow: baseline, proposal, delta, spec check, merge",
+     "Plans per task",
+     "Planning documents per track",
+     "Aimed at new work",
+     "Its core purpose",
+     "Phase plans"],
+    ["Scaling the ceremony",
+     "Three tracks: Quick, Standard, Full",
+     "One workflow",
+     "Tracks from quick flow to enterprise",
+     "One workflow",
+     "Deliberately lightweight",
+     "Deliberately lightweight"],
+    ["Common criticism in reviews",
+     "Young project with a small eval suite (see page 2)",
+     "Overhead and latency from mandatory steps",
+     "Setup effort; heavy for teams under five",
+     "Heavy for small changes",
+     "Less guidance for building new systems",
+     "Token-heavy because of multiple agents"],
 ]
 
-# Split into header + data
-col_w = [1.5 * inch, 1.65 * inch, 1.65 * inch, 2.3 * inch]
-comp_table = Table(comparison_rows, colWidths=col_w, repeatRows=1)
-comp_table.setStyle(TableStyle([
-    ("BACKGROUND",    (0, 0), (-1, 0), PURPLE),
-    ("TEXTCOLOR",     (0, 0), (-1, 0), WHITE),
-    ("FONTNAME",      (0, 0), (-1, 0), "Helvetica-Bold"),
-    ("FONTSIZE",      (0, 0), (-1, 0), 9),
-    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [LIGHT_BG, WHITE]),
-    ("FONTNAME",      (0, 1), (-1, -1), "Helvetica"),
-    ("FONTSIZE",      (0, 1), (-1, -1), 8),
-    ("TEXTCOLOR",     (0, 1), (-1, -1), DARK),
-    ("FONTNAME",      (0, 1), (0, -1), "Helvetica-Bold"),
-    ("FONTSIZE",      (0, 1), (0, -1), 8),
-    # CTS column: green tint
-    ("TEXTCOLOR",     (2, 1), (2, -1), GREEN_TEXT),
-    ("FONTNAME",      (2, 1), (2, -1), "Helvetica-Bold"),
-    ("GRID",          (0, 0), (-1, -1), 0.3, colors.HexColor("#CCCCDD")),
-    ("TOPPADDING",    (0, 0), (-1, -1), 4),
-    ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-    ("LEFTPADDING",   (0, 0), (-1, -1), 5),
-    ("VALIGN",        (0, 0), (-1, -1), "TOP"),
-    ("WORDWRAP",      (0, 0), (-1, -1), True),
-]))
-story.append(comp_table)
-story.append(Spacer(1, 0.2 * inch))
-
-# ── CTS 21 Specialists ────────────────────────────────────────────────────────
-story.append(HRFlowable(width="100%", thickness=1, color=PURPLE, spaceAfter=8))
-story.append(Paragraph("The 23 CTS Specialists", section_style))
-
-specialists = [
-    ["#", "Specialist", "Group", "Unique Capabilities vs Generic AI"],
-    ["1",  "Orchestrator",         "Routing",     "Routes every request; enforces 6 phases, handoffs, coverage gate"],
-    ["2",  "Project Manager",      "Management",  "Charter, WBS, risk matrix, PERT, PRD, Green/Amber/Red status"],
-    ["3",  "Scrum Master",         "Management",  "MoSCoW backlog, Fibonacci points, Given/When/Then stories"],
-    ["4",  "Tech Lead",            "Management",  "ADRs, YAGNI gate, SOLID/DRY/KISS, debt triage"],
-    ["5",  "System Designer",      "Architecture","NFR capture, capacity planning, topology, SLA/SLO, SDRs"],
-    ["6",  "Software Architect",   "Architecture","Clean/Hexagonal/DDD, CQRS, fitness functions, dependency rules"],
-    ["7",  "UX Designer",          "Design",      "3-tier flows, wireframe states, personas, Nielsen heuristics"],
-    ["8",  "UI Designer",          "Design",      "Design tokens, 4px grid, 12-col layout, anti-slop aesthetic"],
-    ["9",  "Motion Designer",      "Design",      "Motion tokens, micro-interactions, scroll/transitions, React→MP4, generative BGs"],
-    ["10", "Design Loop",          "Design",      "Independent fresh-context critics (brief/system/craft) instead of self-review"],
-    ["11", "Security Engineer",    "Security",    "STRIDE model, auth decision tree, SOC2/HIPAA/PCI-DSS, IR template"],
-    ["12", "DBA",                  "Data",        "PostgreSQL-default, 4 index types, EXPLAIN ANALYZE, backup strategy"],
-    ["13", "Backend Dev",          "Dev",         "RESTful checklist, Route→Controller→Service→Repository pattern"],
-    ["14", "Frontend Dev",         "Dev",         "State management decision table, a11y checklist, breakpoints"],
-    ["15", "Tester",               "Quality",     "Testing pyramid, AAA, >=80% coverage gate (non-negotiable)"],
-    ["16", "Test Architect",       "Quality",     "Risk scoring, ATDD, adversarial review, edge case hunter"],
-    ["17", "Deployment",           "Operations",  "Rolling/Blue-Green/Canary procedures, pre/post checklists"],
-    ["18", "DevOps/DevSecOps",     "Operations",  "Semgrep/Trivy/Checkov/Gitleaks, hardened Dockerfile, CI monitoring"],
-    ["19", "Creative Intelligence","Creative",    "7 ideation frameworks (SCAMPER, Design Thinking, First Principles)"],
-    ["20", "Digital Marketer",     "Marketing",   "SEO checklist, funnel, GA4 events, A/B testing rules"],
-    ["21", "Copywriter",           "Marketing",   "AIDA/PAS/BAB, 5 headline types, 8-section landing page"],
-    ["22", "Content Marketer",     "Marketing",   "Pillars, calendar, repurposing chain blog→LinkedIn→email→video"],
-    ["23", "Project Monitor",      "Memory",      "8 append-only logs, 10 KPIs, status reports, session resumption"],
+DIFFERENTIATORS = [
+    ["What CTS does", "How it is backed", "Where to look"],
+    ["Blocks a push until verification is logged",
+     "A hook stops <b>git push</b> unless the latest VERIFY entry is a pass, is newer than the last SHIP, "
+     "and logged coverage is at least 80%. The same script works as a plain git pre-push hook under any agent.",
+     "hooks/push-gate.sh, 13 behaviour tests"],
+    ["Remembers the project between sessions",
+     "Eight append-only log files. A hook loads the last session summary at start and closes sessions "
+     "that ended without one.",
+     "hooks/session-start.sh, session-end.sh"],
+    ["Covers the whole product, not only the code",
+     "23 specialists, including UX, UI, motion, security, DBA, copy, content and marketing, "
+     "loaded one at a time.",
+     "skills/"],
+    ["Scales effort to the request",
+     "Quick answers come straight from one specialist; Standard and Full add gates, documents and subagents. "
+     "All six phases are logged on every track.",
+     "skills/orchestrator/SKILL.md"],
+    ["Reviews with fresh eyes",
+     "Code tasks go to an implementer, then a spec reviewer, then a quality reviewer, none of which saw "
+     "the conversation. Visual work goes through three independent design critics.",
+     "agents/, skills/design-loop/"],
+    ["Publishes its own test results",
+     "Four behavioural evals run with Claude Code's built-in eval command; results and known gaps are in the repo.",
+     "evals/README.md"],
 ]
 
-spec_table = Table(
-    specialists,
-    colWidths=[0.25 * inch, 1.3 * inch, 0.9 * inch, 4.65 * inch],
-    repeatRows=1,
-)
-spec_table.setStyle(TableStyle([
-    ("BACKGROUND",    (0, 0), (-1, 0), PURPLE),
-    ("TEXTCOLOR",     (0, 0), (-1, 0), WHITE),
-    ("FONTNAME",      (0, 0), (-1, 0), "Helvetica-Bold"),
-    ("FONTSIZE",      (0, 0), (-1, 0), 9),
-    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [LIGHT_BG, WHITE]),
-    ("FONTNAME",      (0, 1), (-1, -1), "Helvetica"),
-    ("FONTSIZE",      (0, 1), (-1, -1), 8),
-    ("TEXTCOLOR",     (0, 1), (-1, -1), DARK),
-    ("FONTNAME",      (0, 1), (1, -1), "Helvetica-Bold"),
-    ("GRID",          (0, 0), (-1, -1), 0.3, colors.HexColor("#CCCCDD")),
-    ("TOPPADDING",    (0, 0), (-1, -1), 3),
-    ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-    ("LEFTPADDING",   (0, 0), (-1, -1), 4),
-    ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
-]))
-story.append(spec_table)
-story.append(Spacer(1, 0.2 * inch))
-
-# ── YAGNI & Why CTS ──────────────────────────────────────────────────────────
-story.append(HRFlowable(width="100%", thickness=1, color=PURPLE, spaceAfter=8))
-story.append(Paragraph("Why CTS Skips These BMAD Features", section_style))
-story.append(Paragraph(
-    "CTS intentionally excludes several BMAD features. These are design choices, not gaps. "
-    "Each exclusion serves the core principle: one platform, done exceptionally well, "
-    "with the minimum complexity needed.",
-    body_style,
-))
-
-skips = [
-    ["Skipped Feature", "BMAD Has", "CTS Position"],
-    ["NPM installer",         "✓ Required",   "Zero-dependency is non-negotiable. Copy markdown, start working."],
-    ["10+ IDE support",       "✓ Available",  "Claude Code native — deeper integration beats broader coverage."],
-    ["Named agent personas",  "✓ Included",   "Role-based skills use fewer tokens and are easier to audit."],
-    ["Party Mode debate",     "✓ Included",   "Sequential handoffs save ~70% tokens with no quality loss."],
-    ["Expansion packs",       "✓ Available",  "Single bundle — one download, no dependency management."],
-    ["Auto complexity scale", "✓ Included",   "Explicit YAGNI gates — user chooses, AI doesn't assume."],
-    ["YAML Agent-as-Code",    "✓ Included",   "Plain markdown is universal, editable, versionable by anyone."],
-    ["ChatGPT / Gemini web",  "✓ Available",  "Claude Code native — one tool, maximum depth."],
+LIMITS = [
+    "<b>Evals are small.</b> Four cases, one run each: three pass. In the fourth, Claude refuses to ship untested "
+    "code and names VERIFY, but does so without loading the orchestrator.",
+    "<b>The review loop is not yet evaluated end to end.</b> It needs write and shell tools, which the eval "
+    "command only allows inside a sandbox (WSL2 or Linux).",
+    "<b>The push gate checks the log, not the tests.</b> It catches a skipped VERIFY phase. It cannot tell "
+    "whether a logged pass was earned.",
+    "<b>Hooks and subagents need the plugin install.</b> The copy-the-files and AGENTS.md routes are "
+    "instruction only, apart from the optional git pre-push gate.",
+    "<b>AGENTS.md is untested outside Claude Code.</b>",
 ]
 
-skip_table = Table(
-    skips,
-    colWidths=[1.55 * inch, 1.0 * inch, 4.55 * inch],
-    repeatRows=1,
-)
-skip_table.setStyle(TableStyle([
-    ("BACKGROUND",    (0, 0), (-1, 0), DARK),
-    ("TEXTCOLOR",     (0, 0), (-1, 0), WHITE),
-    ("FONTNAME",      (0, 0), (-1, 0), "Helvetica-Bold"),
-    ("FONTSIZE",      (0, 0), (-1, 0), 9),
-    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [LIGHT_BG, WHITE]),
-    ("FONTNAME",      (0, 1), (-1, -1), "Helvetica"),
-    ("FONTSIZE",      (0, 1), (-1, -1), 8),
-    ("TEXTCOLOR",     (0, 1), (-1, -1), DARK),
-    ("FONTNAME",      (0, 1), (0, -1), "Helvetica-Bold"),
-    ("TEXTCOLOR",     (1, 1), (1, -1), GREEN_TEXT),
-    ("GRID",          (0, 0), (-1, -1), 0.3, colors.HexColor("#CCCCDD")),
-    ("TOPPADDING",    (0, 0), (-1, -1), 4),
-    ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-    ("LEFTPADDING",   (0, 0), (-1, -1), 5),
-    ("VALIGN",        (0, 0), (-1, -1), "TOP"),
-]))
-story.append(skip_table)
-story.append(Spacer(1, 0.2 * inch))
+SOURCES = [
+    "rywalker.com/research/agentic-skills-frameworks",
+    "dailyaiworld.com/blogs/ai-agent-skills-frameworks-comparison-2026",
+    "newreleases.io/project/github/bmad-code-org/BMAD-METHOD/release/v6.10.0",
+    "mintlify.com/bmad-code-org/BMAD-METHOD (modules, introduction)",
+    "mintlify.com/obra/superpowers/concepts/workflow",
+    "glukhov.org/ai-devtools/superpowers",
+    "dabase.com/blog/2026/sdd-framework-comparison",
+    "codemyspec.com/blog/openspec-vs-spec-kit",
+    "codemyspec.com/blog/best-spec-driven-development-tools",
+]
 
-# ── Footer ────────────────────────────────────────────────────────────────────
-story.append(HRFlowable(width="100%", thickness=2, color=PURPLE, spaceAfter=6))
-story.append(Paragraph(
-    "Claude Team Skills v1.1  ·  23 specialists  ·  59 skill files  ·  10,893 lines  ·  MIT License  ·  github.com/rhorba/CTS",
-    note_style,
-))
 
-doc.build(story)
-print(f"Saved -> {OUT}")
+def build(out=OUT):
+    doc = SimpleDocTemplate(
+        str(out), pagesize=landscape(letter),
+        leftMargin=0.6 * inch, rightMargin=0.6 * inch, topMargin=0.55 * inch, bottomMargin=0.55 * inch,
+        title="Claude Team Skills: how it compares", author="CTS",
+    )
+    width = landscape(letter)[0] - 1.2 * inch
+    story = [
+        Paragraph("Claude Team Skills: how it compares", TITLE),
+        Paragraph(
+            f"CTS v{VERSION} beside five agent-workflow frameworks. Competitor columns summarise public "
+            f"documentation and reviews read in {AS_OF}; they describe what each project is known for.", SUB),
+        HRFlowable(width="100%", thickness=1.2, color=ACCENT, spaceAfter=8),
+        table(LANDSCAPE, [1.05 * inch] + [(width - 1.05 * inch) / 6] * 6, highlight_col=1),
+        PageBreak(),
+        Paragraph("What sets CTS apart", H2),
+        table(DIFFERENTIATORS, [2.1 * inch, width - 2.1 * inch - 2.3 * inch, 2.3 * inch]),
+        Paragraph("Known limits", H2),
+    ]
+    story += [Paragraph(f"• {item}", BODY) for item in LIMITS]
+    story += [
+        Paragraph("Sources for the competitor columns", H2),
+        Paragraph(" · ".join(SOURCES), NOTE),
+        Spacer(1, 8),
+        Paragraph(
+            "Popularity figures are left out on purpose: the star counts quoted across these sources disagree "
+            "by a wide margin. Check each project's repository for current numbers and features.", NOTE),
+        Spacer(1, 10),
+        Paragraph(f"Claude Team Skills v{VERSION} · MIT License · github.com/rhorba/CTS", FOOT),
+    ]
+    doc.build(story)
+    return out
+
+
+if __name__ == "__main__":
+    print(f"Wrote {build()}")

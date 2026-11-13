@@ -161,11 +161,11 @@ Claude Team Skills intentionally skips these BMAD features to stay **lightweight
 | BMAD Feature We Skip | Why We Skip It |
 |---|---|
 | NPM installer | CTS is zero-dependency — just copy markdown files, no Node.js required |
-| Multi-IDE support (10+ IDEs) | CTS targets Claude Code specifically for deeper integration |
+| Per-IDE installers (10+ IDEs) | CTS is built for Claude Code; other agents get one generated `AGENTS.md` (see `templates/AGENTS.md`) and an optional git pre-push gate |
 | Agent personas (named characters) | CTS uses role-based skills, not character personas — simpler, less tokens |
 | Party Mode (multi-agent debate) | CTS uses sequential handoffs to save tokens (~70% less than loading all agents) |
 | Modular expansion packs | CTS is a single bundle — one download, everything included |
-| Scale-adaptive intelligence | CTS uses explicit YAGNI gates — user picks complexity, not auto-detected |
+| Automatic scale detection | CTS uses three explicit depth tracks (Quick / Standard / Full) — proposed in one line, overridable in one word |
 | Agent-as-Code (YAML compilation) | CTS uses plain markdown — editable with any text editor, no build step |
 | Web bundles (ChatGPT/Gemini) | CTS is Claude Code native — optimized for one platform done well |
 

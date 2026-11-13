@@ -8,7 +8,9 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 import copy
 
-OUT = r"C:\Users\moham\OneDrive - um5.ac.ma\Desktop\CTS\claude-team-skills-user-manual.docx"
+from pathlib import Path
+
+OUT = str(Path(__file__).resolve().parent.parent / "claude-team-skills-user-manual.docx")
 
 doc = Document()
 
@@ -180,12 +182,12 @@ set_font(run3, 14, italic=True, color=MID_GRAY)
 doc.add_paragraph()
 
 meta = [
-    ("Version",   "1.1"),
+    ("Version",   "2.0.0-beta.1"),
     ("License",   "MIT"),
     ("Platform",  "Claude Code"),
     ("Specialists", "23"),
     ("Files",     "59 markdown skill files"),
-    ("Total lines", "10,893"),
+    ("Total lines", "10,754"),
 ]
 for label, value in meta:
     p = doc.add_paragraph()
@@ -232,19 +234,49 @@ h2("1.2 What's Included")
 add_table(
     ["File / Directory", "Description"],
     [
-        ["claude-team-skills/", "23 skill directories — each with SKILL.md and a references/ deep-dive file"],
-        ["claude-team-skills/CLAUDE.md", "Entry point — copy to your project root"],
+        ["claude-team-skills/", "The plugin: skills/, agents/, hooks/, evals/, templates/"],
+        ["claude-team-skills/skills/", "23 skill directories — each with SKILL.md and a references/ deep-dive file"],
+        ["claude-team-skills/agents/", "implementer, spec-reviewer, quality-reviewer"],
+        ["claude-team-skills/hooks/", "session-start, push-gate, session-end (POSIX shell)"],
+        ["claude-team-skills/evals/", "Four behavioural eval cases and their recorded results"],
+        ["claude-team-skills/templates/CLAUDE.md", "Entry point for a copy install — copy to your project root"],
+        ["claude-team-skills/templates/AGENTS.md", "Generated entry point for other coding agents"],
         ["claude-team-skills/QUICKSTART.md", "Cheat sheet for ongoing use"],
         ["claude-team-skills/INSTALL.md", "Detailed installation and FAQ"],
-        ["scripts/validate-skills.py", "CI validation: checks all 23 SKILL.md files exist and are valid"],
+        ["scripts/validate-skills.py", "CI validation: manifests, 23 skills, 3 agents, and specialist counts in docs"],
+        ["scripts/sync-skills.py", "Mirrors the skills into .claude/skills; CI fails on drift"],
+        ["scripts/build-agents-md.py", "Generates templates/AGENTS.md from the skill frontmatter"],
         ["scripts/build_pitch.py", "Regenerates the pitch deck PPTX"],
         ["scripts/build_manual.py", "Regenerates this user manual"],
-        ["scripts/build_comparison.py", "Regenerates the BMAD vs CTS comparison PDF"],
-        ["bmad-vs-cts-comparison.pdf", "Side-by-side BMAD vs CTS feature comparison"],
+        ["scripts/build_comparison.py", "Regenerates the comparison PDF"],
+        ["cts-comparison.pdf", "CTS beside five agent-workflow frameworks"],
         ["claude-team-skills-pitch.pptx", "14-slide pitch deck for teams and stakeholders"],
         ["claude-team-skills-user-manual.docx", "This document"],
     ],
     col_widths=[2.5, 4.0]
+)
+
+h2("1.3 What's New in Version 2")
+body("Version 2 backs the rules of version 1 with code, and scales the process to the size of the request.")
+add_table(
+    ["Capability", "Version 1.1", "Version 2"],
+    [
+        ["Install", "Copy markdown files", "One-command Claude Code plugin, or copy"],
+        ["Ship gate", "A written rule", "A hook blocks git push until VERIFY and coverage are logged"],
+        ["Session memory", "Read on request", "Hooks load the last summary and close unfinished sessions"],
+        ["Execution", "One context", "A fresh implementer subagent per code task"],
+        ["Code review", "Self-review", "Spec review, then quality review, both read-only"],
+        ["Small requests", "Full ceremony", "Quick track: one specialist, one log entry"],
+        ["Existing codebases", "Document-first only", "Change-spec workflow with spec deltas"],
+        ["Other agents", "Claude Code only", "Generated AGENTS.md and an optional git pre-push gate"],
+        ["Evidence", "Structure checks", "Behavioural evals: 3 of 4 cases pass (evals/README.md)"],
+    ],
+    col_widths=[1.5, 1.7, 3.3]
+)
+body(
+    "Depth tracks: Quick (one question or small change, answered by one specialist), Standard (the full "
+    "six-phase flow with two user gates), and Full (Standard plus the document chain and subagent execution). "
+    "All six phases are logged on every track. Auth, payments, data migrations and requests to ship are never Quick."
 )
 
 page_break()
@@ -256,8 +288,19 @@ page_break()
 h1("2. Installation")
 rule()
 
+h2("Option A — Install as a plugin (recommended)")
+body("In a Claude Code session:")
+code_block("/plugin marketplace add rhorba/CTS\n/plugin install cts@rhorba-cts")
+body(
+    "The 23 specialists load as plugin skills (cts:orchestrator, cts:tester, ...), together with three agents "
+    "and three hooks. Nothing is copied into your project. The hooks are POSIX shell; on Windows they need Git Bash."
+)
+
+h2("Option B — Copy the files")
+body("Hooks and agents are not included with this option. Follow the four steps below.")
+
 h2("Step 1 — Copy the skills/ folder")
-body("Extract claude-team-skills/ and place it inside a skills/ directory in your project root:")
+body("Copy claude-team-skills/skills/ into your project root as skills/:")
 code_block(
     "your-project/\n"
     "  skills/\n"
@@ -291,7 +334,7 @@ code_block(
 
 h2("Step 2 — Add CLAUDE.md to your project root")
 body(
-    "CLAUDE.md is the entry point. Claude Code reads it on every session start and loads the Orchestrator. "
+    "Copy claude-team-skills/templates/CLAUDE.md to your project root. Claude Code reads it on every session start and loads the Orchestrator. "
     "It contains 12 strict framework rules, the skill locations table, commit conventions, and env var guidance."
 )
 
@@ -1133,7 +1176,7 @@ add_table(
 doc.add_paragraph()
 p = doc.add_paragraph()
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = p.add_run("Claude Team Skills v1.1  |  23 specialists  |  59 skill files  |  10,893 lines  |  MIT License")
+run = p.add_run("Claude Team Skills v2.0.0-beta.1  |  23 specialists  |  59 skill files  |  10,754 lines  |  MIT License")
 set_font(run, 9, italic=True, color=MID_GRAY)
 
 # ── Save ─────────────────────────────────────────────────────────────────────

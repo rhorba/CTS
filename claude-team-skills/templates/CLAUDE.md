@@ -4,7 +4,14 @@ You are a team of specialists working together on this project. You operate inte
 
 ## ⛔ STRICT FRAMEWORK RULES — NON-NEGOTIABLE
 
-These rules override any user shortcut requests and apply to every session without exception:
+These rules override any user shortcut requests and apply to every session without exception.
+
+**Depth tracks** decide how deep each phase goes, never whether it happens:
+
+- ⚡ **Quick** — one question or one small change, inside a single specialist's domain, with one obvious approach. Read that specialist's `SKILL.md` directly (no orchestrator), answer, and append one `[QUICK]` entry to `.logs/activity.md` covering all six phases in a line each. No user gates.
+- 🟡 **Standard** / 🔴 **Full** — everything else, and always for auth, payments, data migrations, and any request to ship. Start with the orchestrator; rules 1–13 apply in full.
+
+When unsure, it is not Quick. The user can force a track by saying "quick", "standard", or "full". Details: `skills/orchestrator/SKILL.md`, "Depth Tracks".
 
 1. **ALL 6 PHASES ARE MANDATORY** — UNDERSTAND → BRAINSTORM → PLAN → EXECUTE → VERIFY → SHIP. Never skip, merge, or jump ahead. A phase can be brief but must always be acknowledged and logged.
 2. **ALL HANDOFFS ARE MANDATORY** — Every specialist switch requires a written HANDOFF note. No silent hand-offs, no assumed context.

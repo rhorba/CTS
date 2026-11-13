@@ -2,7 +2,7 @@
 
 **23 AI Specialists Working as One Team — Built for Claude Code**
 
-> Version 2.0.0-alpha.1 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
+> Version 2.0.0-beta.1 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
 
 Claude Team Skills (CTS) is a collection of 23 interconnected specialist skills for Claude Code. Instead of a generic AI assistant, every task is handled by the right expert — PM, Security Engineer, DBA, Software Architect, Test Architect, and more — all routed by a central Orchestrator that loads one specialist at a time.
 
@@ -14,7 +14,7 @@ This repository ships with companion materials for presentations and onboarding:
 
 | File | Description |
 |---|---|
-| `bmad-vs-cts-comparison.pdf` | Side-by-side feature comparison: BMAD Method vs Claude Team Skills |
+| `cts-comparison.pdf` | CTS beside five agent-workflow frameworks, with its known limits |
 | `claude-team-skills-pitch.pptx` | Slide deck — pitch CTS to your team or stakeholders |
 | `claude-team-skills-user-manual.docx` | Detailed user manual covering all 23 specialists and workflows |
 
@@ -85,6 +85,16 @@ your-project/
 #### Step 2 — Copy `claude-team-skills/templates/CLAUDE.md` to your project root
 
 This is the entry point. Claude Code reads it first on every session and loads the Orchestrator.
+
+### Option C — Other coding agents (`AGENTS.md`)
+
+For agents that read `AGENTS.md` instead of `CLAUDE.md`:
+
+1. Copy `claude-team-skills/skills/` into your project root as `skills/`.
+2. Copy `claude-team-skills/templates/AGENTS.md` to your project root.
+3. Optional: copy `claude-team-skills/hooks/push-gate.sh` to `.git/hooks/pre-push` and make it executable. Git itself then refuses to push until VERIFY and coverage are logged, whichever agent is driving.
+
+`AGENTS.md` is generated from the skill files (`scripts/build-agents-md.py`), so its specialist table cannot drift. Outside Claude Code there are no session hooks and no `cts:` subagents; the file explains what to do instead.
 
 ### Start working
 
@@ -238,13 +248,25 @@ The plugin ships three agents the Orchestrator dispatches during EXECUTE for tas
 
 Reviewers are read-only and never see the conversation that produced the code. Small edits, docs, and config stay inline, because three subagents cost more than the task is worth.
 
+### Depth Tracks
+
+Not every request deserves the same ceremony. The track sets how deep each phase goes; it never removes one.
+
+| Track | Use for | Who leads | Phases | User gates |
+|---|---|---|---|---|
+| ⚡ **Quick** | One question or one small change in a single specialist's domain, with one obvious approach | The matching specialist, loaded directly | One line each, in a single `[QUICK]` log entry | None |
+| 🟡 **Standard** | Features, bugs that need investigation, work spanning specialists | Orchestrator | Full phases | Option pick + plan confirmation |
+| 🔴 **Full** | New projects, large features, high-risk work | Orchestrator | Standard + document chain + subagent execution with two-stage review | Option pick + plan confirmation + document approvals |
+
+Auth, payments, data migrations, and any request to ship are never Quick. Say "quick", "standard", or "full" to override the track. The push gate is identical on all three.
+
 ### Strict Rules Summary
 
 | Rule | Detail |
 |---|---|
-| **All 6 phases mandatory** | Every phase must be acknowledged and logged — even if brief |
+| **All 6 phases mandatory** | Every phase is logged on every track — a line each on Quick, in full on Standard and Full |
 | **No silent phase skips** | If user says "skip this" → acknowledge in one sentence, log it, continue |
-| **2 hard gates** | BRAINSTORM → PLAN requires user option pick; PLAN → EXECUTE requires user confirmation |
+| **2 hard gates** (Standard, Full) | BRAINSTORM → PLAN requires user option pick; PLAN → EXECUTE requires user confirmation |
 | **1 ship gate** | VERIFY must pass (tests + security) before SHIP — no exceptions |
 | **One specialist at a time** | Never load all 23 skills — Orchestrator + 1 specialist per task |
 | **Written handoffs** | Every specialist switch gets a 2-3 line HANDOFF note |
@@ -578,10 +600,10 @@ The Orchestrator recognizes these scenarios and uses an optimised fast path:
 | ✨ New Feature | 1-4 hrs | PM → UX → Tech Lead → DBA → Devs → Tester → Security |
 | 🚀 New Project | 2-6 hrs | PM → System Designer → Software Architect → UX → Tech Lead → DBA → Security → all devs → DevOps |
 | 📋 Document-First Build | 1-2 hrs planning + execution | PM → Tech Lead → DBA → Security → Scrum → Test Architect |
-| 🎨 UX/UI Design | 30-120 min | UX → UI → Motion → Frontend → Copywriter |
+| 🎨 UX/UI Design | 30-120 min | UX → UI → Motion → Copywriter → Frontend |
 | 🌀 Motion & Interaction | 20-90 min | UI → Motion Designer → Frontend Dev (→ Design Loop for hero/video) |
 | 🔁 Design Loop | varies (reserve for high-stakes/reusable artifacts) | UI → Design Loop (3 independent critics) → Frontend/builder fixes → re-round |
-| 🗄️ Database Design | 15-60 min | DBA → Tech Lead → Backend Dev |
+| 🗄️ Database Design | 15-60 min | DBA → Security Engineer → Tech Lead → Backend Dev |
 | 🔒 Security Audit | 30-90 min | Security Engineer → DevSecOps → DBA |
 | 🔐 Security Review | 20-60 min | Security Engineer → DevSecOps → Backend/Frontend |
 | 🔄 Refactor | 30-120 min | Tech Lead → Backend/Frontend → Tester |
@@ -589,6 +611,7 @@ The Orchestrator recognizes these scenarios and uses an optimised fast path:
 | 📢 Marketing Launch | 1-3 hrs | Digital Marketer → Copywriter → Content Marketer |
 | 💡 Brainstorm/Ideation | 15-45 min | Creative Intelligence → PM or Tech Lead |
 | 🧪 Test Strategy | 20-60 min | Test Architect → Tester → Security Engineer |
+| 🧬 Change-Spec (existing codebases) | adds 10-30 min to a feature | Tech Lead → Devs → Tester / spec-reviewer |
 
 ---
 
@@ -676,6 +699,28 @@ Each artifact is saved to `docs/`, logged as a MILESTONE, and requires user appr
 - Small task (< 1 day): skip the chain entirely
 - Medium feature: mini-PRD + ADR only
 - Large feature / new project: full chain
+
+---
+
+## Change Specs for Existing Codebases
+
+Document-first covers new projects. For code that already exists, CTS works from a spec delta:
+
+```
+docs/specs/[capability].md          what the system does now
+docs/changes/[change-id]/
+  proposal.md                       why, what, impact
+  spec-delta.md                     ADDED / MODIFIED / REMOVED requirements
+  tasks.md                          the plan, each task naming the scenarios it covers
+docs/changes/archive/               shipped changes
+```
+
+- **No spec yet?** Write a baseline for only the capability being changed, from what the code does today. The spec grows one capability at a time.
+- **The delta is what you approve.** It is confirmed together with the plan, before any code.
+- **VERIFY checks code against the delta**: every added or modified scenario has a test, removed behaviour is gone, and nothing changed outside the delta.
+- **SHIP merges the delta** into `docs/specs/` and archives the change in the same commit as the code.
+
+Templates and rules: `skills/orchestrator/references/change-spec.md`.
 
 ---
 
@@ -837,14 +882,14 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 | BMAD Feature Skipped | Why |
 |---|---|
 | NPM installer | CTS is zero-dependency — copy markdown, no Node.js |
-| Multi-IDE support (10+) | Optimised for Claude Code specifically |
+| Per-IDE installers (10+) | Built for Claude Code; other agents get one generated `AGENTS.md` and an optional git pre-push gate |
 | Named agent personas | Role-based skills use fewer tokens and are easier to maintain |
 | Party Mode (multi-agent debate) | Sequential handoffs save ~70% tokens |
 | Modular expansion packs | Single bundle — one download, everything included |
-| Scale-adaptive intelligence | Explicit YAGNI gates — you pick complexity, not auto-detected |
+| Automatic scale detection | Three explicit depth tracks (Quick / Standard / Full) — proposed in one line, overridable in one word |
 | Agent-as-Code (YAML compilation) | Plain markdown — editable in any text editor |
 | Web bundles (ChatGPT/Gemini) | Claude Code native — one platform done well |
 
 ---
 
-*Claude Team Skills v2.0.0-alpha.1 — 23 specialists, 58 skill files*
+*Claude Team Skills v2.0.0-beta.1 — 23 specialists, 59 skill files*
