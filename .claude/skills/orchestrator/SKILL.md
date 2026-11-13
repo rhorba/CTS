@@ -145,6 +145,7 @@ For common scenarios, read `references/workflows.md` for a pre-built fast path:
 - 💡 **Brainstorm/Ideation** — diverge → cluster → converge → validate (15-45 min)
 - 📋 **Document-First Build** — PRD → arch → stories → execute (large features)
 - 🧪 **Test Strategy** — risk assess → ATDD → adversarial review (20-60 min)
+- 🧬 **Change-Spec (existing codebases)** — baseline spec → proposal → spec delta → build → spec check → merge delta (see `references/change-spec.md`)
 
 If the user's request matches one of these, use that workflow instead of the generic phases below.
 
@@ -192,6 +193,10 @@ Based on answers, determine which specialists are needed. Example mappings:
 | Marketing need | Digital Marketer | Copywriter, Content |
 | Content creation | Content Marketer | Copywriter |
 | Documentation | Tech Lead | relevant dev specialist |
+
+**Change-spec rule**: For a Standard or Full task that changes the behaviour of existing code, read
+`references/change-spec.md` and work from a spec delta: the user confirms the delta with the plan, and
+VERIFY checks the code against it.
 
 **Document-first rule**: For new projects and large features, read `references/document-chain.md`
 and follow the PRD → Architecture → Stories chain before coding.

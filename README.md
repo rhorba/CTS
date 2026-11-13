@@ -601,6 +601,7 @@ The Orchestrator recognizes these scenarios and uses an optimised fast path:
 | 📢 Marketing Launch | 1-3 hrs | Digital Marketer → Copywriter → Content Marketer |
 | 💡 Brainstorm/Ideation | 15-45 min | Creative Intelligence → PM or Tech Lead |
 | 🧪 Test Strategy | 20-60 min | Test Architect → Tester → Security Engineer |
+| 🧬 Change-Spec (existing codebases) | adds 10-30 min to a feature | Tech Lead → Devs → Tester / spec-reviewer |
 
 ---
 
@@ -688,6 +689,28 @@ Each artifact is saved to `docs/`, logged as a MILESTONE, and requires user appr
 - Small task (< 1 day): skip the chain entirely
 - Medium feature: mini-PRD + ADR only
 - Large feature / new project: full chain
+
+---
+
+## Change Specs for Existing Codebases
+
+Document-first covers new projects. For code that already exists, CTS works from a spec delta:
+
+```
+docs/specs/[capability].md          what the system does now
+docs/changes/[change-id]/
+  proposal.md                       why, what, impact
+  spec-delta.md                     ADDED / MODIFIED / REMOVED requirements
+  tasks.md                          the plan, each task naming the scenarios it covers
+docs/changes/archive/               shipped changes
+```
+
+- **No spec yet?** Write a baseline for only the capability being changed, from what the code does today. The spec grows one capability at a time.
+- **The delta is what you approve.** It is confirmed together with the plan, before any code.
+- **VERIFY checks code against the delta**: every added or modified scenario has a test, removed behaviour is gone, and nothing changed outside the delta.
+- **SHIP merges the delta** into `docs/specs/` and archives the change in the same commit as the code.
+
+Templates and rules: `skills/orchestrator/references/change-spec.md`.
 
 ---
 
@@ -859,4 +882,4 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 
 ---
 
-*Claude Team Skills v2.0.0-alpha.1 — 23 specialists, 58 skill files*
+*Claude Team Skills v2.0.0-alpha.1 — 23 specialists, 59 skill files*

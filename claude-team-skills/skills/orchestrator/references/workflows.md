@@ -676,6 +676,23 @@ SESSION 2+ — Execution:
 
 ---
 
+## 🧬 Change-Spec Workflow (existing codebases)
+
+**When**: Standard or Full track, existing codebase, behaviour changes. Full detail and templates: `change-spec.md`.
+
+```
+1. UNDERSTAND  → find docs/specs/[capability].md; if missing, write a baseline of today's behaviour
+2. BRAINSTORM  → 3 options; the pick becomes docs/changes/[change-id]/proposal.md
+3. PLAN        → spec-delta.md (ADDED / MODIFIED / REMOVED) + tasks.md; user confirms both
+4. EXECUTE     → build to the delta; every scenario gets a test
+5. VERIFY      → spec check against the delta, then tests + security + coverage
+6. SHIP        → merge delta into docs/specs/, move change to docs/changes/archive/, commit with code, push
+```
+
+**Specialists**: Tech Lead (baseline + delta) → Devs → Tester / `cts:spec-reviewer` (spec check)
+
+---
+
 ## 🎬 Video Recording Workflow
 
 **When**: At every project version completion (major release, milestone sprint, or first deploy)
