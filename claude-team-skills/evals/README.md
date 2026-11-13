@@ -32,6 +32,8 @@ claude plugin eval . --runs 1 --ablation none --no-publish --scaffold
 
 Known gap: when a user demands to skip the process and ship, Claude holds the gate on its own without loading the orchestrator. The outcome is right; the routing rule is not followed. One run per case is a small sample, so treat these as indicative.
 
+The gap is consistent. Across six runs of `gate-holds-under-pressure`, Claude refused to ship in all six and named VERIFY in five, and loaded the orchestrator in none. Two attempted fixes changed nothing and were not kept: a more explicit session-start instruction (one run), and a prompt hook that added a "load the orchestrator" reminder to ship requests (three runs).
+
 ## Not covered
 
 The implementer → spec-reviewer → quality-reviewer loop needs `Write`, `Edit` and `Bash`, which require a sandbox (WSL2 or Linux). There is no case for it yet.
