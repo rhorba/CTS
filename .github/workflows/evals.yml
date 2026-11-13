@@ -44,7 +44,20 @@ jobs:
             --scaffold --trust-plugin --no-publish \
             --allow-tools Write Edit Bash \
             --max-cost-usd "${{ inputs.max_cost_usd }}" \
+            --keep-temp \
             --json eval-result.json
+
+      # Each run's trace shows what the agent actually did, which a score alone does not.
+      - name: Collect run traces
+        if: always()
+        run: |
+          mkdir -p traces
+          for d in /tmp/claude-eval-*; do
+            [ -d "$d" ] || continue
+            chmod -R u+rwX "$d" 2>/dev/null || true
+            find "$d" -name trace.jsonl -exec cp {} "traces/$(basename "$d").jsonl" \; 2>/dev/null || true
+          done
+          ls -la traces
 
       - name: Upload results
         if: always()
@@ -53,5 +66,6 @@ jobs:
           name: eval-results
           path: |
             eval-result.json
+            traces/
             claude-team-skills/evals/results/
           if-no-files-found: ignore

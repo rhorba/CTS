@@ -135,7 +135,7 @@ Interactive: options → pick → execute → verify
 Switches specialist with a 2-3 line handoff summary
 ```
 
-**Token cost** (estimated at about 4 characters per token): on the Quick track, the session context (~0.5K) plus one specialist (~1-3K) comes to ~2-4K tokens. On the Standard track the Orchestrator adds ~6K, for ~8-10K. Loading all 23 skills at once would cost ~39K.
+**Token cost** (estimated at about 4 characters per token): on the Quick track, the session context (~0.5K) plus one specialist (~1-3K) comes to ~2-4K tokens. On the Standard track the Orchestrator adds ~4K, for ~6-8K. Loading all 23 skills at once would cost ~37K.
 
 ---
 
@@ -830,16 +830,16 @@ What CTS itself adds to the context: the session context (~0.5K) plus each skill
 | Session Type | Skills Loaded | Skill-Loading Cost |
 |---|---|---|
 | Quick question (Quick track) | 1 specialist, no Orchestrator | ~2K |
-| Bug fix | Orchestrator + Tech Lead + 1 dev + Tester | ~10K |
-| Small feature | Orchestrator + Software Architect + Tech Lead + 2 devs + Tester | ~13K |
-| New project | Orchestrator + 14 of the specialists across the session | ~25K |
-| Database design | Orchestrator + DBA + Tech Lead + Backend Dev | ~10K |
-| UX/UI design | Orchestrator + UX + UI + Motion + Copywriter + Frontend | ~14K |
-| Security audit | Orchestrator + Security Eng + DevSecOps + DBA | ~10K |
-| Brainstorm session | Orchestrator + Creative Intelligence + PM | ~10K |
-| Test strategy | Orchestrator + Test Architect + Tester + Security Eng | ~11K |
-| Sprint planning | Orchestrator + Scrum Master + PM + Tech Lead | ~10K |
-| Marketing launch | Orchestrator + Digital Marketer + Copywriter + Content Marketer | ~9K |
+| Bug fix | Orchestrator + Tech Lead + 1 dev + Tester | ~8K |
+| Small feature | Orchestrator + Software Architect + Tech Lead + 2 devs + Tester | ~11K |
+| New project | Orchestrator + 14 of the specialists across the session | ~23K |
+| Database design | Orchestrator + DBA + Tech Lead + Backend Dev | ~8K |
+| UX/UI design | Orchestrator + UX + UI + Motion + Copywriter + Frontend | ~12K |
+| Security audit | Orchestrator + Security Eng + DevSecOps + DBA | ~9K |
+| Brainstorm session | Orchestrator + Creative Intelligence + PM | ~8K |
+| Test strategy | Orchestrator + Test Architect + Tester + Security Eng | ~9K |
+| Sprint planning | Orchestrator + Scrum Master + PM + Tech Lead | ~8K |
+| Marketing launch | Orchestrator + Digital Marketer + Copywriter + Content Marketer | ~8K |
 
 These figures cover CTS's instruction files only. They exclude your code, the conversation, tool output, and reference files (1-14K per skill when read). Subagent runs and Design Loop critic rounds each start their own context and have not been measured.
 

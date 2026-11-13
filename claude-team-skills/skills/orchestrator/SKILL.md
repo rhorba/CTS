@@ -36,15 +36,7 @@ BEFORE adding anything, ask: "Does the user need this RIGHT NOW?"
   NO  → Skip it. Don't plan for it. Don't design for it. Don't mention it.
 ```
 
-**YAGNI in practice:**
-- Don't suggest microservices for an MVP — monolith first
-- Don't design a full design system for a 3-page app — pick a UI framework
-- Don't build admin panels nobody asked for
-- Don't add caching before proving there's a performance problem
-- Don't create database tables "we might need later"
-- Don't set up Kubernetes when Docker Compose works fine
-- Don't write a marketing funnel for an internal tool
-- Start with the simplest approach in 🟢 and only upgrade when there's a real reason
+In practice: a monolith before microservices, a UI framework before a design system, Docker Compose before Kubernetes, and no caching, admin panel, or extra table until there is a real need. Start with the 🟢 option and upgrade only for a reason.
 
 ## Depth Tracks
 
@@ -77,7 +69,7 @@ The push gate is the same on every track: a Quick change that gets pushed still 
 
 ## Interactive Workflow
 
-> **STRICT RULE — NO EXCEPTIONS**: All 6 phases are MANDATORY on every session, on every track. On the Quick track they are a line each in one `[QUICK]` entry; on Standard and Full they follow the rules below. Do NOT skip, merge, or abbreviate any phase. If a phase is lightweight (e.g., "UNDERSTAND" takes 30 seconds), complete it and log it — then move on. Skipping phases creates gaps, missed requirements, and bugs. Even if the user says "skip this" or "just do it", acknowledge the phase first, confirm the context, then proceed. A fast phase is fine. A missing phase is not.
+> **STRICT RULE — NO EXCEPTIONS**: All 6 phases are MANDATORY on every session, on every track. On the Quick track they are a line each in one `[QUICK]` entry; on Standard and Full they follow the rules below. Do NOT skip, merge, or abbreviate any phase. If a phase is lightweight (e.g., "UNDERSTAND" takes 30 seconds), complete it and log it — then move on. Skipping phases creates gaps, missed requirements, and bugs. Even if the user says "skip this" or "just do it", acknowledge the phase first, confirm the context, then proceed. The one thing you never proceed to is a ship without a passing VERIFY: refuse, name VERIFY as the missing phase, and offer to run it. A fast phase is fine. A missing phase is not.
 >
 > **GLOBAL RULES (apply every session)**:
 > - **80% coverage gate**: Before SHIP, run coverage. If < 80% combined unit + integration, write tests first.
@@ -89,65 +81,23 @@ The push gate is the same on every track: a Quick change that gets pushed still 
 >
 > **Handoffs are also MANDATORY**: Every specialist switch MUST include a written HANDOFF note (from/to/context/need/constraints). Never load a new specialist without one.
 
-```
-SESSION START
-    │
-    ├── 📝 Log: SESSION_START → .logs/sessions.md
-    ├── 📝 Check: resume from last session? → read .logs/sessions.md (last entry only)
-    ▼
-[1. UNDERSTAND] ← What are we working on?
-    │
-    ├── 📝 Log: user preferences → .logs/communications.md
-    ▼
-[2. BRAINSTORM] ← Options from simple → complex
-    │
-    ├── 📝 Log: chosen approach → .logs/decisions.md
-    ▼
-[3. PLAN]       ← Break into batches of tasks
-    │
-    ├── 📝 Log: plan snapshot → .logs/activity.md
-    ▼
-[4. EXECUTE]    ← One task at a time, interactive
-    │
-    ├── 📝 Log: each task completed → .logs/activity.md
-    ├── 📝 Log: blockers/bugs → .logs/issues.md
-    ├── 📝 Log: plan changes → .logs/corrections.md
-    ▼
-[5. VERIFY]     ← Test, review, validate
-    │
-    ├── 📝 Log: issues found → .logs/issues.md
-    ├── 📝 Log: risks found → .logs/risks.md
-    ▼
-[6. SHIP]       ← Deploy, document, market (if needed)
-    │
-    ├── 📝 Log: MILESTONE → .logs/activity.md
-    ├── 📝 Log: SPRINT_SNAPSHOT → .logs/metrics.md
-    └── 📝 Log: SESSION_END → .logs/sessions.md
-```
+| Phase | What happens | Log to |
+|---|---|---|
+| Session start | Resume from the last `SESSION_END` entry if there is one | `.logs/sessions.md` |
+| 1. UNDERSTAND | What are we working on? | `.logs/communications.md` (user preferences) |
+| 2. BRAINSTORM | Options from simple to complex; the user picks | `.logs/decisions.md` |
+| 3. PLAN | Batches of tasks; the user confirms | `.logs/activity.md` |
+| 4. EXECUTE | One task at a time | `.logs/activity.md`, `issues.md` (blockers), `corrections.md` (plan changes) |
+| 5. VERIFY | Test, review, validate | `.logs/issues.md`, `risks.md`, `metrics.md` (coverage) |
+| 6. SHIP | Deploy, document, market if needed | `.logs/activity.md`, `metrics.md`, then `SESSION_END` in `sessions.md` |
 
 **Logging rule**: Append a log entry AFTER the action, in the SAME tool call as the action when possible. Don't make separate tool calls just for logging — that wastes tokens. If you're already writing a file, append the log entry in the same bash command.
 
 ## Quick-Start Workflows
 
-For common scenarios, read `references/workflows.md` for a pre-built fast path:
-- 🐛 **Bug Fix** — reproduce → options → fix → test (15-60 min)
-- ✨ **New Feature** — scope → design → plan → execute in batches (1-4 hrs)
-- 📝 **Documentation** — gather → write → review (15-60 min)
-- 🚀 **New Project** — PRD → architecture → stories → scaffold → build (2-6 hrs)
-- 📢 **Marketing Launch** — strategy → content → setup → launch (1-3 hrs)
-- 🔒 **Security Audit** — scan → triage → fix → verify (30-90 min)
-- 🔄 **Refactor** — assess → plan → incremental steps (30-120 min)
-- 🎨 **UX/UI Design** — flow → wireframe → visual → motion → handoff (30-120 min)
-- 🌀 **Motion & Interaction** — motion tokens → named interactions → scroll/transition spec → handoff (or React→MP4 video) (20-90 min)
-- 🔁 **Design Loop (one-shot quality)** — design system → build → 3 independent critics → fix → re-round (varies; reserve for high-stakes/reusable artifacts)
-- 🗄️ **Database Design** — entities → schema → migration → indexes (15-60 min)
-- 🔐 **Security Review** — threat model → requirements → scan → fix (20-60 min)
-- 💡 **Brainstorm/Ideation** — diverge → cluster → converge → validate (15-45 min)
-- 📋 **Document-First Build** — PRD → arch → stories → execute (large features)
-- 🧪 **Test Strategy** — risk assess → ATDD → adversarial review (20-60 min)
-- 🧬 **Change-Spec (existing codebases)** — baseline spec → proposal → spec delta → build → spec check → merge delta (see `references/change-spec.md`)
+`references/workflows.md` has a pre-built fast path for each common scenario: bug fix, new feature, documentation, new project, marketing launch, security audit, refactor, UX/UI design, motion and interaction, design loop, database design, security review, brainstorm, document-first build, and test strategy. Changes to existing code use `references/change-spec.md`.
 
-If the user's request matches one of these, use that workflow instead of the generic phases below.
+If the user's request matches one of these, read that workflow and use it instead of the generic phases below.
 
 ---
 
@@ -172,27 +122,7 @@ Please provide values for each. I'll write them to .env.example.
 ```
 Never start EXECUTE without collecting all env vars first.
 
-Based on answers, determine which specialists are needed. Example mappings:
-
-| Request Type | Primary Specialist | Supporting |
-|---|---|---|
-| New feature (large) | PM (PRD) → System Designer → Software Architect → Tech Lead → Scrum | UX, DBA, Test Architect, Security |
-| New feature (small) | Software Architect → Tech Lead → Backend/Frontend | Tester |
-| Bug fix | Tech Lead → Backend or Frontend | Tester |
-| New project | PM (PRD) → System Designer → Software Architect → Tech Lead → Scrum | UX, DBA, Security, DevOps |
-| Sprint planning | Scrum Master → PM | Tech Lead |
-| Deployment issue | DevOps/DevSecOps | Deployment, Tech Lead |
-| Database work | DBA | Backend Dev, Tech Lead |
-| Security review | Security Engineer | DevSecOps, Test Architect |
-| System/infra design | System Designer | Tech Lead, DBA, DevOps |
-| Software structure | Software Architect | Tech Lead, Backend Dev |
-| UI/UX design | UX Designer → UI Designer | Motion Designer, Frontend Dev, Copywriter, Design Loop (before ship) |
-| Motion / animation / transitions / promo video | Motion Designer | UI Designer, Frontend Dev, Design Loop |
-| Brainstorm / ideation | Creative Intelligence | PM, Tech Lead, UX |
-| Test strategy | Test Architect | Tester, Security Engineer |
-| Marketing need | Digital Marketer | Copywriter, Content |
-| Content creation | Content Marketer | Copywriter |
-| Documentation | Tech Lead | relevant dev specialist |
+Based on the answers, pick the lead specialist. `references/team.md` lists who leads each request type and when to load each specialist.
 
 **Change-spec rule**: For a Standard or Full task that changes the behaviour of existing code, read
 `references/change-spec.md` and work from a spec delta: the user confirms the delta with the plan, and
@@ -252,11 +182,13 @@ For each code task:
   2. Dispatch cts:implementer with the brief
   3. Dispatch cts:spec-reviewer with the brief + implementer's report
        FAIL → send findings back to cts:implementer, then re-review
-  4. Dispatch cts:quality-reviewer (only after spec PASS)
+  4. Dispatch cts:quality-reviewer as soon as the spec review returns PASS
        FAIL → send critical/high findings back to cts:implementer, then re-review
   5. Show the user: what changed, both verdicts, open medium/low findings
   6. Ask: "Good? Next task, or adjustments needed?"
 ```
+
+A spec PASS does not finish the task: the quality review always runs next, and the task is done only when both reviewers have returned a verdict.
 
 After two failed rounds at either review stage, stop and use the blocker protocol. A third attempt at the same brief usually means the brief or the plan is wrong.
 
@@ -344,92 +276,19 @@ If this sprint completes a project version:
 
 ---
 
-## Team Interaction Map
+## Specialists
 
-```
-                         ┌─────────┐
-                         │   PM    │ ← scope, risk, status
-                         └────┬────┘
-                              │
-              ┌───────────────┼───────────────┐
-              │               │               │
-        ┌─────┴─────┐   ┌────┴────┐   ┌─────┴─────┐
-        │   Scrum   │   │ System  │   │ Security  │ ← threat model
-        │  Master   │   │Designer │   │ Engineer  │
-        └─────┬─────┘   └────┬────┘   └─────┬─────┘
-              │               │               │
-              │         ┌─────┴──────┐        │
-              │         │  Software  │        │
-              │         │ Architect  │        │
-              │         └─────┬──────┘        │
-              │               │               │
-              └───────────────┼───────────────┘
-                              │
-                       ┌──────┴──────┐
-                       │  Tech Lead  │ ← architecture, standards
-                       └──────┬──────┘
-                              │
-          ┌──────┬──────┬─────┼──────┬──────┐
-          │      │      │     │      │      │
-       ┌──┴──┐┌──┴──┐┌──┴──┐┌┴────┐┌┴────┐┌┴────┐
-       │ UX  ││ DBA ││Back-││Front││DevOps││Test │
-       │Desgn││     ││end  ││end  ││DevSec││Arch │
-       └──┬──┘└──┬──┘└──┬──┘└──┬──┘└──┬──┘└──┬──┘
-          │      │      │      │      │      │
-       ┌──┴──┐   │      │      │   ┌──┴──┐   │
-       │ UI  │   │      └──┬───┘   │Deploy│  │
-       │Desgn│   │         │       └──────┘  │
-       └──┬──┘   └────┬────┘                 │
-          │           │                      │
-       ┌──┴──┐        │                      │
-       │Motn │        │                      │  ← animation, transitions, promo video
-       │Desgn│        │                      │
-       └──┬──┘        │                      │
-          └─────┬─────┘                      │
-                │                            │
-          ┌─────┴─────┐                      │
-          │  Tester   │←─────────────────────┘
-          └───────────┘  ← tests everything, enforces ≥80% coverage
+Each specialist is one skill; load only the one the current step needs:
 
-  ┌────────────────────────────────┐
-  │ Digital Marketer → Copywriter  │
-  │       ↕            ↕          │ ← marketing team (activates post-ship)
-  │ Content Marketer              │
-  └────────────────────────────────┘
-```
+project-manager, scrum-master, system-designer, software-architect, tech-lead, security-engineer, dba,
+ux-designer, ui-designer, motion-designer, design-loop, backend-dev, frontend-dev, tester, test-architect,
+deployment, devops-devsecops, creative-intelligence, digital-marketer, copywriter, content-marketer,
+project-monitor.
 
-**Flow direction**: PM defines scope → System Designer designs topology + NFRs → Software Architect designs internal structure → Scrum breaks into sprints → Tech Lead sets standards → specialists build → Tester verifies (≥80% coverage gate) → Deployment ships → git push → video recording at version completion. Security Engineer reviews at design and verification. Marketing team activates after ship.
-
----
-
-## Specialist Routing Table
-
-When you need a specialist, read ONLY that skill's SKILL.md:
-
-| Specialist | Skill Path | Load When |
-|---|---|---|
-| Project Manager | `project-manager/SKILL.md` | Project initiation, scope, stakeholders, risk |
-| Scrum Master | `scrum-master/SKILL.md` | Sprint planning, backlog, ceremonies, velocity |
-| System Designer | `system-designer/SKILL.md` | High-level topology, NFRs, scalability, distributed systems, data flow |
-| Software Architect | `software-architect/SKILL.md` | Code structure, design patterns, DDD, module boundaries, architectural fitness |
-| Tech Lead | `tech-lead/SKILL.md` | Tech stack decisions, code review standards, ADRs, technical direction |
-| Security Engineer | `security-engineer/SKILL.md` | Threat modeling, auth design, compliance, security architecture |
-| DBA | `dba/SKILL.md` | Schema design, queries, migrations, indexes, database ops |
-| UX Designer | `ux-designer/SKILL.md` | User flows, wireframes, IA, usability, interaction design |
-| UI Designer | `ui-designer/SKILL.md` | Visual design, design tokens, color, typography, component styling |
-| Motion Designer | `motion-designer/SKILL.md` | Animation, micro-interactions, transitions, scroll choreography, reduced-motion strategy, motion graphics / React→MP4 video, generative background visuals |
-| Design Loop | `design-loop/SKILL.md` | Before shipping any high-stakes UI/graphic — runs independent fresh-context critics (brief/system/craft) instead of self-review |
-| Backend Dev | `backend-dev/SKILL.md` | APIs, server logic, microservices |
-| Frontend Dev | `frontend-dev/SKILL.md` | UI components, state management, accessibility |
-| Tester | `tester/SKILL.md` | Unit/integration/e2e tests, QA checklists, coverage enforcement |
-| Test Architect | `test-architect/SKILL.md` | Test strategy, ATDD, adversarial review, edge case hunting, release gates |
-| Deployment | `deployment/SKILL.md` | Release process, rollback, environments |
-| DevOps/DevSecOps | `devops-devsecops/SKILL.md` | CI/CD, infra, security scanning, hardening |
-| Creative Intelligence | `creative-intelligence/SKILL.md` | Brainstorming, design thinking, storytelling, innovation |
-| Digital Marketer | `digital-marketer/SKILL.md` | SEO, campaigns, analytics, growth |
-| Copywriter | `copywriter/SKILL.md` | Ad copy, emails, landing pages, CTAs |
-| Content Marketer | `content-marketer/SKILL.md` | Blog posts, social media, content strategy |
-| Project Monitor | `project-monitor/SKILL.md` | Logging, KPIs, status reports, retrospectives, session resumption |
+**Flow**: PM defines scope → System Designer → Software Architect → Scrum Master plans → Tech Lead sets
+standards → specialists build → Tester verifies (≥80% coverage) → Deployment ships. Security Engineer reviews
+at design and at verification. Marketing activates after ship. `references/team.md` has the team map, the
+lead specialist per request type, and when to load each one.
 
 ---
 
