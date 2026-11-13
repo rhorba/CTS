@@ -221,7 +221,7 @@ principles = [
     ("YAGNI", "You Aren't Gonna Need It. Before building, designing, or planning anything, "
                "ask: \"Is this needed RIGHT NOW?\" Default to the simplest approach."),
     ("Token Efficiency", "Load one specialist at a time. Handoffs use 2-3 line summaries. "
-                          "~3-5K tokens for routing vs 35K+ if all skills loaded at once."),
+                          "About 2-4K tokens of routing on the Quick track and 8-10K on Standard, against about 39K if all skills were loaded at once."),
     ("Project Memory", "Eight append-only log files in .logs/. Resume any session exactly where "
                         "you left off. Decisions, bugs, and risks never disappear."),
     ("Strict Process", "6 mandatory phases with hard gates. VERIFY before SHIP — always. "
@@ -987,9 +987,10 @@ h2("Load Cost Comparison")
 add_table(
     ["Approach", "Token Cost"],
     [
-        ["CLAUDE.md + Orchestrator + 1 specialist",     "~3-5K tokens"],
-        ["CLAUDE.md + Orchestrator + 1 specialist + 1 reference file", "~6-10K tokens"],
-        ["All 23 skills loaded at once",                "~35K+ tokens (wasteful)"],
+        ["Quick track: session context + 1 specialist", "~2-4K tokens"],
+        ["Standard track: session context + Orchestrator + 1 specialist", "~8-10K tokens"],
+        ["Standard track + 1 reference file",            "~11-15K tokens"],
+        ["All 23 skills loaded at once",                "~39K tokens"],
     ],
     col_widths=[3.5, 3.0]
 )

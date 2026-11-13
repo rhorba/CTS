@@ -102,13 +102,13 @@ You say something
 ## Token Usage
 
 This setup is designed to be lean:
-- CLAUDE.md: ~1K tokens (always loaded)
-- Orchestrator: ~2K tokens (loaded at session start)
-- Each specialist: ~1-2K tokens (loaded one at a time)
+- Session context (plugin): ~0.5K tokens, or CLAUDE.md (copy install): ~2K tokens (always loaded)
+- Orchestrator: ~6K tokens (loaded for Standard and Full track work)
+- Each specialist: ~1-3K tokens (loaded one at a time)
 - Reference files: ~3-5K tokens each (loaded only for deep dives)
 
-**Typical session cost**: ~3-5K tokens for routing + whatever the actual coding costs.
-Compare to loading everything at once: ~35K+ tokens wasted.
+**Typical routing cost**: ~2-4K tokens on the Quick track and ~8-10K on Standard, plus whatever the actual work costs.
+Loading everything at once would cost ~39K tokens. These are estimates at about 4 characters per token.
 
 ## Customization
 
@@ -154,19 +154,10 @@ A: On first session, Claude creates a `.logs/` directory with 8 structured log f
 **Q: Should I commit `.logs/` to git?**
 A: Up to you. The init script adds `.logs/` to `.gitignore` by default (keeps logs private). Remove that line if you want logs in version control for team visibility.
 
-## Intentional Trade-offs (vs BMAD Method)
+## How CTS Compares
 
-Claude Team Skills intentionally skips these BMAD features to stay **lightweight and zero-dependency**:
+CTS is one of several free agent-workflow frameworks, and the established ones (Superpowers, ECC, Spec Kit, OpenSpec, BMAD Method) have far larger communities. Hooks, session memory, per-task subagents and spec deltas all exist elsewhere. What CTS adds is a team beyond engineering (UX, UI, motion, copy, content, marketing, project management) in the same gated workflow, and a hook that blocks `git push` until verification is logged.
 
-| BMAD Feature We Skip | Why We Skip It |
-|---|---|
-| NPM installer | CTS is zero-dependency — just copy markdown files, no Node.js required |
-| Per-IDE installers (10+ IDEs) | CTS is built for Claude Code; other agents get one generated `AGENTS.md` (see `templates/AGENTS.md`) and an optional git pre-push gate |
-| Agent personas (named characters) | CTS uses role-based skills, not character personas — simpler, less tokens |
-| Party Mode (multi-agent debate) | CTS uses sequential handoffs to save tokens (~70% less than loading all agents) |
-| Modular expansion packs | CTS is a single bundle — one download, everything included |
-| Automatic scale detection | CTS uses three explicit depth tracks (Quick / Standard / Full) — proposed in one line, overridable in one word |
-| Agent-as-Code (YAML compilation) | CTS uses plain markdown — editable with any text editor, no build step |
-| Web bundles (ChatGPT/Gemini) | CTS is Claude Code native — optimized for one platform done well |
+CTS's design choices: plain markdown and POSIX shell with no build step, role-based skills rather than personas, one specialist loaded at a time, and a single bundle.
 
-These are **design choices, not missing features**. CTS prioritizes simplicity, token efficiency, and operational awareness (logging, KPIs, session resumption) over platform breadth and ecosystem size.
+The repository README has the comparison table, and `cts-comparison.pdf` has the feature-by-feature detail and known limits.

@@ -135,7 +135,7 @@ Interactive: options → pick → execute → verify
 Switches specialist with a 2-3 line handoff summary
 ```
 
-**Token cost:** CLAUDE.md (~1K) + Orchestrator (~2K) + one specialist (~1-2K) = ~3-5K tokens for routing. Compare to loading all 23 skills at once: 35K+ tokens wasted.
+**Token cost** (estimated at about 4 characters per token): on the Quick track, the session context (~0.5K) plus one specialist (~1-3K) comes to ~2-4K tokens. On the Standard track the Orchestrator adds ~6K, for ~8-10K. Loading all 23 skills at once would cost ~39K.
 
 ---
 
@@ -224,7 +224,7 @@ Write SESSION_END to .logs/sessions.md:
   - Next: [planned next steps]
 ```
 
-### Enforced by Hooks, Not Just Instructions
+### Hook-Enforced Gates
 
 When CTS is installed as a plugin, three hooks back the rules with code. They are plain POSIX shell with no dependencies (on Windows, Claude Code runs them through Git Bash).
 
@@ -875,20 +875,41 @@ Then add the skill to the Orchestrator's routing table and the `CLAUDE.md` skill
 
 ---
 
-## Intentional Trade-offs (vs BMAD Method)
+## How CTS Compares
 
-CTS skips these BMAD features by design to stay **lightweight and zero-dependency**:
+CTS is new and has no user base yet. The projects below are established, free, and good; several do one thing better than CTS does. Star counts are from the GitHub API on 13 November 2026, rounded.
 
-| BMAD Feature Skipped | Why |
-|---|---|
-| NPM installer | CTS is zero-dependency — copy markdown, no Node.js |
-| Per-IDE installers (10+) | Built for Claude Code; other agents get one generated `AGENTS.md` and an optional git pre-push gate |
-| Named agent personas | Role-based skills use fewer tokens and are easier to maintain |
-| Party Mode (multi-agent debate) | Sequential handoffs save ~70% tokens |
-| Modular expansion packs | Single bundle — one download, everything included |
-| Automatic scale detection | Three explicit depth tracks (Quick / Standard / Full) — proposed in one line, overridable in one word |
-| Agent-as-Code (YAML compilation) | Plain markdown — editable in any text editor |
-| Web bundles (ChatGPT/Gemini) | Claude Code native — one platform done well |
+| Project | Stars | Known for | Choose it when |
+|---|---|---|---|
+| [Superpowers](https://github.com/obra/superpowers) | 317,000 | An engineering methodology: brainstorm, plan, test-driven work, per-task subagents with two-stage review | You want engineering discipline and the largest community |
+| [ECC](https://github.com/affaan-m/ECC) | 302,000 | A large ready-made configuration: agents, skills, hooks, security scanning, memory, across several coding agents | You want one broad setup for Claude Code, Cursor, Codex and OpenCode |
+| [Spec Kit](https://github.com/github/spec-kit) | 150,000 | Spec-driven development for new work | You are starting a greenfield project from a spec |
+| [OpenSpec](https://github.com/Fission-AI/OpenSpec) | 75,000 | Lightweight spec tracking for changes to existing code | Spec deltas on a brownfield codebase are all you need |
+| [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD) | 55,000 | The agile lifecycle with roles, tracks and many workflows | Your team wants agile roles and ceremonies |
+| [wshobson/agents](https://github.com/wshobson/agents) | 42,000 | A catalogue of plugins, agents and skills generated for many tools | You want to pick individual agents rather than adopt a workflow |
+| **CTS** | 0 | A 23-role team run through six gated phases | You want design, marketing and project management covered alongside the code |
+
+**What CTS shares with them.** These ideas are not unique to CTS, and it does not claim them as such:
+
+- Hooks and cross-session memory (ECC ships both)
+- A fresh subagent per task with spec review then quality review (Superpowers)
+- Spec deltas for existing code (OpenSpec's core purpose)
+- Depth tracks that scale the process (BMAD)
+
+**What CTS adds.**
+
+- **A team beyond engineering**: UX, UI, motion, copy, content, marketing and project management specialists in the same workflow as the developers. The larger projects above are engineering-focused or not role-based.
+- **A gate on the push itself**: `git push` is blocked until verification and coverage are logged, and the same script works as a plain git pre-push hook under any agent.
+- **Its own test results in the repo**, including what fails: see `claude-team-skills/evals/README.md`.
+
+**Design choices.**
+
+- Plain markdown and POSIX shell, with no Node.js, npm, or build step
+- Role-based skills rather than named personas
+- One specialist loaded at a time, with written handoffs, rather than several agents in one conversation
+- One bundle rather than modules to pick from
+
+`cts-comparison.pdf` has the feature-by-feature table and CTS's known limits.
 
 ---
 
