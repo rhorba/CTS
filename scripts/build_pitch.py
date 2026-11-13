@@ -388,12 +388,12 @@ for i, line in enumerate(with_cts):
 # budget table
 rect(s, Inches(0.3), Inches(5.95), Inches(12.75), Inches(1.25), LIGHT_GRAY)
 budget = [
-    ("Quick bug fix", "3-8K"),
-    ("Small feature", "8-15K"),
-    ("Large feature", "15-30K"),
-    ("New project", "15-25K"),
-    ("Security audit", "5-15K"),
-    ("Test strategy", "5-10K"),
+    ("Quick question", "~2K"),
+    ("Bug fix", "~10K"),
+    ("Small feature", "~13K"),
+    ("UX/UI design", "~14K"),
+    ("Security audit", "~10K"),
+    ("New project", "~25K"),
 ]
 col_w = Inches(2.12)
 for i, (label, tokens) in enumerate(budget):

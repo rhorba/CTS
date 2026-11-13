@@ -995,24 +995,26 @@ add_table(
     col_widths=[3.5, 3.0]
 )
 
-h2("Session Budget by Type")
+h2("Skill-Loading Cost by Session Type")
+body("What CTS itself adds to the context: the session context plus each skill file loaded, summed from the skill files at about 4 characters per token. Your code, the conversation, tool output, reference files and subagent runs are extra and are not measured here.")
 add_table(
-    ["Session Type", "Expected Tokens", "Skills Loaded"],
+    ["Session Type", "Skills Loaded", "Skill-Loading Cost"],
     [
-        ["Quick bug fix",         "3-8K",   "Orchestrator + 1 dev + Tester"],
-        ["Small feature",         "8-15K",  "Orchestrator + Tech Lead + 1-2 devs + Tester"],
-        ["Large feature",         "15-30K", "Multiple specialists across batches"],
-        ["New project scaffold",  "15-25K", "PM + System Designer + Software Architect + Tech Lead + DBA + devs + DevOps"],
-        ["Database design",       "5-10K",  "DBA + Backend Dev"],
-        ["UX/UI design",          "5-12K",  "UX + UI + Frontend + Copywriter"],
-        ["Security audit",        "5-15K",  "Security Eng + DevSecOps + references"],
-        ["Brainstorm session",    "3-8K",   "Creative Intelligence + PM or Tech Lead"],
-        ["Test strategy",         "5-10K",  "Test Architect + Tester + Security Eng"],
-        ["Document-first build",  "10-20K", "PM + Tech Lead + Scrum + devs"],
-        ["Sprint planning",       "3-8K",   "PM + Scrum Master"],
+        ["Quick question (Quick track)", "1 specialist, no Orchestrator", "~2K"],
+        ["Bug fix", "Orchestrator + Tech Lead + 1 dev + Tester", "~10K"],
+        ["Small feature", "Orchestrator + Software Architect + Tech Lead + 2 devs + Tester", "~13K"],
+        ["New project", "Orchestrator + 14 of the specialists across the session", "~25K"],
+        ["Database design", "Orchestrator + DBA + Tech Lead + Backend Dev", "~10K"],
+        ["UX/UI design", "Orchestrator + UX + UI + Motion + Copywriter + Frontend", "~14K"],
+        ["Security audit", "Orchestrator + Security Eng + DevSecOps + DBA", "~10K"],
+        ["Brainstorm session", "Orchestrator + Creative Intelligence + PM", "~10K"],
+        ["Test strategy", "Orchestrator + Test Architect + Tester + Security Eng", "~11K"],
+        ["Sprint planning", "Orchestrator + Scrum Master + PM + Tech Lead", "~10K"],
+        ["Marketing launch", "Orchestrator + Digital Marketer + Copywriter + Content Marketer", "~9K"],
     ],
-    col_widths=[2.0, 1.5, 3.0]
+    col_widths=[2.0, 3.3, 1.2]
 )
+
 
 h2("5 Efficiency Rules")
 rules_tok = [

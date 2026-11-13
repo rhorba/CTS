@@ -823,10 +823,27 @@ Which one?
 
 ---
 
-## Token Budget by Session Type
+## Skill-Loading Cost by Session Type
 
-| Session Type | Expected Tokens | Skills Loaded |
+What CTS itself adds to the context: the session context (~0.5K) plus each skill file loaded, summed from the files in this repository at about 4 characters per token.
+
+| Session Type | Skills Loaded | Skill-Loading Cost |
 |---|---|---|
+| Quick question (Quick track) | 1 specialist, no Orchestrator | ~2K |
+| Bug fix | Orchestrator + Tech Lead + 1 dev + Tester | ~10K |
+| Small feature | Orchestrator + Software Architect + Tech Lead + 2 devs + Tester | ~13K |
+| New project | Orchestrator + 14 of the specialists across the session | ~25K |
+| Database design | Orchestrator + DBA + Tech Lead + Backend Dev | ~10K |
+| UX/UI design | Orchestrator + UX + UI + Motion + Copywriter + Frontend | ~14K |
+| Security audit | Orchestrator + Security Eng + DevSecOps + DBA | ~10K |
+| Brainstorm session | Orchestrator + Creative Intelligence + PM | ~10K |
+| Test strategy | Orchestrator + Test Architect + Tester + Security Eng | ~11K |
+| Sprint planning | Orchestrator + Scrum Master + PM + Tech Lead | ~10K |
+| Marketing launch | Orchestrator + Digital Marketer + Copywriter + Content Marketer | ~9K |
+
+These figures cover CTS's instruction files only. They exclude your code, the conversation, tool output, and reference files (1-14K per skill when read). Subagent runs and Design Loop critic rounds each start their own context and have not been measured.
+
+---|---|---|
 | Quick bug fix | 3-8K | Orchestrator + 1 dev + Tester |
 | Small feature | 8-15K | Orchestrator + Tech Lead + 1-2 devs + Tester |
 | Large feature | 15-30K | Multiple specialists across batches |
