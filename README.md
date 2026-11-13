@@ -86,6 +86,16 @@ your-project/
 
 This is the entry point. Claude Code reads it first on every session and loads the Orchestrator.
 
+### Option C — Other coding agents (`AGENTS.md`)
+
+For agents that read `AGENTS.md` instead of `CLAUDE.md`:
+
+1. Copy `claude-team-skills/skills/` into your project root as `skills/`.
+2. Copy `claude-team-skills/templates/AGENTS.md` to your project root.
+3. Optional: copy `claude-team-skills/hooks/push-gate.sh` to `.git/hooks/pre-push` and make it executable. Git itself then refuses to push until VERIFY and coverage are logged, whichever agent is driving.
+
+`AGENTS.md` is generated from the skill files (`scripts/build-agents-md.py`), so its specialist table cannot drift. Outside Claude Code there are no session hooks and no `cts:` subagents; the file explains what to do instead.
+
 ### Start working
 
 Open Claude Code and describe what you need:
@@ -872,7 +882,7 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 | BMAD Feature Skipped | Why |
 |---|---|
 | NPM installer | CTS is zero-dependency — copy markdown, no Node.js |
-| Multi-IDE support (10+) | Optimised for Claude Code specifically |
+| Per-IDE installers (10+) | Built for Claude Code; other agents get one generated `AGENTS.md` and an optional git pre-push gate |
 | Named agent personas | Role-based skills use fewer tokens and are easier to maintain |
 | Party Mode (multi-agent debate) | Sequential handoffs save ~70% tokens |
 | Modular expansion packs | Single bundle — one download, everything included |

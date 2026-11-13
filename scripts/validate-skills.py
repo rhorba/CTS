@@ -38,7 +38,7 @@ REQUIRED_SKILLS = [
 REQUIRED_AGENTS = ["implementer", "spec-reviewer", "quality-reviewer"]
 
 # Paths relative to the plugin directory.
-REQUIRED_PLUGIN_FILES = ["INSTALL.md", "QUICKSTART.md", "templates/CLAUDE.md"]
+REQUIRED_PLUGIN_FILES = ["INSTALL.md", "QUICKSTART.md", "templates/CLAUDE.md", "templates/AGENTS.md"]
 
 # Docs whose "N specialists" / "all N" claims must match the real skill count.
 COUNTED_DOCS = [

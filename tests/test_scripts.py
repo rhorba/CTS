@@ -23,6 +23,7 @@ def load(name):
 
 validate = load("validate-skills")
 sync = load("sync-skills")
+agents_md = load("build-agents-md")
 
 SKILL_BODY = "x" * 120
 
@@ -270,6 +271,81 @@ class SyncTests(TempDirCase):
         code, out = self.run_main(["--check"])
         self.assertEqual(code, 0)
         self.assertIn("in sync", out)
+
+
+class AgentsMdTests(TempDirCase):
+    def skill(self, name, frontmatter):
+        write(self.root / "skills" / name / "SKILL.md", f"---\nname: {name}\n{frontmatter}\n---\nbody\n")
+
+    def test_description_inline_and_folded(self):
+        self.assertEqual(agents_md.description("---\ndescription: Plain text. More.\n---\n"), "Plain text. More.")
+        folded = "---\nname: x\ndescription: >\n  First line\n  second line.\nother: y\n---\n"
+        self.assertEqual(agents_md.description(folded), "First line second line.")
+        self.assertEqual(agents_md.description("---\nname: x\n---\n"), "")
+        self.assertEqual(agents_md.description("no frontmatter"), "")
+
+    def test_first_sentence(self):
+        self.assertEqual(agents_md.first_sentence("Does one thing. Use when asked."), "Does one thing.")
+        self.assertEqual(
+            agents_md.first_sentence('The Loop (a.k.a. "Gauntlet") for design. Fixes slop.'),
+            'The Loop (a.k.a. "Gauntlet") for design.',
+        )
+        self.assertEqual(agents_md.first_sentence("No full stop"), "No full stop")
+        self.assertEqual(agents_md.first_sentence("A | B. Next"), "A \\| B.")
+
+    def test_rows_are_sorted_and_titled(self):
+        self.skill("ux-designer", "description: UX flows. More.")
+        self.skill("dba", "description: Databases. More.")
+        self.skill("empty", "other: x")
+        (self.root / "skills" / "not-a-skill").mkdir()
+        rows = agents_md.rows(self.root / "skills")
+        self.assertEqual(
+            rows,
+            [
+                "| DBA | `skills/dba/SKILL.md` | Databases. |",
+                "| Empty | `skills/empty/SKILL.md` | See the skill file. |",
+                "| UX Designer | `skills/ux-designer/SKILL.md` | UX flows. |",
+            ],
+        )
+
+    def run_agents_main(self, argv, output):
+        out = io.StringIO()
+        with redirect_stdout(out):
+            code = agents_md.main(argv, self.root / "skills", output)
+        return code, out.getvalue()
+
+    def test_main_write_and_check(self):
+        output = self.root / "out" / "AGENTS.md"
+        code, out = self.run_agents_main([], output)
+        self.assertEqual(code, 1)
+        self.assertIn("not found", out)
+
+        self.skill("dba", "description: Databases. More.")
+        code, out = self.run_agents_main(["--check"], output)
+        self.assertEqual(code, 1)
+        self.assertIn("stale", out)
+
+        code, out = self.run_agents_main([], output)
+        self.assertEqual(code, 0)
+        self.assertIn("1 specialists", out)
+        self.assertIn("| DBA |", output.read_text(encoding="utf-8"))
+
+        code, _ = self.run_agents_main(["--check"], output)
+        self.assertEqual(code, 0)
+
+        self.skill("tester", "description: Tests. More.")
+        code, _ = self.run_agents_main(["--check"], output)
+        self.assertEqual(code, 1)
+
+    def test_committed_agents_md_is_current(self):
+        old = os.getcwd()
+        os.chdir(REPO)
+        try:
+            out = io.StringIO()
+            with redirect_stdout(out):
+                self.assertEqual(agents_md.main(["--check"]), 0, out.getvalue())
+        finally:
+            os.chdir(old)
 
 
 if __name__ == "__main__":
