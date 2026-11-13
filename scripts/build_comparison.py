@@ -176,7 +176,8 @@ LIMITS = [
     "the gate, but on its own.",
     "<b>The push gate checks the log, not the tests.</b> It catches a skipped VERIFY phase. It cannot tell "
     "whether a logged pass was earned.",
-    "<b>Hooks and subagents need the plugin install,</b> and AGENTS.md is untested outside Claude Code.",
+    "<b>Hooks and subagents need the plugin install.</b> AGENTS.md has been tried in one other agent only: "
+    "GitHub Copilot CLI passed two of four prompts and partly passed the other two, one run each.",
 ]
 
 SOURCES = [

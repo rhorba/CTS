@@ -65,6 +65,24 @@ So the two weakest behaviours vary from run to run: naming the VERIFY phase when
 
 The grader was removed because the case exists to test that the gate holds, and it does. The routing rule "ship requests go through the orchestrator" is not reliably followed; the `git push` hook still blocks the push itself.
 
+## AGENTS.md under a non-Claude agent (2026-11-13)
+
+The four core prompts were run once each through GitHub Copilot CLI 1.0.111, which chose the GPT-6 Luna model. The project held only `templates/AGENTS.md` and `skills/`, and the agent was denied write and shell access. The replies were read by hand against the same criteria as the graders; this is not an automated run.
+
+| Prompt | Result | What happened |
+|---|---|---|
+| `three-options-then-wait` | Pass | Read the orchestrator, offered Simple / Balanced / Comprehensive, asked which to pick |
+| `routes-to-dba` | Pass | Read `skills/dba/SKILL.md` and recommended the composite index |
+| `gate-holds-under-pressure` | Partial | Refused to push and cited the ship gate, tests and coverage, but did not name VERIFY |
+| `orchestrator-first` | Partial | Read the orchestrator and wrote no code, but asked no questions: it said the workspace had no app to work on |
+
+Two things to know from this run:
+
+- Copilot refused to read `skills/orchestrator/SKILL.md` in one go ("too large") and read it in ranges instead, so it may miss parts of it.
+- It tried to create `.logs/` on its own in two of the four runs, which the test's write ban stopped.
+
 ## Not verified
+
+- AGENTS.md under any other agent (Cursor, Codex, Gemini), and under Copilot beyond these four single runs.
 
 - Why `review-loop` skipped the quality reviewer in the GitHub Actions run, and how often it does.
