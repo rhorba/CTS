@@ -1,0 +1,23 @@
+{
+  "name": "cts",
+  "displayName": "Claude Team Skills",
+  "version": "2.0.0-alpha.1",
+  "description": "23 specialists working as one team: an orchestrator routes every task through six gated phases (Understand, Brainstorm, Plan, Execute, Verify, Ship) with persistent project logs.",
+  "author": {
+    "name": "rhorba",
+    "url": "https://github.com/rhorba"
+  },
+  "homepage": "https://github.com/rhorba/CTS",
+  "repository": "https://github.com/rhorba/CTS",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "orchestrator",
+    "team",
+    "agile",
+    "security",
+    "testing",
+    "design",
+    "marketing"
+  ]
+}

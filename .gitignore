@@ -1,0 +1,6 @@
+.logs/
+.recordings/
+*.stackdump
+__pycache__/
+.coverage
+htmlcov/
