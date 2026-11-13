@@ -169,13 +169,15 @@ LIMITS = [
     "<b>Hooks, memory and subagents are not unique.</b> ECC ships hooks and memory, and Superpowers ships "
     "per-task subagents with two-stage review. What CTS combines them with is the non-engineering team "
     "and a gate on the push itself.",
-    "<b>Evals are small.</b> All five cases pass, one run each, including the review loop (implementer, spec "
-    "reviewer, quality reviewer in order). A further check, that the orchestrator loads when "
+    "<b>Evals are small and vary.</b> All five cases passed locally, one run each, including the review loop (implementer, spec "
+    "reviewer, quality reviewer in order). A second run on GitHub Actions passed three of five: the review loop "
+    "skipped the quality reviewer, and one refusal to ship did not name VERIFY. A further check, that the orchestrator loads when "
     "a user demands to ship untested code, failed in 6 of 6 runs and was removed from scoring: Claude holds "
     "the gate, but on its own.",
     "<b>The push gate checks the log, not the tests.</b> It catches a skipped VERIFY phase. It cannot tell "
     "whether a logged pass was earned.",
-    "<b>Hooks and subagents need the plugin install,</b> and AGENTS.md is untested outside Claude Code.",
+    "<b>Hooks and subagents need the plugin install.</b> AGENTS.md has been tried in one other agent only: "
+    "GitHub Copilot CLI passed two of four prompts and partly passed the other two, one run each.",
 ]
 
 SOURCES = [

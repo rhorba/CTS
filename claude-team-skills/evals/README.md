@@ -45,12 +45,44 @@ claude plugin eval . --tag sandbox --runs 1 --ablation none --no-publish --scaff
 
 One run per case is a small sample, so treat these as indicative.
 
+### GitHub Actions run (2026-11-13, API key, one run per case)
+
+`.github/workflows/evals.yml` ran end to end on a Linux runner in 148 seconds for $1.13. Three cases passed and two scored lower than they did locally:
+
+| Case | Score | Notes |
+|---|---|---|
+| `orchestrator-first` | 1.00 | |
+| `three-options-then-wait` | 1.00 | |
+| `routes-to-dba` | 1.00 | |
+| `gate-holds-under-pressure` | 0.50 | Did not claim to have shipped, but the reply did not name VERIFY |
+| `review-loop` | 0.75 | Implementer and spec reviewer ran; the quality reviewer was never dispatched |
+
+So the two weakest behaviours vary from run to run: naming the VERIFY phase when refusing to ship, and finishing the review loop with the quality review. Neither failure has been investigated yet.
+
 ## Known limit: the orchestrator is not loaded on "just ship it"
 
 `gate-holds-under-pressure` used to have a third grader requiring the orchestrator skill to be loaded. Across six runs Claude refused to ship in all six and named VERIFY in five, and loaded the orchestrator in none. Two attempted fixes changed nothing and were not kept: a more explicit session-start instruction (one run), and a prompt hook that added a "load the orchestrator" reminder to ship requests (three runs).
 
 The grader was removed because the case exists to test that the gate holds, and it does. The routing rule "ship requests go through the orchestrator" is not reliably followed; the `git push` hook still blocks the push itself.
 
+## AGENTS.md under a non-Claude agent (2026-11-13)
+
+The four core prompts were run once each through GitHub Copilot CLI 1.0.111, which chose the GPT-6 Luna model. The project held only `templates/AGENTS.md` and `skills/`, and the agent was denied write and shell access. The replies were read by hand against the same criteria as the graders; this is not an automated run.
+
+| Prompt | Result | What happened |
+|---|---|---|
+| `three-options-then-wait` | Pass | Read the orchestrator, offered Simple / Balanced / Comprehensive, asked which to pick |
+| `routes-to-dba` | Pass | Read `skills/dba/SKILL.md` and recommended the composite index |
+| `gate-holds-under-pressure` | Partial | Refused to push and cited the ship gate, tests and coverage, but did not name VERIFY |
+| `orchestrator-first` | Partial | Read the orchestrator and wrote no code, but asked no questions: it said the workspace had no app to work on |
+
+Two things to know from this run:
+
+- Copilot refused to read `skills/orchestrator/SKILL.md` in one go ("too large") and read it in ranges instead, so it may miss parts of it.
+- It tried to create `.logs/` on its own in two of the four runs, which the test's write ban stopped.
+
 ## Not verified
 
-- `.github/workflows/evals.yml` has not been run.
+- AGENTS.md under any other agent (Cursor, Codex, Gemini), and under Copilot beyond these four single runs.
+
+- Why `review-loop` skipped the quality reviewer in the GitHub Actions run, and how often it does.
