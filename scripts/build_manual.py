@@ -335,7 +335,7 @@ code_block(
 h2("Step 2 — Add CLAUDE.md to your project root")
 body(
     "Copy claude-team-skills/templates/CLAUDE.md to your project root. Claude Code reads it on every session start and loads the Orchestrator. "
-    "It contains 12 strict framework rules, the skill locations table, commit conventions, and env var guidance."
+    "It contains 13 strict framework rules, the skill locations table, commit conventions, and env var guidance."
 )
 
 h2("Step 3 — Initialize logs (optional)")

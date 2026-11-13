@@ -240,6 +240,12 @@ class SyncTests(TempDirCase):
         self.assertEqual(sync.drift(self.source, self.mirror), [])
         self.assertFalse((self.mirror / "c").exists())
 
+    def test_line_endings_are_not_drift(self):
+        sync.sync(self.source, self.mirror)
+        (self.mirror / "a" / "SKILL.md").write_bytes(b"line one\r\nline two\r\n")
+        (self.source / "a" / "SKILL.md").write_bytes(b"line one\nline two\n")
+        self.assertEqual(sync.drift(self.source, self.mirror), [])
+
     def test_drift_when_mirror_absent(self):
         self.assertEqual(len(sync.drift(self.source, self.mirror)), 2)
 

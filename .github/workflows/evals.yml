@@ -1,0 +1,57 @@
+name: Evals
+
+# Manual only: each run starts real Claude sessions and spends tokens.
+# Requires an ANTHROPIC_API_KEY repository secret.
+on:
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: Runs per case
+        default: "1"
+      max_cost_usd:
+        description: Cost ceiling in USD
+        default: "5"
+
+jobs:
+  plugin-evals:
+    name: Behavioural evals
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the sandbox backend
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq bubblewrap socat
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Run evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::Add an ANTHROPIC_API_KEY repository secret to run evals."
+            exit 1
+          fi
+          claude plugin eval ./claude-team-skills \
+            --runs "${{ inputs.runs }}" \
+            --ablation none \
+            --scaffold --trust-plugin --no-publish \
+            --allow-tools Write Edit Bash \
+            --max-cost-usd "${{ inputs.max_cost_usd }}" \
+            --json eval-result.json
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: |
+            eval-result.json
+            claude-team-skills/evals/results/
+          if-no-files-found: ignore

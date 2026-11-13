@@ -7,7 +7,6 @@ The single source of truth is claude-team-skills/skills/. Never edit .claude/ski
     python3 scripts/sync-skills.py --check  # exit 1 if the mirror has drifted (used in CI)
 """
 
-import filecmp
 import shutil
 import sys
 from pathlib import Path
@@ -20,6 +19,11 @@ def relative_files(root):
     return {p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()}
 
 
+def same_content(a, b):
+    """Compare ignoring line endings: git may check the two copies out with different ones."""
+    return a.read_bytes().replace(b"\r\n", b"\n") == b.read_bytes().replace(b"\r\n", b"\n")
+
+
 def drift(source=SOURCE, mirror=MIRROR):
     """Return a sorted list of human-readable differences between source and mirror."""
     src = relative_files(source)
@@ -29,7 +33,7 @@ def drift(source=SOURCE, mirror=MIRROR):
     problems += [
         f"content differs: {f}"
         for f in src & dst
-        if not filecmp.cmp(source / f, mirror / f, shallow=False)
+        if not same_content(source / f, mirror / f)
     ]
     return sorted(problems)
 

@@ -407,10 +407,10 @@ slide_number(s, 8, TOTAL)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Slide 9 — 13 Pre-Built Workflows
+# Slide 9 — Pre-Built Workflows
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 s = add_slide()
-header_band(s, "13 Pre-Built Workflows",
+header_band(s, "Pre-Built Workflows",
             "Orchestrator recognises the scenario and uses an optimised fast-path automatically")
 
 workflows = [

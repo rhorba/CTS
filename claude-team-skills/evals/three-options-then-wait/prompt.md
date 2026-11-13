@@ -1,4 +1,5 @@
 ---
+tags: [core]
 description: With UNDERSTAND already answered, BRAINSTORM must present three ranked options and wait for a pick.
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
