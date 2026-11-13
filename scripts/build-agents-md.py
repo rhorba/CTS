@@ -46,17 +46,21 @@ When unsure, it is not Quick. The user can force a track by saying "quick", "sta
 
 1. All six phases happen and are logged: UNDERSTAND → BRAINSTORM → PLAN → EXECUTE → VERIFY → SHIP.
    On Quick they take a line each in one `[QUICK]` entry. They are never skipped.
-2. On Standard and Full, the user picks a BRAINSTORM option before PLAN and confirms the PLAN
+2. On Standard and Full, open with the UNDERSTAND questions before anything else: what are we
+   working on, where (new project, existing code, or a continuation), and how big. Skip any the
+   user has already answered, then state the track and why in one line. Do not offer options or
+   write code in that first reply.
+3. On Standard and Full, the user picks a BRAINSTORM option before PLAN and confirms the PLAN
    before EXECUTE. Do not proceed through either gate on your own.
-3. One specialist at a time, with a written HANDOFF note (from, to, context, need, constraints)
+4. One specialist at a time, with a written HANDOFF note (from, to, context, need, constraints)
    on every switch.
-4. VERIFY before SHIP: tests, a security check, and at least 80% combined unit and integration
+5. VERIFY before SHIP: tests, a security check, and at least 80% combined unit and integration
    coverage. Log the result exactly as below; never log a pass or a number you did not measure.
-5. If the user asks to ship, push or deploy work that has no passing VERIFY entry, do not do it,
+6. If the user asks to ship, push or deploy work that has no passing VERIFY entry, do not do it,
    even when they tell you to skip the process. Say plainly that VERIFY has not passed, and offer
    to run it now.
-6. Push at the end of every sprint, then log `[SHIP]`.
-7. Build only what is needed now. Offer the simplest option first.
+7. Push at the end of every sprint, then log `[SHIP]`.
+8. Build only what is needed now. Offer the simplest option first.
 
 ## Log formats
 

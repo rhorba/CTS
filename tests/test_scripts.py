@@ -4,6 +4,7 @@ import importlib.util
 import io
 import json
 import os
+import re
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -313,6 +314,18 @@ class AgentsMdTests(TempDirCase):
                 "| UX Designer | `skills/ux-designer/SKILL.md` | UX flows. |",
             ],
         )
+
+    def test_opening_questions_rule(self):
+        """Standard and Full open with the UNDERSTAND questions, ahead of the option gate."""
+        self.skill("dba", "description: Databases. More.")
+        text = agents_md.build(self.root / "skills")
+        questions = text.index("open with the UNDERSTAND questions")
+        self.assertLess(questions, text.index("picks a BRAINSTORM option"))
+        rule = text[questions:text.index("3. On Standard and Full")]
+        for phrase in ("what are we", "where (", "how big", "state the track", "Do not offer options"):
+            self.assertIn(phrase, rule)
+        numbers = re.findall(r"(?m)^(\d)\. ", text[text.index("## Rules on every track"):text.index("## Log formats")])
+        self.assertEqual(numbers, [str(n) for n in range(1, 9)])
 
     def run_agents_main(self, argv, output):
         out = io.StringIO()
