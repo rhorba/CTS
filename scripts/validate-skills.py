@@ -35,6 +35,8 @@ REQUIRED_SKILLS = [
     "project-monitor",
 ]
 
+REQUIRED_AGENTS = ["implementer", "spec-reviewer", "quality-reviewer"]
+
 # Paths relative to the plugin directory.
 REQUIRED_PLUGIN_FILES = ["INSTALL.md", "QUICKSTART.md", "templates/CLAUDE.md"]
 
@@ -86,6 +88,22 @@ def validate_skill(skills_dir, skill_name, errors):
     body = content[closing:].strip()
     if len(body) < 100:
         errors.append(f"{skill_path}: Skill body too short (< 100 chars)")
+
+
+def validate_agents(plugin_dir, required, errors):
+    agents_dir = plugin_dir / "agents"
+    for agent in required:
+        path = agents_dir / f"{agent}.md"
+        if not path.exists():
+            errors.append(f"Missing required agent file: {path}")
+            continue
+        fm = parse_frontmatter(path.read_text(encoding="utf-8"), path, errors)
+        if not fm:
+            continue
+        if fm.get("name") != agent:
+            errors.append(f"{path}: name '{fm.get('name')}' does not match file '{agent}.md'")
+        if not fm.get("description"):
+            errors.append(f"{path}: Missing 'description:' in frontmatter")
 
 
 def validate_unlisted_skills(skills_dir, required, errors):
@@ -173,6 +191,7 @@ def run(plugin_dir=PLUGIN_DIR, marketplace=MARKETPLACE, docs=None):
 
     validate_manifests(plugin_dir, marketplace, errors)
     validate_plugin_files(plugin_dir, REQUIRED_PLUGIN_FILES, errors)
+    validate_agents(plugin_dir, REQUIRED_AGENTS, errors)
     validate_reference_dirs(skills_dir, REQUIRED_SKILLS, warnings)
     validate_unlisted_skills(skills_dir, REQUIRED_SKILLS, errors)
     for skill in REQUIRED_SKILLS:
@@ -197,6 +216,7 @@ def main():
 
     print(f"PASS  All {len(REQUIRED_SKILLS)} skills validated")
     print("PASS  Plugin and marketplace manifests")
+    print(f"PASS  Agents: {', '.join(REQUIRED_AGENTS)}")
     print(f"PASS  Required plugin files: {', '.join(REQUIRED_PLUGIN_FILES)}")
     print("PASS  Specialist counts in docs")
     if warnings:

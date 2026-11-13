@@ -42,6 +42,8 @@ def make_plugin(root, skills=None):
         )
     for filename in validate.REQUIRED_PLUGIN_FILES:
         write(plugin / filename, "y" * 60)
+    for agent in validate.REQUIRED_AGENTS:
+        write(plugin / "agents" / f"{agent}.md", f"---\nname: {agent}\ndescription: d\n---\nbody\n")
     write(
         plugin / ".claude-plugin" / "plugin.json",
         json.dumps({"name": "cts", "version": "1.0.0", "description": "d"}),
@@ -114,6 +116,19 @@ class ValidateTests(TempDirCase):
         path.write_bytes(f"---\r\nname: tester\r\ndescription: d\r\n---\r\n{SKILL_BODY}".encode())
         errors, _ = self.run_checks(plugin, marketplace)
         self.assertEqual(errors, [])
+
+    def test_agent_problems(self):
+        plugin, marketplace = make_plugin(self.root)
+        agents = plugin / "agents"
+        (agents / "implementer.md").unlink()
+        write(agents / "spec-reviewer.md", "---\nname: wrong\n---\nbody")
+        write(agents / "quality-reviewer.md", "no frontmatter")
+        errors, _ = self.run_checks(plugin, marketplace)
+        joined = "\n".join(errors)
+        self.assertIn("Missing required agent file", joined)
+        self.assertIn("does not match file 'spec-reviewer.md'", joined)
+        self.assertIn("spec-reviewer.md: Missing 'description:'", joined)
+        self.assertIn("quality-reviewer.md: Missing YAML frontmatter", joined)
 
     def test_unlisted_skill_folder(self):
         plugin, marketplace = make_plugin(self.root)

@@ -226,6 +226,18 @@ When CTS is installed as a plugin, three hooks back the rules with code. They ar
 
 The push gate only applies to projects that have a `.logs/` directory. It checks what was logged, so it catches a skipped VERIFY phase; it does not re-run your tests.
 
+### Fresh-Context Execution and Two-Stage Review
+
+The plugin ships three agents the Orchestrator dispatches during EXECUTE for tasks that change code:
+
+| Agent | Role |
+|---|---|
+| `cts:implementer` | Builds one task test-first from a self-contained brief, in a fresh context |
+| `cts:spec-reviewer` | Checks the result against the brief: nothing missing, nothing wrong, nothing extra |
+| `cts:quality-reviewer` | Runs only after the spec review passes: correctness, security, tests, fit, simplicity |
+
+Reviewers are read-only and never see the conversation that produced the code. Small edits, docs, and config stay inline, because three subagents cost more than the task is worth.
+
 ### Strict Rules Summary
 
 | Rule | Detail |

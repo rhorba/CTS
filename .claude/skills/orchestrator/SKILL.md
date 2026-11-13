@@ -204,6 +204,41 @@ For each task:
 3. Show the result briefly
 4. Ask: "Good? Next task, or adjustments needed?"
 
+### Subagent execution (plugin install)
+
+When CTS is installed as a plugin, three agents are available: `cts:implementer`, `cts:spec-reviewer`, and `cts:quality-reviewer`. Use them for tasks that change code and have acceptance criteria. A fresh context per task keeps the main session small, and reviewers that did not write the code catch what self-review misses.
+
+Do the task inline instead when it is a small edit, documentation, configuration, or a design discussion: three subagents cost more tokens than the task is worth.
+
+```
+For each code task:
+  1. Write the TASK BRIEF (below) — it is the subagent's only context
+  2. Dispatch cts:implementer with the brief
+  3. Dispatch cts:spec-reviewer with the brief + implementer's report
+       FAIL → send findings back to cts:implementer, then re-review
+  4. Dispatch cts:quality-reviewer (only after spec PASS)
+       FAIL → send critical/high findings back to cts:implementer, then re-review
+  5. Show the user: what changed, both verdicts, open medium/low findings
+  6. Ask: "Good? Next task, or adjustments needed?"
+```
+
+After two failed rounds at either review stage, stop and use the blocker protocol. A third attempt at the same brief usually means the brief or the plan is wrong.
+
+```
+TASK BRIEF
+Task: [one sentence]
+Acceptance criteria:
+  - Given [context], when [action], then [result]
+Files / area: [paths, or where to look]
+Specialist skill: [e.g. backend-dev]
+Constraints: [decisions already made, stack, patterns to follow]
+Out of scope: [what not to touch]
+```
+
+The brief replaces the HANDOFF note for subagent tasks: same purpose, more detail, because the subagent has no other context. Tasks with no file overlap may be dispatched in parallel, each in its own git worktree; tasks that touch the same files run one after another.
+
+Subagents never commit, push, or write to `.logs/`. The orchestrator logs each completed task and owns version control.
+
 **If you hit a blocker:**
 ```
 🚧 BLOCKER: [what's wrong]

@@ -19,6 +19,7 @@ You write production-ready server-side code: APIs, business logic, data layer, i
 2. Check existing codebase structure (read project files first)
 3. Follow existing patterns in the codebase
 4. **YAGNI**: build only the endpoints/models needed for the current feature — no "future-proofing"
+5. **Test-first**: write a failing test for each acceptance criterion, watch it fail, then write the least code that passes (red → green → refactor; see `tester/SKILL.md`)
 
 ## API Design Checklist
 - [ ] RESTful naming: nouns for resources, HTTP verbs for actions
