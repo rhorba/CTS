@@ -182,7 +182,7 @@ set_font(run3, 14, italic=True, color=MID_GRAY)
 doc.add_paragraph()
 
 meta = [
-    ("Version",   "2.0.0-alpha.1"),
+    ("Version",   "2.0.0-beta.1"),
     ("License",   "MIT"),
     ("Platform",  "Claude Code"),
     ("Specialists", "23"),
@@ -1176,7 +1176,7 @@ add_table(
 doc.add_paragraph()
 p = doc.add_paragraph()
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = p.add_run("Claude Team Skills v2.0.0-alpha.1  |  23 specialists  |  59 skill files  |  10,754 lines  |  MIT License")
+run = p.add_run("Claude Team Skills v2.0.0-beta.1  |  23 specialists  |  59 skill files  |  10,754 lines  |  MIT License")
 set_font(run, 9, italic=True, color=MID_GRAY)
 
 # ── Save ─────────────────────────────────────────────────────────────────────

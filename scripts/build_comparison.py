@@ -20,7 +20,7 @@ from reportlab.platypus import (
 
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "cts-comparison.pdf"
-VERSION = "2.0.0-alpha.1"
+VERSION = "2.0.0-beta.1"
 AS_OF = "November 2026"
 
 INK = colors.HexColor("#16202A")

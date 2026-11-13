@@ -2,7 +2,7 @@
 
 **23 AI Specialists Working as One Team — Built for Claude Code**
 
-> Version 2.0.0-alpha.1 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
+> Version 2.0.0-beta.1 · Zero dependencies · Token-efficient · YAGNI-driven · [MIT License](LICENSE)
 
 Claude Team Skills (CTS) is a collection of 23 interconnected specialist skills for Claude Code. Instead of a generic AI assistant, every task is handled by the right expert — PM, Security Engineer, DBA, Software Architect, Test Architect, and more — all routed by a central Orchestrator that loads one specialist at a time.
 
@@ -600,10 +600,10 @@ The Orchestrator recognizes these scenarios and uses an optimised fast path:
 | ✨ New Feature | 1-4 hrs | PM → UX → Tech Lead → DBA → Devs → Tester → Security |
 | 🚀 New Project | 2-6 hrs | PM → System Designer → Software Architect → UX → Tech Lead → DBA → Security → all devs → DevOps |
 | 📋 Document-First Build | 1-2 hrs planning + execution | PM → Tech Lead → DBA → Security → Scrum → Test Architect |
-| 🎨 UX/UI Design | 30-120 min | UX → UI → Motion → Frontend → Copywriter |
+| 🎨 UX/UI Design | 30-120 min | UX → UI → Motion → Copywriter → Frontend |
 | 🌀 Motion & Interaction | 20-90 min | UI → Motion Designer → Frontend Dev (→ Design Loop for hero/video) |
 | 🔁 Design Loop | varies (reserve for high-stakes/reusable artifacts) | UI → Design Loop (3 independent critics) → Frontend/builder fixes → re-round |
-| 🗄️ Database Design | 15-60 min | DBA → Tech Lead → Backend Dev |
+| 🗄️ Database Design | 15-60 min | DBA → Security Engineer → Tech Lead → Backend Dev |
 | 🔒 Security Audit | 30-90 min | Security Engineer → DevSecOps → DBA |
 | 🔐 Security Review | 20-60 min | Security Engineer → DevSecOps → Backend/Frontend |
 | 🔄 Refactor | 30-120 min | Tech Lead → Backend/Frontend → Tester |
@@ -892,4 +892,4 @@ CTS skips these BMAD features by design to stay **lightweight and zero-dependenc
 
 ---
 
-*Claude Team Skills v2.0.0-alpha.1 — 23 specialists, 59 skill files*
+*Claude Team Skills v2.0.0-beta.1 — 23 specialists, 59 skill files*

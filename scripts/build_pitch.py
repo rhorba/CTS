@@ -632,7 +632,7 @@ txt(s, "github.com/rhorba/CTS",
     Inches(3.8), Inches(6.27), Inches(5.75), Inches(0.65),
     size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 
-txt(s, "Claude Team Skills v2.0.0-alpha.1 · MIT License · 23 specialists · 59 skill files · 10,754 lines",
+txt(s, "Claude Team Skills v2.0.0-beta.1 · MIT License · 23 specialists · 59 skill files · 10,754 lines",
     Inches(0.5), Inches(7.1), Inches(12.3), Inches(0.35),
     size=10, color=MID_GRAY, align=PP_ALIGN.CENTER)
 

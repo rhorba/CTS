@@ -283,62 +283,87 @@ Quick-start paths for common scenarios. These templates fast-track phases — th
 
 ## 🎨 UX/UI Design Workflow
 
-**Duration**: 30-120 min | **Skills**: UX Designer → UI Designer → Frontend Dev → Copywriter
+**Duration**: 30-120 min | **Skills**: UX Designer → UI Designer → Motion Designer → Copywriter → Frontend Dev
 
 ```
 1. UNDERSTAND (5 min)
-   → Who is the user? What's their goal?
-   → YAGNI: do we need full personas or is a 1-liner enough?
+   → Who is the user? What task are they completing?
+   → YAGNI: a one-line persona unless research is the point
+   → Scale the depth, not the phases:
+     Small (button/modal)   → fast-track steps 2-3 (1-2 min each; state
+                              "no new flow/layout — existing pattern reused" and log it)
+     Medium (page/feature)  → normal depth for steps 2-3
+     Large (new product)    → full depth for all steps
 
-2. FLOW (10-20 min)
-   → UX Designer: happy path user flow
+2. FLOW (UX — 10-20 min)
+   → Happy-path user flow (text-based diagram), key screens identified
    → Error paths and edge cases
    → Screen states: empty, loading, error, success
 
-3. WIREFRAME (10-20 min — fast-track to 2 min for trivial changes: state "no new layout — existing pattern reused" and log it)
-   → Low-fi layout: content hierarchy, primary CTA
+3. WIREFRAME (UX — 10-20 min)
+   → Low-fi, text-based layout for key screens: content hierarchy, primary CTA
+   → Navigation decisions
+   → Usability heuristic check
    → YAGNI: boxes + text only, no colors yet
 
-4. VISUAL (10-20 min)
-   → UI Designer: apply design tokens (colors, type, spacing)
-   → YAGNI: use existing component library unless brand requires custom
-   → Dark mode only if explicitly needed
+4. VISUAL (UI — 15-30 min)
+   → Apply design tokens (colors, type, spacing), or pick a UI framework
+   → Component styling decisions, responsive adaptations
+   → YAGNI: existing component library unless the brand requires custom;
+     dark mode only if explicitly needed
 
-5. COPY (5-10 min)
-   → Copywriter: button labels, error messages, empty states
-   → UX writing: help text, tooltips
+5. MOTION (Motion Designer — 5-15 min; skip with a logged one-liner if nothing moves)
+   → Hover, focus, press and transition behaviour for the key interactions
+   → Reduced-motion fallback
 
-6. HANDOFF → Frontend Dev
-   → Specs: tokens used, states, responsive behavior
+6. COPY (Copywriter — 5-10 min)
+   → Button labels, error messages, empty states
+   → Help text and tooltips
+
+7. HANDOFF → Frontend Dev
+   → Flow + wireframe + visual specs: tokens used, states, responsive behaviour
+   → Interaction details from step 5 and copy from step 6
+   → High-stakes or reusable screens: run the Design Loop before shipping
 ```
 
 ---
 
 ## 🗄️ Database Design Workflow
 
-**Duration**: 15-60 min | **Skills**: DBA → Tech Lead → Backend Dev
+**Duration**: 15-60 min | **Skills**: DBA → Security Engineer → Tech Lead → Backend Dev
 
 ```
 1. REQUIREMENTS (5 min)
-   → What data? What queries? How much volume?
-   → YAGNI: don't design for scale you don't have
+   → What entities and relationships? What queries? How much volume?
+   → Read-heavy or write-heavy?
+   → YAGNI: start with Postgres unless there is a real reason not to;
+     don't design for scale you don't have
 
 2. SCHEMA (10-20 min)
-   → DBA: entities, relationships, table design
+   → Entity list → relationship map → table design, naming conventions applied
    → Normalize to 3NF by default
-   → YAGNI: no denormalization until you've measured a real bottleneck
+   → YAGNI: only the tables and columns the current feature needs;
+     no denormalization until a real bottleneck is measured
 
 3. MIGRATION (5-10 min)
-   → Write migration files
-   → Ensure backward-compatible (nullable new columns first)
+   → Migration file(s) with up + down
+   → Backward-compatible: new columns nullable first
 
 4. INDEXES (5 min)
-   → Foreign keys + WHERE clause columns
-   → YAGNI: don't index everything, add when queries are slow
+   → Foreign keys + frequent WHERE columns
+   → YAGNI: don't index everything; add when queries are slow
 
-5. VERIFY
-   → Run migration on dev
+5. SECURITY CHECK (Security Engineer)
+   → Encryption for sensitive columns?
+   → Row-level security for multi-tenant data?
+   → Access permissions scoped?
+
+6. VERIFY
+   → Run the migration (up and down) on dev data
    → Test key queries with EXPLAIN ANALYZE
+
+7. HANDOFF → Backend Dev
+   → Schema + migrations + query patterns
 ```
 
 ---
@@ -349,130 +374,31 @@ Quick-start paths for common scenarios. These templates fast-track phases — th
 
 ```
 1. SCOPE (5 min)
-   → What are we reviewing? (new feature / full app / infra)
-   → YAGNI: match depth to risk level
+   → What is being reviewed? (new feature / architecture / full app / infra)
+   → YAGNI: match depth to risk and project maturity
      - Internal tool → quick checklist
      - Public app handling PII → full review
 
-2. THREAT MODEL (10 min)
-   → Security Engineer: 5-minute threat model
-   → Identify top 3 threats
-   → YAGNI: STRIDE only for high-risk components
-
-3. REVIEW (10-20 min)
-   → Security checklist (auth, input, data, infra)
-   → Run automated scans if code exists
-
-4. REMEDIATE
-   → Fix critical/high issues
-   → Backlog medium/low
-   → YAGNI: don't add WAF for an internal dashboard
-
-5. VERIFY
-   → Re-scan, confirm fixes
-```
-
----
-
-## 🎨 UX/UI Design Workflow
-
-**Duration**: 30-120 min | **Skills**: UX Designer → UI Designer → Frontend Dev
-
-```
-1. UNDERSTAND (5 min)
-   → Who is the user?
-   → What task are they completing?
-   → YAGNI check: scale the depth, not the phases
-     Small (button/modal)   → fast-track steps 2-3 (1 min each, note "minimal — no new flow/layout")
-     Medium (page/feature)  → normal depth for steps 2-3
-     Large (new product)    → full depth for all steps
-
-2. FLOW (UX — 15 min)
-   → User flow diagram (text-based)
-   → Key screens identified
-   → Error/empty states planned
-
-3. WIREFRAME (UX — 15 min)
-   → Text-based wireframe for key screens
-   → Navigation + hierarchy decisions
-   → Usability heuristic check
-
-4. VISUAL (UI — 15-30 min)
-   → Design tokens (or pick UI framework)
-   → Component styling decisions
-   → Responsive adaptations noted
-
-5. HANDOFF → Frontend Dev
-   → Flow + wireframe + visual specs
-   → Interaction details (hover, focus, transitions)
-   → Copy from Copywriter if needed
-```
-
----
-
-## 🗄️ Database Design Workflow
-
-**Duration**: 15-60 min | **Skills**: DBA → Backend Dev → Security Engineer
-
-```
-1. REQUIREMENTS (5 min)
-   → What entities? What relationships?
-   → Read vs write heavy?
-   → YAGNI: start with Postgres unless there's a real reason not to
-
-2. SCHEMA (10-20 min)
-   → Entity list → relationship map → table design
-   → YAGNI: only tables/columns needed for current feature
-   → Naming conventions applied
-
-3. MIGRATION (5-10 min)
-   → Migration file(s) with up + down
-   → Test on dev data
-
-4. INDEXES (5 min)
-   → Index foreign keys + frequent WHERE columns
-   → YAGNI: don't preemptively index everything
-
-5. SECURITY CHECK
-   → Encryption for sensitive columns?
-   → Row-level security for multi-tenant?
-   → Access permissions scoped?
-
-6. HANDOFF → Backend Dev
-   → Schema + migrations + query patterns
-```
-
----
-
-## 🔐 Security Review Workflow
-
-**Duration**: 20-60 min | **Skills**: Security Engineer → DevSecOps → relevant dev
-
-```
-1. SCOPE
-   → What's being reviewed? (feature / architecture / full app)
-   → YAGNI: match security depth to project maturity
-
-2. THREAT MODEL (Security Engineer)
-   → STRIDE on relevant components only
-   → Identify top 3-5 risks
+2. THREAT MODEL (Security Engineer — 10 min)
+   → 5-minute threat model; identify the top 3-5 risks
+   → YAGNI: STRIDE only on high-risk components
 
 3. REQUIREMENTS
    → Auth/authz design
    → Data protection needs
    → Logging requirements
 
-4. SCAN (DevSecOps)
-   → Run automated scanners
-   → Triage findings by severity
+4. REVIEW + SCAN (10-20 min)
+   → Security checklist (auth, input, data, infra)
+   → DevSecOps: run automated scanners if code exists; triage findings by severity
 
 5. REMEDIATE
    → Fix critical/high findings
    → Backlog medium/low
+   → YAGNI: don't add a WAF for an internal dashboard
 
 6. VERIFY
-   → Re-scan
-   → Confirm fixes
+   → Re-scan, confirm fixes
 ```
 
 ---
