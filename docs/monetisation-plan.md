@@ -1,6 +1,6 @@
 # CTS monetisation plan
 
-Drafted 13 November 2026. Status: draft for review.
+Drafted 13 November 2026. Status: accepted 13 November 2026. The public offer is [CTS for teams](for-teams.md).
 
 ## Summary
 
@@ -62,8 +62,8 @@ most hours to go to outreach, so the 30% figure will be too low at the start.
    - 0 accept and price is the stated reason: cut the scope (fewer hours), not the hourly value.
    - 0 accept for another reason: the offer is wrong, not the price. Ask what they would pay for.
 
-Quote local teams in MAD and foreign teams in USD or EUR. Whether to keep one price everywhere or set
-a lower local price is open; the table uses one price.
+Quote local teams in MAD and foreign teams in USD or EUR. One price applies everywhere (decided
+14 November 2026); there is no lower local price.
 
 ## Reaching the first 10 teams
 
@@ -122,5 +122,5 @@ Until then, a paid tier has nobody to sell to.
 ## Open questions
 
 1. How many hours per week will you commit? The plan works at 5; pick the row.
-2. One price everywhere, or a lower local price in MAD?
+2. ~~One price everywhere, or a lower local price in MAD?~~ Answered 14 November 2026: one price.
 3. Legal form for invoicing, and whether foreign-currency invoices need anything extra.

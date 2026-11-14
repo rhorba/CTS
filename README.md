@@ -20,6 +20,14 @@ This repository ships with companion materials for presentations and onboarding:
 
 ---
 
+## For Teams
+
+CTS is free and MIT-licensed. If you want it set up for your team, there are three fixed-price services: a Team Setup tuned to your stack, a half-day Team Workshop, and a Custom Skill Pack for your domain.
+
+See [CTS for teams](docs/for-teams.md) for what each includes and what it costs.
+
+---
+
 ## Installation
 
 ### Option A — Install as a plugin (recommended)
@@ -842,20 +850,6 @@ What CTS itself adds to the context: the session context (~0.5K) plus each skill
 | Marketing launch | Orchestrator + Digital Marketer + Copywriter + Content Marketer | ~8K |
 
 These figures cover CTS's instruction files only. They exclude your code, the conversation, tool output, and reference files (1-14K per skill when read). Subagent runs and Design Loop critic rounds each start their own context and have not been measured.
-
----|---|---|
-| Quick bug fix | 3-8K | Orchestrator + 1 dev + Tester |
-| Small feature | 8-15K | Orchestrator + Tech Lead + 1-2 devs + Tester |
-| Large feature | 15-30K | Multiple specialists across batches |
-| New project scaffold | 15-25K | PM + System Designer + Software Architect + Tech Lead + DBA + devs + DevOps |
-| Database design | 5-10K | DBA + Backend Dev |
-| UX/UI design | 5-12K | UX + UI + Frontend + Copywriter |
-| Design loop (per critic round) | 3-6K in-app / ~2-3M tokens for a full multi-round external run (e.g. Claude Design + exported assets) | Design Loop + 3 fresh critic subagents |
-| Security audit | 5-15K | Security Eng + DevSecOps + references |
-| Brainstorm session | 3-8K | Creative Intelligence + PM or Tech Lead |
-| Test strategy | 5-10K | Test Architect + Tester + Security Eng |
-| Document-first build | 10-20K | PM + Tech Lead + Scrum + devs |
-| Sprint planning | 3-8K | PM + Scrum Master |
 
 ---
 
