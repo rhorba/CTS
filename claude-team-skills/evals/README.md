@@ -95,7 +95,7 @@ caller must provide CAP_SYS_ADMIN): Permission denied
 
 No one could run the tests, so the spec review could not pass, and the session stopped the loop and reported the work as unverified instead of dispatching the quality reviewer. That is the behaviour CTS asks for when verification cannot run. The 0.75 is an environment failure on the runner, not a skipped step: locally in WSL2, where Bash works, the loop finished 3 of 3 times.
 
-The fix belongs in the workflow (letting the sandbox create user namespaces on the runner). It has not been made, because it cannot be tested until the API key's limit resets on 1 December 2026.
+The fix belongs in the workflow (letting the sandbox create user namespaces on the runner). A candidate is prepared but untested: the job moves to `ubuntu-22.04`, which has no AppArmor user-namespace restriction, and a new step runs a nested `bwrap` check before any API spend, failing in seconds if the sandbox cannot work. The check passes in local WSL2 (Ubuntu 22.04). It cannot be run on the runner until the API key's limit resets on 1 December 2026.
 
 ## Known limit: the orchestrator is not loaded on "just ship it"
 
