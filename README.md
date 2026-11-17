@@ -26,6 +26,8 @@ CTS is free and MIT-licensed. If you want it set up for your team, there are thr
 
 See [CTS for teams](docs/for-teams.md) for what each includes and what it costs.
 
+If CTS saves you time and you want to keep it maintained, you can [sponsor it on GitHub](https://github.com/sponsors/rhorba).
+
 ---
 
 ## Installation
