@@ -121,6 +121,10 @@ Until then, a paid tier has nobody to sell to.
 
 ## Open questions
 
-1. How many hours per week will you commit? The plan works at 5; pick the row.
+1. ~~How many hours per week will you commit?~~ Answered 17 November 2026: 5 hours per week
+   (the first row of the capacity table: about 15 delivery hours a month, one Team Setup plus one
+   Skill Pack at most).
 2. ~~One price everywhere, or a lower local price in MAD?~~ Answered 14 November 2026: one price.
-3. Legal form for invoicing, and whether foreign-currency invoices need anything extra.
+3. Legal form for invoicing, and whether foreign-currency invoices need anything extra. Not decided
+   as of 17 November 2026. Action: ask an accountant before sending the first quote, and cover
+   GitHub Sponsors income in the same conversation.
