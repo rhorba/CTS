@@ -12,6 +12,19 @@ project=${CLAUDE_PROJECT_DIR:-.}
 logs="$project/.logs"
 min_coverage=80
 
+# As a Claude Code PreToolUse hook, stdin is JSON with tool_input.command. The hooks.json
+# `if` filter is not a guarantee (compound commands can still reach this script), so gate
+# only commands that run `git push`, also `git -C dir push` or a push inside a pipeline.
+# As a git pre-push hook, stdin holds ref lines; those are always gated.
+input=$(cat)
+case "$input" in
+  *'"tool_input"'*)
+    printf '%s' "$input" |
+      grep -Eq 'git([[:space:]]+-[^[:space:]]+([[:space:]]+[^-[:space:]][^[:space:]]*)?)*[[:space:]]+push([[:space:]]|"|;|&|\||\\|$)' ||
+      exit 0
+    ;;
+esac
+
 [ -d "$logs" ] || exit 0
 
 block() {

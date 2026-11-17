@@ -29,11 +29,11 @@ class HookCase(unittest.TestCase):
         self.logs.mkdir(exist_ok=True)
         (self.logs / name).write_text(text, encoding="utf-8", newline="\n")
 
-    def run_hook(self, script):
+    def run_hook(self, script, stdin="{}"):
         env = dict(os.environ, CLAUDE_PROJECT_DIR=self.project.as_posix())
         return subprocess.run(
             [SH, (HOOKS / script).as_posix()],
-            input="{}",
+            input=stdin,
             capture_output=True,
             text=True,
             encoding="utf-8",
@@ -111,6 +111,43 @@ class PushGateTests(HookCase):
         self.log("issues.md", VERIFY_PASS)
         self.log("metrics.md", "Coverage: 40%\nCoverage: n/a — documentation only\n")
         self.assertEqual(self.gate().returncode, 0)
+
+
+class PushGateCommandFilterTests(HookCase):
+    """As a PreToolUse hook the gate must only fire for commands that actually run git push."""
+
+    def setUp(self):
+        super().setUp()
+        self.logs.mkdir()  # CTS project with nothing verified: any gated command is blocked
+
+    def bash(self, command):
+        payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
+        return self.run_hook("push-gate.sh", stdin=payload)
+
+    def test_ignores_commands_without_git_push(self):
+        for command in [
+            "./mvnw verify",
+            "cd api && ./mvnw -q verify 2>&1 | tail -5",
+            "cat >> .logs/activity.md <<'EOF'\nHANDOFF: push the work later\nEOF\ndocker compose up -d",
+            'git commit -m "push gate fix"',
+            "git status && git log --oneline -1",
+            "docker push ghcr.io/x/y:1",
+        ]:
+            with self.subTest(command=command):
+                result = self.bash(command)
+                self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_gates_commands_that_push(self):
+        for command in [
+            "git push origin main",
+            "git -C ../repo push",
+            "git add -A && git commit -m x && git push -u origin feature",
+            "git push",
+        ]:
+            with self.subTest(command=command):
+                result = self.bash(command)
+                self.assertEqual(result.returncode, 2, command)
+                self.assertIn("CTS push gate", result.stderr)
 
 
 @unittest.skipIf(SH is None or shutil.which("git") is None, "sh and git are required")
